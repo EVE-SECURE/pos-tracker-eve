@@ -1,0 +1,312 @@
+/* $Id: pos.css 244 2009-04-26 17:25:32Z stephenmg $ */
+body {
+  color:black;
+  background-color:#F2EFE9;
+  font: Arial, sans-serif;
+  text-align:center;
+}
+
+img {
+  border:0;
+}
+
+.style6 {
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+table {
+  empty-cells: show
+}
+
+.txtcenter {
+  text-align:center;
+}
+
+.txtleft {
+  text-align:left;
+}
+
+.txtright {
+  text-align:right;
+}
+
+.mcenter {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.tracktable {
+  font-family: Arial,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: normal;
+  font-size-adjust: none;
+  font-stretch: normal;
+  /*border:1px white solid;*/
+  padding:5px;
+  /*width:100%;*/
+}
+
+.tracktable td, .tracktable th {
+  border:1px black solid;
+  border-collapse:collapse;
+  padding:5px;
+  color:black;
+}
+
+.trackheader {
+  background-color:#336699;
+  color:#EEEEEE;
+}
+
+.arialorangeunderlinebold12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bolder;
+  color: #FFA500;
+  text-decoration: underline;
+
+}
+
+.arialwhitebold12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: bolder;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+.arialwhite12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+td.arialwhite12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #CCCCCC;
+  text-decoration: none;
+}
+
+
+tr.arialwhitebold12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: bolder;
+  color: #000000;
+  text-decoration: none;
+}
+
+tr.arialwhite12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+
+.arialwhitebold14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+th.arialwhitebold14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+.arialwhite14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #000000;
+  text-decoration: none;
+
+}
+.arialgrey14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.arialwhitebold16 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bolder;
+  color: #FFFFFF;
+  text-decoration: none;
+
+}
+
+.arialblackbold14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #000000;
+  text-decoration: none;
+
+}
+
+.arialredbold12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bolder;
+  color: #FF0000;
+  text-decoration: none;
+
+}
+
+.arialredbold14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #FF0000;
+  text-decoration: none;
+
+}
+
+.arialredbold16 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bolder;
+  color: #FF0000;
+  text-decoration: none;
+
+}
+
+.arialcustombluebold10 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: bolder;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.arialcustombluebold12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bolder;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.arialcustombluebold14 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.arialcustombluebold16 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bolder;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.arialcustomblue10 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.arialcustomblue12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #1B3169;
+  text-decoration: none;
+
+}
+
+.nolink12 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #1B3169;
+  text-decoration: none;
+}
+
+.billheader {
+  padding:5px;
+  border:1px black solid;
+  border-collapse:collapse;
+  text-decoration: none;
+}
+
+.billcontent {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: black;
+  text-decoration: none;
+  border:1px black solid;
+  border-collapse:collapse;
+  text-align:right;
+  padding:5px;
+}
+
+.collapse {
+  border-collapse:collapse;
+}
+
+.txtunderlined {
+  text-decoration: underline;
+}
+
+a {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1B3169;
+  text-decoration: underline;
+
+}
+
+.pageTitle {
+text-align:center;
+color:#1B3169;
+}
+
+.fuelCalc {
+  margin-left:auto;
+  margin-right:auto;
+  font-family: Arial,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: normal;
+  font-size-adjust: none;
+  font-stretch: normal;
+  padding:5px;
+}
+
+.fuelCalc td, .fuelCalc th {
+  border:1px black solid;
+  border-collapse:collapse;
+  padding:5px;
+  color:black;
+}
