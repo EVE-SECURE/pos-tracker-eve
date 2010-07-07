@@ -180,7 +180,6 @@ switch($action) {
         break;
     case 'Assign As Backup Fuel Tech':
         $newowner=$eve->VarCleanFromInput('newowner');
-        echo $newowner;
         $args=array('pos_id'=>$pos_id, 'newowner_id'=>$newowner);
         $posmgmt->updateOwner($args, $backup=true);
         break;
