@@ -26,7 +26,7 @@
  * @copyright  2007-2008 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: class.pos.php 304 2010-01-10 04:17:45Z stephenmg12 $
+ * @version    SVN: $Id$
  * @link       https://sourceforge.net/projects/pos-tracker2/
  * @link       http://www.eve-online.com/
  */
@@ -47,7 +47,7 @@ include 'includes/pos_val.php';
  * @author     Stephen Gulickk <stephenmg12@gmail.com>
  * @author     DeTox MinRohim <eve@onewayweb.com>
  * @copyright 2008-2009
- * @version SVN: $Id: class.pos.php 304 2010-01-10 04:17:45Z stephenmg12 $
+ * @version SVN: $Id$
  * @access public
  */
 class POSMGMT
@@ -932,28 +932,49 @@ class POSMGMT
             $orderstatus=true;
         }
 
+		//POS List = No Secret POS Access but can see what they own.
+		$query_pl = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
+                      OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']."
+                      OR ( ".TBL_PREFIX."tower_info.owner_id = 0
+                      AND ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
+		
         switch($userinfo['access']) {
           case 0:
           default:
-              // This should never happen anyways, so we're going to make sure it won't.
+          // This should never happen anyways, so we're going to make sure it won't.
               $where = "WHERE 0=1";
           break;
           case 1:
-              // Access Level 1 = Show Towers User is Fuel Tech
+          // Access Level 1 = Show Towers User is Fuel Tech(View Only Access - No Secret POS[Unless of course they are a fuel tech for it])
               $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
                         OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id'];
           break;
           case 2:
-            // Access Level 2 = Show Towers User is Fuel Tech or Same Corp but no Fuel Tech yet.
-            $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
-                      OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']."
-                      OR ( ".TBL_PREFIX."tower_info.owner_id = 0
-                      AND ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' )";
+          // Access Level 2 = Show Towers User is Fuel Tech(Fuel Tech Access - No Secret POS[Unless of course they are a fuel tech for it])
+			$where = $query_pl;
           break;
           case 3:
+		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - Secret POS Access)
+		   if ($userinfo['highly_trusted'] == 1){
+		   $where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
+		   }
+		   else {
+		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - No Secret POS)
+			$where = $query_pl;
+		   }
+		  break;
           case 4:
+		  // Access Level 4 = Show Towers User is of Same Corp(Directors - Secret POS Access)
+		  if ($userinfo['highly_trusted'] == 1){
+		  $where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
+		   }
+		   else {
+		  // Access Level 4 = Show Towers User is of Same Corp(Directors - No Secret POS)
+			$where = $query_pl;
+		   }
+		  break;
           case 5:
-            // Access Level 3 or Higher Show everything.
+          // Access Level 5 = Admin Account(Currently Disabled)
             $where = "WHERE 1=1";
           break;
         }
@@ -1083,7 +1104,7 @@ class POSMGMT
 
     /**
      * POSMGMT::GetAllPoses()
-     *
+     * - OLDDDDDDDDDDDDDDDDDDDD CODE. NOT USED. Will be removed later.
      * @return
      */
     function GetAllPoses()
@@ -3968,8 +3989,8 @@ class POSMGMT
             $charters_needed          = $tower['charters_needed'];
             $pos_size                 = $tower['pos_size'];
             $pos_race                 = $tower['pos_race'];
-            $tower_cpu               = $tower['cpu'];
-            $tower_pg                = $tower['powergrid'];
+            $tower_cpu                = $tower['cpu'];
+            $tower_pg                 = $tower['powergrid'];
             // added new varibles to bring it update with our new additions
             $systemID                 = $tower['systemID'];
             $locationName             = $this->getSystemName($systemID);
@@ -3977,8 +3998,9 @@ class POSMGMT
             $system                   = $locationName;//$tower['system'];
             $corp                     = $tower['corp'];
             $towerName                = $tower['towerName'];
-            $outpost_id             = $tower['outpost_id'];
+            $outpost_id               = $tower['outpost_id'];
             $pos_id                   = $tower['pos_id'];
+			$secret_pos               = $tower['secret_pos'];
             $bill[$pos_to_refuel]['owner_id'] = $tower['owner_id'];
             $bill[$pos_to_refuel]['pos_status'] = $tower['pos_status'];
             $bill[$pos_to_refuel]['result_uptimecalc'] = $result_uptimecalc;
