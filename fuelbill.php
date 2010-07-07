@@ -26,7 +26,7 @@
  * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: fuelbill.php 243 2009-04-26 16:10:33Z stephenmg $
+ * @version    SVN: $Id$
  * @link       https://sourceforge.net/projects/pos-tracker2/
  * @link       http://www.eve-online.com/
  */
@@ -51,6 +51,7 @@ $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
 
 $access = $eve->SessionGetVar('access');
+$highly_trusted = $eve->SessionGetVar('highly_trusted');
 $eveRender->Assign('access', $access);
 if ($access >= '2') {
 
@@ -183,22 +184,27 @@ if ($access >= '2') {
     $eveRender->Assign('use_current_levels', $use_current_levels);
     $eveRender->Assign('optlevels',          $optlevels);
     $eveRender->Assign('optposids',          $optposids);
-//echo '<pre>';print_r($systems); echo '</pre>';exit;
-
 
     $count = 0;
     $args['use_current_levels'] = $use_current_levels;
     $towers = $posmgmt->GetFuelBill($args);
-    //echo '<pre>';print_r($towers); echo '</pre>';exit;
+
     foreach ($towers as $key => $tower) {
 
         // Users with Access below 3 -> Only Display the Tower if they are Fuel Tech for it.
         if ($access <= "2") {
-          if ($tower['owner_id'] != $userinfo['eve_id'] && $tower['secondary_owner_id'] != $userinfo['eve_id']) {
+			if ($tower['owner_id'] != $userinfo['eve_id'] && $tower['secondary_owner_id'] != $userinfo['eve_id']) {
             continue ;
-          }
+			}
         }
-
+		else {
+			if ($tower['secret_pos'] == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
+				if ($highly_trusted != 1 && $tower['owner_id'] != $userinfo['eve_id'] && $tower['secondary_owner_id'] != $userinfo['eve_id']) {
+				continue ;
+				}
+			}
+		}
+		
         $required_H_isotope  = 0;
         $required_N_isotope  = 0;
         $required_O_isotope  = 0;
