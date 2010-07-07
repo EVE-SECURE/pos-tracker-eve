@@ -27,7 +27,7 @@
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
  * @version    SVN: $Id: about.php 305 2010-01-12 00:27:16Z stephenmg12 $
- * @link       https://sourceforge.net/projects/pos-tracker2/
+ * @link       https://code.google.com/p/pos-tracker-eve/
  * @link       http://www.eve-online.com/
  */
 
