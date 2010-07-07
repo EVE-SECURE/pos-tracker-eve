@@ -26,13 +26,12 @@
  * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: viewpos.php 305 2010-01-12 00:27:16Z stephenmg12 $
- * @link       https://sourceforge.net/projects/pos-tracker2/
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/pos-tracker-eve/
  * @link       http://www.eve-online.com/
  */
 include_once 'eveconfig/config.php';
 include_once 'includes/dbfunctions.php';
-
 
 EveDBInit();
 
@@ -42,7 +41,6 @@ include_once 'includes/eveRender.class.php';
 
 $eveRender = New eveRender($config, $mod, false);
 $colors    = $eveRender->themeconfig;
-//echo '<pre>';print_r($_SESSION); echo '</pre>';exit;
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 $eve->SessionSetVar('userlogged', 1);
@@ -50,10 +48,11 @@ $eve->SessionSetVar('userlogged', 1);
 $userinfo = $posmgmt->GetUserInfo();
 
 $access = $eve->SessionGetVar('access');
+$highly_trusted = $eve->SessionGetVar('highly_trusted');
+$eve_id = $eve->SessionGetVar('eve_id');
 
 $eveRender->Assign('access', $access);
 $eveRender->Assign('config', $config);
-//echo '<pre>';print_r($_SESSION); echo '</pre>';exit;
 
 if ($access >= 1) {
     $pos_id = $eve->VarCleanFromInput('i');
@@ -61,6 +60,7 @@ if ($access >= 1) {
 
         $tower = $posmgmt->GetTowerInfo($pos_id);
         //if ($row = mysql_fetch_array($result)) {
+		
         if ($tower) {
             $current_isotope         = $tower['isotope'];
             $outpost_id            = $tower['outpost_id'];
@@ -80,27 +80,58 @@ if ($access >= 1) {
             $location                = $tower['moonName'];
             $tower_cpu               = $tower['cpu'];
             $tower_pg                = $tower['powergrid'];
-            $systemName               = $posmgmt->getSystemName($systemID); //New Call to Function to get System Name from database
+            $systemName              = $posmgmt->getSystemName($systemID); //New Call to Function to get System Name from database
             //New Sovereingty Function to retrieve Sovereingty Status
-            $tower['sovereignty']     = $posmgmt->getSovereignty($systemID);
+            $tower['sovereignty']    = $posmgmt->getSovereignty($systemID);
             //$sovereignty              = $tower['sovereignty'] = $sov['sovereignty'];
-            $allianceid               = $tower['allianceid'];
-            $tower['sovfriendly']     = $posmgmt->getSovereigntyStatus($systemID, $allianceid);
+            $allianceid              = $tower['allianceid'];
+            $tower['sovfriendly']    = $posmgmt->getSovereigntyStatus($systemID, $allianceid);
             //if ($_SESSION['allainceid'] == $sov['allianceID']) {
             //    $sovfriendly            = $tower['sovfriendly'] = true;
-            $charters_needed          = $tower['charters_needed'];
+            $charters_needed         = $tower['charters_needed'];
             //$system = $row['system'];
-            $pos_id                   = $tower['pos_id'];
+            $pos_id                  = $tower['pos_id'];
             // grabs the new allianceid off the table
 
+			$owner_id				 = $tower['owner_id'];
+			$sec_owner_id			 = $tower['secondary_owner_id'];
+			
             $owner_info=$posmgmt->GetUserInfofromID($tower['owner_id']);
             $tower['owner_name']=$owner_info['name'];
 
             $sec_owner_info=$posmgmt->GetUserInfofromID($tower['secondary_owner_id']);
             $tower['secondary_owner_name']=$sec_owner_info['name'];
-
+			$secret_pos         = $tower['secret_pos'];
         }
 
+				
+		if ($secret_pos == 1) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
+			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $secondary_owner_id) {
+				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $secondary_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
+					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+					$eve->RedirectUrl('index.php');
+					die();
+				}
+			}
+			else {
+				$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+				$eve->RedirectUrl('index.php');
+				die();
+			}
+		}
+		
+		if ($access == 1) { //View Only Access Check, should make sure they are ONLY looking at their own towers.
+			if ($eve_id == $owner_id || $eve_id == $secondary_owner_id) {
+			}
+			else {
+					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+					$eve->RedirectUrl('index.php');
+					die();
+			}
+		}
+		
+		
+		
         $display_hangar = false;
 
         $hangars = $posmgmt->GetPosHangars($pos_id);
