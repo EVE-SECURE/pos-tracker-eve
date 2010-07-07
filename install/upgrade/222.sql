@@ -1,0 +1,1 @@
+ ALTER TABLE `%prefix%system_status` CHANGE `constellationSovereignty` `constellationSovereignty` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' 
