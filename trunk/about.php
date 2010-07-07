@@ -50,7 +50,7 @@ $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('access', $userinfo['access']);
 $eveRender->Assign('config', $config);
 
-$version = '3.0.0 FGV';//$posmgmt->GetVersion();
+$version = '5.0.1 FGV';//$posmgmt->GetVersion();
 
 
 $eveRender->Assign('version', $version);
