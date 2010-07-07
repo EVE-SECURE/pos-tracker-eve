@@ -233,9 +233,9 @@ if ($tower) {
 	$secret_pos         = $tower['secret_pos'];
 }
 
-if ($secret_pos == 1) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
-			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $secondary_owner_id) {
-				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $secondary_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
+if ($secret_pos == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
+			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $sec_owner_id) {
+				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $sec_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
 					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
 					$eve->RedirectUrl('index.php');
 					die();
