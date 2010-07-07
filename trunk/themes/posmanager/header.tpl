@@ -1,11 +1,9 @@
 <!--[* $Id: header.tpl 305 2010-01-12 00:27:16Z stephenmg12 $ *]-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-en">
-<!--$Id: header.tpl 305 2010-01-12 00:27:16Z stephenmg12 $-->
-<!--Pos-Tracker 3.0-->
-<!--Visit http://pos-tracker.eve-corporate.net for  more information-->
+<!--POS-Tracker 5.0.1 FGV-->
 <head>
-  <title>POS-Tracker 3.0.0.305 RC 5 - FG Version</title>
+  <title>POS-Tracker 5.0.1 - FG Version</title>
   <link href="themes/<!--[$config.theme]-->/style/pos.css" rel="stylesheet" type="text/css" />
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
   <!--[additional_header]-->
