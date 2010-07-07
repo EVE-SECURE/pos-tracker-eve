@@ -22,12 +22,12 @@
 
  * @author     Stephen Gulickk <stephenmg12@gmail.com>
  * @author     DeTox MinRohim <eve@onewayweb.com>
- * @author      Andy Snowden <forumadmin@eve-razor.com>
+ * @author     Andy Snowden <forumadmin@eve-razor.com>
  * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id$Id$ 
- * @link       https://code.google.com/p/pos-tracker-eve/
+ * @version    SVN: $Id$Id$
+ * @link       http://code.google.com/p/pos-tracker-eve/
  * @link       http://www.eve-online.com/
  */
 
