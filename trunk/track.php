@@ -26,8 +26,8 @@
  * @copyright  2007-2008 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: track.php 243 2009-04-26 16:10:33Z stephenmg $
- * @link       https://sourceforge.net/projects/pos-tracker2/
+ * @version    SVN: $Id$
+ * @link       http://code.google.com/p/pos-tracker-eve/
  * @link       http://www.eve-online.com/
  */
 
@@ -124,6 +124,8 @@ if ($access >= "1") {
 
     $bgcolor   = "#111111";
     $textcolor = "#FFFFFF";
+	
+	
     foreach($rows as $key => $row) {
 	
         $row2 = $posmgmt->GetLastPosUpdate($row['pos_id']);
