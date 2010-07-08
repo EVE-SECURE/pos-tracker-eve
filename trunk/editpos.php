@@ -55,6 +55,7 @@ if ($access < 2) {
 }
 
 $eveRender->Assign('access', $access);
+$eveRender->Assign('highly_trusted', $highly_trusted);
 
 $pos_id = $eve->VarCleanFromInput('i');
 // Dirty fix
@@ -89,7 +90,22 @@ switch($action) {
             $eve->RedirectUrl('viewpos.php?i='.$pos_id);
         }
 
-        //echo 'Change Tower Information - ' . $newstatus . ' - ' .$new_tower_name;exit;
+        //echo 'Change Tower Information - ' . $newstatus . ' - ' .$new_tower_name;exit;  
+        break;
+	case 'Change POS Secretive Status':
+	
+		$new_secret    = $eve->VarCleanFromInput('new_secret');
+		if ($new_secret == 0) {
+			$new_secret  = 1;
+		}
+		else {
+			$new_secret = 0;
+		}
+		
+        if ($posmgmt->ChangeTowerSecret(array('pos_id' => $pos_id, 'new_secret' => $new_secret))) {
+            $eve->SessionSetVar('statusmsg', 'POS Secretive Status Changed!');
+            $eve->RedirectUrl('viewpos.php?i='.$pos_id);
+        }
         break;
     case 'Update Fuel':
 
@@ -789,6 +805,7 @@ $eveRender->Assign('outpostlist', $outpost_list);
 $eveRender->Assign('users',     $users);
 $eveRender->Assign('optimal',   $optimal);
 $eveRender->Assign('optimalDiff',   $optimalDiff);
+$eveRender->Assign('secret_pos',	$secret_pos);
 /*0 - Unanchored (also unanchoring??) (has valid stateTimestamp)
 Note that moonID is zero for unanchored Towers, but locationID will still yield the solar system ID
 1 - Anchored / Offline (no time information stored)
