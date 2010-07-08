@@ -931,12 +931,6 @@ class POSMGMT
             $orderby="ORDER BY  MoonName";
             $orderstatus=true;
         }
-
-		//POS List = No Secret POS Access but can see what they own.
-		$query_pl = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
-                      OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']."
-                      OR ( ".TBL_PREFIX."tower_info.owner_id = 0
-                      AND ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
 		
         switch($userinfo['access']) {
           case 0:
@@ -951,7 +945,10 @@ class POSMGMT
           break;
           case 2:
           // Access Level 2 = Show Towers User is Fuel Tech(Fuel Tech Access - No Secret POS[Unless of course they are a fuel tech for it])
-			$where = $query_pl;
+			$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
+                      OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']."
+                      OR ( ".TBL_PREFIX."tower_info.owner_id = 0
+                      AND ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
           break;
           case 3:
 		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - Secret POS Access)
@@ -960,7 +957,7 @@ class POSMGMT
 		   }
 		   else {
 		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - No Secret POS)
-			$where = $query_pl;
+			$where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0";
 		   }
 		  break;
           case 4:
@@ -970,7 +967,7 @@ class POSMGMT
 		   }
 		   else {
 		  // Access Level 4 = Show Towers User is of Same Corp(Directors - No Secret POS)
-			$where = $query_pl;
+			$where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0";
 		   }
 		  break;
           case 5:
