@@ -52,6 +52,7 @@ $highly_trusted = $eve->SessionGetVar('highly_trusted');
 $eve_id = $eve->SessionGetVar('eve_id');
 
 $eveRender->Assign('access', $access);
+$eveRender->Assign('highly_trusted', $highly_trusted);
 $eveRender->Assign('config', $config);
 
 if ($access >= 1) {
@@ -532,6 +533,7 @@ if ($access >= 1) {
         $eveRender->Assign('hangars',   $hangar);
         $eveRender->Assign('optimal',   $optimal);
         $eveRender->Assign('optimalDiff',   $optimalDiff);
+		$eveRender->Assign('secret_pos',	$secret_pos);
         $eveRender->Display('viewpos.tpl');
 
     } else {
