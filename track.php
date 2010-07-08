@@ -55,6 +55,7 @@ $sb = $eve->VarCleanFromInput('sb');
 if(is_numeric($sb)) {
     $args['scolumn']=$sb;
 }
+$st = $eve->VarCleanFromInput('st');
 
 //User Display Options
 $action = $eve->VarCleanFromInput('action');
@@ -66,6 +67,13 @@ switch($action) {
     case 'Display':
         $usrlimit     = $eve->VarCleanFromInput('pagernumsel');
         $eve->SessionSetVar('usrlimit', $usrlimit);
+	break;
+	case 'Show Stront Timers':
+        $eve->RedirectUrl('track.php?st='.$st);
+	break;
+	case 'Hide Stront Timers':
+        $eve->RedirectUrl('track.php?st='.$st);
+	break;
 }
 
 
@@ -173,7 +181,8 @@ Note that moonID is zero for unanchored Towers, but locationID will still yield 
             $row['bgcolor']   = $colors['critical_fuel_background_color'];
             $row['textcolor'] = $colors['critical_fuel_text_color'];
         }
-
+		
+		$row['uptimecalc'] = $posmgmt->uptimecalc($row['pos_id']);
         $disp_rows[$key]=$row;
     }
     //array_multisort($sortAarr, SORT_ASC, $rows);
@@ -217,7 +226,7 @@ Note that moonID is zero for unanchored Towers, but locationID will still yield 
     $eveRender->Assign('arrporace', $arrporace);
     $eveRender->Assign('config',    $config);
     $eveRender->Assign('poses',     $disp_rows);
-
+	$eveRender->Assign('st',     $st);
     $eveRender->Display('track.tpl');
 
 } else {
