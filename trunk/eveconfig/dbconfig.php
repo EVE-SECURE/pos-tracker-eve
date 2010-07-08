@@ -22,6 +22,4 @@ $dbdebug['debug_sql']      = 0;
 $dbdebug['pagerendertime'] = 0;
 
 // Done... no need to touch anything else. (Unless you know what you are doing)
-
-/* $Id: dbconfig.php 51 2008-06-30 14:31:03Z eveoneway $ */
 ?>
