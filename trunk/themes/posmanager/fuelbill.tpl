@@ -94,7 +94,7 @@
       <td class="billcontent"><!--[formatnumber value=$fuel_mechanical_parts_size]--></td>
       <td class="billcontent"><!--[formatnumber value=$fuel_oxygen_size]--></td>
       <td class="billcontent"><!--[formatnumber value=$fuel_robotics_size]--></td>
-      <td class="arialwhite12">&nbsp;</td>
+	  <td class="arialwhite12">&nbsp;</td>
     </tr>
 
     <tr>
@@ -111,9 +111,10 @@
       <td style="background-color:#336699; color:#CCCCCC;" class="billcontent"><!--[formatnumber value=$fuel_oxygen]--></td>
       <td style="background-color:#336699; color:#CCCCCC;" class="billcontent"><!--[formatnumber value=$fuel_robotics]--></td>
       <td class="arialwhite12">&nbsp;</td>
+	  <td class="arialwhite12">&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="15" class="billcontent" style="text-align:center;"><!--[formatnumber value=$total_size]--> (m3)</td>
+      <td colspan="16" class="billcontent" style="text-align:center;"><!--[formatnumber value=$total_size]--> (m3)</td>
     </tr>
   </table>
   <p style="text-align:center;"><input type="submit" name="filter" value="Filter" /> - <a href="fuelbill.php" title="Clear Filter">Clear Filter</a></p>
