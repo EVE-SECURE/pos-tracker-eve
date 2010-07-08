@@ -228,7 +228,7 @@
         </table>
       </div>
       </form>
-	  Highly Trusted requires the person to be View-All Manager or Directory in order to function. Secret POS will show to Fuel Techs if they are actually assigned to it and do not need Highly Trusted selected.
+	  Highly Trusted requires the person to be View-All Manager or Director in order to function. Secret POS will show to Fuel Techs if they are actually assigned to it and do not need Highly Trusted selected.
     </div>
   <!--[/if]-->
 
