@@ -1,10 +1,18 @@
-<!--[* $Id: track.tpl 205 2008-10-24 08:06:58Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
+
   <form method="post" action="track.php">
   <!--[html_options options=$sortlist name='sortlist' selected=$sb]-->
   <input type="submit" name="action" value="Sort Towers" />
   <!--[html_options options=$pagernumlist name='pagernumsel' selected=$pager.limit]-->
   <input type="submit" name="action" value="Display" />
+  <!-- $st = $_POST['st']; -->
+  <!--[if $st == 1]-->
+  <input type="submit" name="action" value="Hide Stront Timers" />
+  <input type="hidden" name="st" value="0" />
+  <!--[else]-->
+  <input type="submit" name="action" value="Show Stront Timers" />
+  <input type="hidden" name="st" value="1" />
+  <!--[/if]-->
   </form>
   <table class="mcenter tracktable" style="width:100%;" cellspacing="0">
   <tbody>
@@ -17,8 +25,12 @@
       <td class="arialwhite12">Region</td>
       <td class="arialwhite12">Owner</td>
       <td class="arialwhite12">Last Update</td>
+	  <!--[if $st == 1]-->
+	  <td class="arialwhite12">Stront Status</td>
+	  <!--[else]-->
       <td class="arialwhite12">Status</td>
-      <td class="arialwhite12">Action</td>
+      <!--[/if]-->
+	  <td class="arialwhite12">Action</td>
     </tr>
 
   <!--[foreach item='pos' from=$poses]-->
@@ -33,8 +45,12 @@
       <td><a href="http://evemaps.dotlan.net/region/<!--[$pos.region|regex_replace:"/[^'a-z0-9-\.:,]/i":"_"]-->/moons" target="_blank"><!--[$pos.region]--></a></td>
       <td><a href="http://evemaps.dotlan.net/corp/<!--[$pos.corp|regex_replace:"/[^'a-z0-9-\.:,]/i":"_"]-->" target="_blank"><!--[$pos.corp]--></a><br><!--[$pos.name|default:"-"]--> / <!--[$pos.backup|default:"-"]--></td>
       <td><!--[$pos.last_update]--></td>
+	  <!--[if $st == 1]-->
+	  <td style="color:<!--[$pos.textcolor]-->;"><!--[$pos.strontium]--> (<!--[daycalc hours=$pos.uptimecalc.strontium]-->)</td>
+	  <!--[else]-->
       <td style="color:<!--[$pos.textcolor]-->;"><!--[$pos.online]--></td>
-      <td>
+      <!--[/if]-->
+	  <td>
       <a href="viewpos.php?i=<!--[$pos.pos_id]-->"><img src="images/icons/zoom.png" border="0" alt="View" title="View" /></a>
       <a href="fuel_calculator.php?pos_to_refuel=<!--[$pos.pos_id]-->&days=30"><img src="images/icons/cart_go.png" border="0" alt="fuel Bill Calculator" title="Fuel Bill Calculator" /></a>
       <!--[if $access >= 2 ]-->
