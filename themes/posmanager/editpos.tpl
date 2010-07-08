@@ -98,6 +98,18 @@
       <td class="txtleft trackheader">Backup Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.secondary_owner_name]--></td>
     </tr>
+	<!--[if $access == 5 || $highly_trusted == 1]-->
+	<tr>
+      <td class="txtleft trackheader">Secretive:</td>
+	  <td class="txtleft"><!--[if $tower.secret_pos]-->Yes<!--[else]-->No<!--[/if]--></td>
+    </tr>
+	<!--[/if]-->
+	<!--[if $access == 5]-->
+	<tr>
+	  <input type="hidden" name="new_secret" value="<!--[$tower.secret_pos]-->" />
+      <td colspan="3" class="tracktable txtcenter"><input type="submit" name="action" value="Change POS Secretive Status" /></td>
+    </tr>
+	<!--[/if]-->
     <tr>
       <td colspan="3" class="tracktable txtcenter"><input type="submit" name="action" value="Change Tower Information" /></td>
     </tr>
