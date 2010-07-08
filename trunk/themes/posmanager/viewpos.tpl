@@ -66,14 +66,12 @@
       <td class="txtleft trackheader">Backup Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.secondary_owner_name]--></td>
     </tr>
-	<tr>
 	<!--[if $access == 5 || $highly_trusted == 1]-->
 	<tr>
       <td class="txtleft trackheader">Secretive:</td>
 	  <td class="txtleft"><!--[if $tower.secret_pos]-->Yes<!--[else]-->No<!--[/if]--></td>
     </tr>
 	<!--[/if]-->
-	</tr>
   </tbody>
   </table>
 
