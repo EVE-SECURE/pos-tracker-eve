@@ -13,6 +13,7 @@
   <table class="mcenter" style="padding:0; width:70%; border:1px #336699 solid; font-family: Arial,sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 11px; line-height: normal; font-size-adjust: none; font-stretch: normal;" cellspacing="1">
   <tbody>
     <tr class="arialwhitebold12" style="background-color:#336699;">
+	  <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Tower</td>
       <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">System</td>
       <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Id</td>
       <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Type</td>
@@ -39,6 +40,7 @@
   <!--[/if]-->
   <!--[foreach item='silo' from=$tower.silos]-->
     <tr style="border:1px #aaaaaa solid;background-color:#F2EFE9;">
+	  <td><a style="color:#1B3169;" href="viewpos.php?i=<!--[$tower.pos_id]-->" title="<!--[$tower.towerName]-->"><!--[$tower.towerName]--></a></td>
       <td><a style="color:#1B3169;" href="viewpos.php?i=<!--[$tower.pos_id]-->" title="<!--[$tower.locationName]-->"><!--[$tower.locationName]--></a></td>
       <td><!--[$silo.silo_id]--></td>
       <td><!--[$silo.material_name]--></td>
@@ -52,7 +54,7 @@
     </tr>
   <!--[/foreach]-->
     <tr>
-      <td colspan="9"><hr></td>
+      <td colspan="10"><hr></td>
     </tr>
   <!--[/foreach]-->
   </tbody>
