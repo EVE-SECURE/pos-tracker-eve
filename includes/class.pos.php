@@ -974,7 +974,7 @@ class POSMGMT
 		   }
 		  break;
           case 5:
-          // Access Level 5 = Admin Account(Currently Disabled)
+          // Access Level 5 = Admin Account(Access to Everything)
             $where = "WHERE 1=1";
           break;
         }
@@ -2950,7 +2950,38 @@ class POSMGMT
         return true;
 
     }
+	
+	/**
+     * POSMGMT::ChangeTowerSecret()
+     *
+     * @param mixed $args
+     * @return
+     */
+	function ChangeTowerSecret($args)
+    {
 
+        if (!$args['pos_id'] || !is_numeric($args['pos_id'])) {
+            return false;
+        }
+        $pos_id     = Eve::VarPrepForStore($args['pos_id']);
+        $new_secret = Eve::VarPrepForStore($args['new_secret']);
+     
+        $dbconn =& DBGetConn(true);
+
+        $sql = "UPDATE ".TBL_PREFIX."tower_info
+                SET    secret_pos   = '".$new_secret."'
+				WHERE  pos_id       = '".$pos_id."'";
+        $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        return true;
+
+    }
+	
     /**
      * POSMGMT::updateOwner()
      *
@@ -4002,6 +4033,7 @@ class POSMGMT
             $pos_id                   = $tower['pos_id'];
 			$secret_pos               = $tower['secret_pos'];
             $bill[$pos_to_refuel]['owner_id'] = $tower['owner_id'];
+			$bill[$pos_to_refuel]['secondary_owner_id'] = $tower['secondary_owner_id'];
             $bill[$pos_to_refuel]['pos_status'] = $tower['pos_status'];
             $bill[$pos_to_refuel]['result_uptimecalc'] = $result_uptimecalc;
             $bill[$pos_to_refuel]['result_online'] = $result_online;
@@ -4032,7 +4064,8 @@ class POSMGMT
             $bill[$pos_to_refuel]['outpost_id'] = $outpost_id;
             $bill[$pos_to_refuel]['pos_id']       = $pos_id;
             $bill[$pos_to_refuel]['allianceid']   = $allianceid;
-
+			$bill[$pos_to_refuel]['secret_pos']         = $secret_pos;
+			
             $db = $this->selectstaticdb($systemID, $allianceid);
 
             $sql = "SELECT * FROM " . $db . " WHERE pos_race ='" . $pos_race ."' && pos_size = '" . $pos_size . "'";
