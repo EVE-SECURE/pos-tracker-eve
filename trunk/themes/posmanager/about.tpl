@@ -11,6 +11,8 @@
       <li>Changed version numbering scheme due to confusion with other people's version and mine. We are now on version 5 because 5 is an awesome number.</li>
       <li>Added Secret POS feature. People who are allowed to see the Secret POSes are people who are deemed "Highly Trusted" or if they are fuel techs of the tower. The only one that can change "secretive" status of a tower is the default admin account. Functionality added under the edit POS area.</li>
       <li>Implemented several security checks to stop low access accounts see or do what they shouldn't be able to.</li>
+	  <li>Added Stront Timer option on the pos track page.</li>
+	  <li>Material Volume updates for: Atmospheric Gases, Caesium, Crystalline Carbonide, Fernite Carbide, Hydrocarbons, and Titanium Carbide. (Requires a DB update)</li>
     </ul>
     <br />
     <strong>Version 3.0 ( <a href="#" onclick="CCPEVE.showInfo(1377, 772034121)">Frozen Guardian</a> Version)</strong><br />
