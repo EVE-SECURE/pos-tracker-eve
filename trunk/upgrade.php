@@ -26,7 +26,7 @@
  * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: upgrade.php 305 2010-01-12 00:27:16Z stephenmg12 $
+ * @version    SVN: $Id$
  * @link       https://sourceforge.net/projects/pos-tracker2/
  * @link       http://www.eve-online.com/
  */
@@ -66,7 +66,8 @@ $upgradeList=array(
 272=>'Alchemy Update - Use at your own risk',
 292=>'Dominion Sovereignty and Manual Powergrid and CPU - 3.0.0.292 RC 4',
 305=>'Material Volume Fix - 3.0.0.305 RC 5',
-333=>'FG Update for Tyrannis'
+333=>'FG Update for Tyrannis',
+501=>'Material Volume Fix - v5.0.1'
 );
 
 $eveRender->Assign('upgradeList', $upgradeList);
