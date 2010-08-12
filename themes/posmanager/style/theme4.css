@@ -1,0 +1,97 @@
+/*Theme 4 = Razor Alliance*/
+.txtcenter {
+  text-align:center;
+}
+
+.txtleft {
+  text-align:left;
+}
+
+.txtright {
+  text-align:right;
+}
+
+.mcenter {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+a {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #eae9e9;
+  text-decoration: underline;
+}
+
+.link { /*links in footer, tracker*/
+  color: #9d9d9d;
+  text-decoration: underline;
+}
+
+.mcolor { /*main color*/
+  color: #eae9e9;
+}
+
+.mbground { /*main background color*/
+  background-color:#242424;
+}
+
+.hcolor { /*header color*/
+  color: #dedddc;
+}
+
+.billheader {
+  padding:5px;
+  border:1px black solid;
+  border-collapse:collapse;
+  text-decoration: none;
+}
+
+.billcontent {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  text-decoration: none;
+  border:1px black solid;
+  border-collapse:collapse;
+  text-align:right;
+  padding:5px;
+}
+
+.tracktable {
+  font-family: Arial,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: normal;
+  font-size-adjust: none;
+  font-stretch: normal;
+  /*border:1px white solid;*/
+  padding:5px;
+  /*width:100%;*/
+}
+
+.tracktable td, .tracktable th {
+  border:1px black solid;
+  border-collapse:collapse;
+  padding:5px;
+
+}
+
+body {
+  color:#eae9e9;
+  background-color:#2f2f2e;
+  font: Arial, sans-serif;
+  text-align:center;
+}
+
+img {
+  border:0;
+}
+
+table {
+  empty-cells: show
+}
+
+.collapse {
+  border-collapse:collapse;
+}

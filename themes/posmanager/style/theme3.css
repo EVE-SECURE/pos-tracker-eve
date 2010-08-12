@@ -1,0 +1,97 @@
+/*Theme 3 = Majesta Empire*/
+.txtcenter {
+  text-align:center;
+}
+
+.txtleft {
+  text-align:left;
+}
+
+.txtright {
+  text-align:right;
+}
+
+.mcenter {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+a {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #4f7045;
+  text-decoration: underline;
+}
+
+.link { /*links in footer, tracker*/
+  color: #d47100;
+  text-decoration: underline;
+}
+
+.mcolor { /*main color*/
+  color: #d5e9ae;
+}
+
+.mbground { /*main background color*/
+  background-color:#4f7045;
+}
+
+.hcolor { /*header color*/
+  color: #d5e9ae;
+}
+
+.billheader {
+  padding:5px;
+  border:1px #73796e solid;
+  border-collapse:collapse;
+  text-decoration: none;
+}
+
+.billcontent {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  text-decoration: none;
+  border:1px #73796e solid;
+  border-collapse:collapse;
+  text-align:right;
+  padding:5px;
+}
+
+.tracktable {
+  font-family: Arial,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: normal;
+  font-size-adjust: none;
+  font-stretch: normal;
+  /*border:1px white solid;*/
+  padding:5px;
+  /*width:100%;*/
+}
+
+.tracktable td, .tracktable th {
+  border:1px #73796e solid;
+  border-collapse:collapse;
+  padding:5px;
+
+}
+
+body {
+  color:#cfdac7;
+  background-color:#1f1005;
+  font: Arial, sans-serif;
+  text-align:center;
+}
+
+img {
+  border:0;
+}
+
+table {
+  empty-cells: show
+}
+
+.collapse {
+  border-collapse:collapse;
+}
