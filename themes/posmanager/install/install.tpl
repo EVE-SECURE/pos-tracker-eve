@@ -1,15 +1,13 @@
-<!--[* $Id: install.tpl 201 2008-10-19 22:35:04Z stephenmg $ *]-->
 <!--[include file='install/install_header.tpl']-->
-
-  <div class="mcenter">
-    <div class="arialwhite14 txtleft">
+<div class="mcenter">
+    <div class="txtleft">
     <!--[if $step eq 1]-->
-      <strong><span class="txtunderlined">Thank you for choosing POS-Tracker 3.0.0. FG Version! Please fill the form to set the database information.</span></strong>
+      <strong><span>Thank you for choosing POS-Tracker 5.0.2. FG Version! Please fill the form to set the database information.</span></strong>
       <ul>
         <li>Current PHP version: <!--[$phpversion]--> (Needs to be greater than 5.1.2)</li>
         <li>Your CURL Version: <!--[$curlversion.version]--><!--[if $curlversion.version eq '0']--> (fopen alternative: <!--[$fopen]-->)<!--[/if]--></li>
       </ul>
-      <strong><span class="txtunderlined">Required Modules Installed</span></strong>
+      <strong><span>Required Modules Installed</span></strong>
       <ul>
         <li>CURL: <!--[$curl]--><!--[if $curl eq 'No' && $fopen eq 'Yes']--> (Will use fopen)<!--[/if]--></li>
         <li>SimpleXML: <!--[$simpleXML]--></li>
@@ -71,7 +69,7 @@
     <!--[if not $done]-->
       Problem?
     <!--[else]-->
-      <strong><span class="txtunderlined">Tables created/updated successfully!</span></strong>
+      <strong><span>Tables created/updated successfully!</span></strong>
       <br /><br />
       This is to create the user <strong>'admin'</strong>. Please provide an email address and a password.<br />
       You must <strong>click</strong> the <strong>"Next"</strong> button if using the IGB!
@@ -97,11 +95,11 @@
     <!--[elseif $step eq 4]-->
       <div class="mcenter txtcenter">
       <p>
-        <a class="arialwhite14 txtunderlined" href="install.php?step=5" title="Next">Next</a>
+        <a class="link" href="install.php?step=5" title="Next">Next</a>
       </p>
       </div>
       <table class="tracktable mcenter" style="font-size:11px; font-family: Arial, sans-serif;" summary="Moon Installation">
-        <tr style="background-color:#33CCFF;">
+        <tr class="mbground">
           <td>Region</td>
           <td>Region ID</td>
           <td>File Name</td>
@@ -122,7 +120,7 @@
     <h4>ADD an API Key</h4>
     <div class="mcenter txtcenter">
       <p>
-        <a class="arialwhite14 txtunderlined" href="install.php?step=6" title="Finish Installation">Finish Installation</a>
+        <a class="link" href="install.php?step=6" title="Finish Installation">Finish Installation</a>
       </p>
     </div>
     <div class="mcenter">
@@ -138,7 +136,7 @@
       <h4>Current API Keys</h4>
         <table class="tracktable" style="width:640px;">
         <thead>
-          <tr class="trackheader">
+          <tr>
             <th>Corp</th>
             <th>UserID</th>
             <th>API Key (first 5 characters)</th>
