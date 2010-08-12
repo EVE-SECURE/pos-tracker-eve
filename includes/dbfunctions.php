@@ -1,5 +1,5 @@
 <?php
-/* $Id: dbfunctions.php 136 2008-08-03 21:35:13Z stephenmg $ */
+/* $Id$ */
 function EveDBInit()
 {
 
