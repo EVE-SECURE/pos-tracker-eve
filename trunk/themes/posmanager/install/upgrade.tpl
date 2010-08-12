@@ -1,8 +1,7 @@
-<!--[* $Id: upgrade.tpl 177 2008-09-28 20:42:42Z stephenmg $ *]-->
 <!--[include file='install/install_header.tpl']-->
 
   <div class="mcenter">
-    <div class="arialwhite14 txtleft">
+    <div class="mcolor txtleft">
     <!--[if $step eq 1]-->
 	Please Select the upgrade you need to apply:
 	<form method="post" action="upgrade.php?step=2">
