@@ -1,5 +1,5 @@
 <?php
-/* $Id: class.posmailer.php 140 2008-08-03 22:12:53Z stephenmg $ */
+/* $Id$ */
 require("includes/phpmailer/class.phpmailer.php");
 
 class posmailer extends PHPMailer {

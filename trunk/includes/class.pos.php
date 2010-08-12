@@ -1,35 +1,4 @@
 <?php
-/**
- * Pos-Tracker2
- *
- * Starbase Tracking Page, multiple Tower view
- *
- * PHP version 5
- *
- * LICENSE: This file is part of POS-Tracker2.
- * POS-Tracker2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3 of the License.
- *
- * POS-Tracker2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with POS-Tracker2.  If not, see <http://www.gnu.org/licenses/>.
- *
-
- * @author     Stephen Gulickk <stephenmg12@gmail.com>
- * @author     DeTox MinRohim <eve@onewayweb.com>
- * @author      Andy Snowden <forumadmin@eve-razor.com>
- * @copyright  2007-2008 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
- * @package    POS-Tracker2
- * @version    SVN: $Id$
- * @link       https://sourceforge.net/projects/pos-tracker2/
- * @link       http://www.eve-online.com/
- */
 
 define('INT_SECOND', 1);
 define('INT_MINUTE', 60);
@@ -448,6 +417,7 @@ class POSMGMT
             Eve::SessionSetVar('highly_trusted', $userinfo['highly_trusted']);
             Eve::SessionSetVar('delsid',         $userinfo['delsid']);
             Eve::SessionSetVar('allianceID',     $userinfo['alliance_id']);
+			Eve::SessionSetVar('theme_id',       $userinfo['theme_id']);
             Eve::SessionSetVar('userlogged',     true);
 
             return $userinfo;
@@ -541,6 +511,7 @@ class POSMGMT
                               'away'           => Eve::SessionGetVar('away'),
                               'highly_trusted' => Eve::SessionGetVar('highly_trusted'),
                               'delsid'         => Eve::SessionGetVar('delsid'),
+							  'theme_id'       => Eve::SessionGetVar('theme_id'),
                               'allianceID'     => Eve::SessionGetVar('allianceID'));
 
         }
@@ -570,6 +541,7 @@ class POSMGMT
             Eve::SessionDelVar('highly_trusted');
             Eve::SessionDelVar('delsid');
             Eve::SessionDelVar('allianceID');
+			Eve::SessionDelVar('theme_id');
             Eve::SessionDelVar('userlogged');
         }
         return true;
@@ -611,6 +583,40 @@ class POSMGMT
         return true;
     }
 
+	/**
+     * POSMGMT::UpdateUserTheme()
+     *
+     * @param mixed $args
+     * @return
+     */
+    function UpdateUserTheme($args)
+    {
+        if (!isset($args['id'])) {
+            Eve::SessionSetVar('errormsg', 'No ID!');
+            return false;
+        }
+        if (!isset($args['newtheme'])) {
+            Eve::SessionSetVar('errormsg', 'No Theme Set!');
+            return false;
+        }
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "UPDATE ".TBL_PREFIX."user
+                SET    theme_id          = '".Eve::VarPrepForStore($args['newtheme'])."'
+                WHERE  id            = '".Eve::VarPrepForStore($args['id'])."'";
+
+        $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        Eve::SessionSetVar('theme_id', $newtheme);
+
+        return true;
+    }
 
     /**
      * POSMGMT::UpdateUserMail()
@@ -953,21 +959,21 @@ class POSMGMT
           case 3:
 		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - Secret POS Access)
 		   if ($userinfo['highly_trusted'] == 1){
-		   $where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
+		   $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
 		   }
 		   else {
 		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - No Secret POS)
-			$where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0";
+			$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0";
 		   }
 		  break;
           case 4:
 		  // Access Level 4 = Show Towers User is of Same Corp(Directors - Secret POS Access)
 		  if ($userinfo['highly_trusted'] == 1){
-		  $where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
+		  $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
 		   }
 		   else {
 		  // Access Level 4 = Show Towers User is of Same Corp(Directors - No Secret POS)
-			$where = "WHERE ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0";
+			$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR (".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
 		   }
 		  break;
           case 5:
@@ -3971,18 +3977,24 @@ class POSMGMT
      */
     function GetFuelBill($args = array())
     {
-
         //global $eve, $posmgmt;
 
         //database connection
         $dbconn =& DBGetConn(true);
 
-        //$use_current_levels = true;
-        if (isset($args['use_current_levels'])) {
+      if (isset($args['use_current_levels'])) {
             $use_current_levels = $args['use_current_levels'];
         } else {
             $use_current_levels = 1;
         }
+		
+		if (isset($args['display_optimal'])) {
+            $display_optimal = $args['display_optimal'];
+        } else {
+            $display_optimal = 1;
+        }
+		
+		
         //$days_to_refuel = $eve->VarCleanFromInput('days'); if (empty($days_to_refuel)) { $days_to_refuel = 20; }
         $days_to_refuel = 30; //$eve->VarCleanFromInput('days'); if (empty($days_to_refuel)) { $days_to_refuel = 20; }
         if (isset($args['days_to_refuel'])) {
@@ -4284,7 +4296,33 @@ class POSMGMT
 
           /* --- Needed fuel calculation --- */
 
-            $needed_hours               = (integer) (abs($days_to_refuel*24) + abs($hours_to_refuel)) ;
+		if ($display_optimal) {
+		$volume_per_cycle  = 0;
+        $volume_per_cycle += ($required_uranium * $GLOBALS["pos_Ura"]);
+        $volume_per_cycle += ($required_oxygen * $GLOBALS["pos_Oxy"]);
+        $volume_per_cycle += ($required_mechanical_parts * $GLOBALS["pos_Mec"]);
+        $volume_per_cycle += ($required_coolant * $GLOBALS["pos_Coo"]);
+        $volume_per_cycle += ($required_robotics * $GLOBALS["pos_Rob"]);
+        $volume_per_cycle += ($required_isotope * $GLOBALS["pos_Iso"]);
+        $volume_per_cycle += ceil(($current_pg / $total_pg) * $required_ozone) * $GLOBALS["pos_Ozo"];
+        $volume_per_cycle += ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $GLOBALS["pos_Hea"];
+        $volume_per_cycle += ($required_charters * $GLOBALS["pos_Cha"]);
+        $optimum_cycles    = floor(($pos_capacity)/$volume_per_cycle);
+
+		$optimal['optimum_cycles']=$optimum_cycles;
+        $needed_uranium         = $required_uranium * $optimum_cycles;
+        $needed_oxygen           = $required_oxygen * $optimum_cycles;
+        $needed_mechanical_parts = $required_mechanical_parts * $optimum_cycles;
+        $needed_coolant          = $required_coolant * $optimum_cycles;
+        $needed_robotics         = $required_robotics * $optimum_cycles;
+        $needed_isotopes          = $required_isotope * $optimum_cycles;
+        $needed_ozone            = ceil(($current_pg / $total_pg) * $required_ozone) * $optimum_cycles;
+        $needed_heavy_water      = ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $optimum_cycles;
+        $needed_charters        = $required_charters * $optimum_cycles;
+		}
+		else {
+		
+		$needed_hours               = (integer) (abs($days_to_refuel*24) + abs($hours_to_refuel)) ;
             $real_required_ozone        = ceil(($current_pg / $total_pg) * $required_ozone) ;
             $real_required_heavy_water  = ceil(($current_cpu / $total_cpu) * $required_heavy_water) ;
 
@@ -4312,6 +4350,8 @@ class POSMGMT
             if ($checkstront) {
                 $needed_stront       = $strontium_capacity - $current_strontium;
             }
+		
+		}
 
             if ($use_current_levels) {
                 $needed_uranium          = $needed_uranium          - $avail_uranium ;
@@ -4337,6 +4377,8 @@ class POSMGMT
                 $needed_heavy_water      = $needed_heavy_water - - $hanger_heavy_water ;
                 $needed_charters         = $needed_charters - $hanger_charters;
             }
+			
+			
             //Disable NPC hanger
             /*if ($use_npc_levels) {
               $needed_uranium          = $needed_uranium - $npc_uranium ;

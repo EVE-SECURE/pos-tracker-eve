@@ -1,5 +1,5 @@
 <?php
-/* $Id: eveclass.php 136 2008-08-03 21:35:13Z stephenmg $ */
+/* $Id$ */
 
 // Eve class adapted and simplified igbclass from Nonsequitur (Patrick D Hall) Nonsequitur SoftWerx.
 

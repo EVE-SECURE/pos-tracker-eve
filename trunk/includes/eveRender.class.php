@@ -1,5 +1,5 @@
 <?php
-/** $Id: eveRender.class.php 242 2009-04-26 05:55:42Z stephenmg $
+/** $Id$
  *
  * * eveRender *
  *
