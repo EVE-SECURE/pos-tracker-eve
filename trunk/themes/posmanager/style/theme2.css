@@ -1,0 +1,97 @@
+/*Theme 2 = Original POS-Tracker Theme*/
+.txtcenter {
+  text-align:center;
+}
+
+.txtleft {
+  text-align:left;
+}
+
+.txtright {
+  text-align:right;
+}
+
+.mcenter {
+  margin-left:auto;
+  margin-right:auto;
+}
+
+a {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #aaaaaa;
+  text-decoration: underline;
+}
+
+.link { /*links in footer, tracker*/
+ color: #FFA500;
+ text-decoration: underline;
+}
+
+.mcolor { /*main color*/
+  color: white;
+}
+
+.mbground { /*main background color*/
+  background-color:#4f0202;
+}
+
+.hcolor { /*header color*/
+  color: white;
+}
+
+.billheader {
+  padding:5px;
+  border:1px white solid;
+  border-collapse:collapse;
+  text-decoration: none;
+}
+
+.billcontent {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  text-decoration: none;
+  border:1px #aaaaaa solid;
+  border-collapse:collapse;
+  text-align:right;
+  padding:5px;
+}
+
+.tracktable {
+  font-family: Arial,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: normal;
+  font-size-adjust: none;
+  font-stretch: normal;
+  /*border:1px white solid;*/
+  padding:5px;
+  /*width:100%;*/
+}
+
+.tracktable td, .tracktable th {
+  border:1px white solid;
+  border-collapse:collapse;
+  padding:5px;
+
+}
+
+body {
+  color:white;
+  background-color:#000000;
+  font: Arial, sans-serif;
+  text-align:center;
+}
+
+img {
+  border:0;
+}
+
+table {
+  empty-cells: show
+}
+
+.collapse {
+  border-collapse:collapse;
+}
