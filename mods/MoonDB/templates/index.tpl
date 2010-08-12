@@ -1,17 +1,15 @@
-<!--[* $Id: index.tpl 207 2008-10-29 10:23:06Z eveoneway $ *]-->
-
-  <h3 class="txtcenter" style="color:#aaaaaa;"><!--[$days_to_refuel]--> Moon Database</h3>
+ <h3 class="txtcenter"><!--[$days_to_refuel]--> Moon Database</h3>
   <form style="text-align: center;" method="post" action="module.php?name=MoonDB&amp;func=AddNewMaterial">
   <div>
     <table cellspacing="0" class="mcenter" style="padding:5px; font:11px Arial, sans-serif;">
-      <tr style="background-color:#4F0202;">
-        <td class="arialwhite12 billheader">Region</td>
-        <td class="arialwhite12 billheader">System</td>
-        <td class="arialwhite12 billheader">Planet - Moon</td>
-        <td class="arialwhite12 billheader">Material</td>
-        <td class="arialwhite12 billheader">Abundance</td>
-    <td class="arialwhite12 billheader">Notes</td>
-        <td class="arialwhite12 billheader">Taken</td>
+      <tr class="mbground">
+        <td class="billheader hcolor">Region</td>
+        <td class="billheader hcolor">System</td>
+        <td class="billheader hcolor">Planet - Moon</td>
+        <td class="billheader hcolor">Material</td>
+        <td class="billheader hcolor">Abundance</td>
+		<td class="billheader hcolor">Notes</td>
+        <td class="billheader hcolor">Taken</td>
       </tr>
       <tr>
         <td class="billcontent">
@@ -67,25 +65,25 @@
   </form>
   *]-->
   <table cellspacing="0" class="mcenter" style="width:90%; padding:5px; font:11px Arial, sans-serif;">
-    <tr style="background-color:#4F0202;">
-      <td class="arialwhite12 billheader">Region</td>
-      <td class="arialwhite12 billheader">System</td>
-      <td class="arialwhite12 billheader">Moon</td>
-      <td class="arialwhite12 billheader">Material</td>
-      <td class="arialwhite12 billheader">Abundance</td>
-    <td class="arialwhite12 billheader">Notes</td>
-      <td class="arialwhite12 billheader">Taken</td>
+    <tr class="mbground">
+      <td class="billheader hcolor">Region</td>
+      <td class="billheader hcolor">System</td>
+      <td class="billheader hcolor">Moon</td>
+      <td class="billheader hcolor">Material</td>
+      <td class="billheader hcolor">Abundance</td>
+	  <td class="billheader hcolor">Notes</td>
+      <td class="billheader hcolor">Taken</td>
     </tr>
   <!--[foreach item='row' from=$rows]-->
     <tr>
-      <td class="mooncontent"><!--[$row.regionName]--></td>
-      <td class="mooncontent"><!--[$row.systemName]--></td>
-      <td class="mooncontent"><!--[$row.moonName]--></td>
-      <td class="mooncontent"><!--[$row.material_name]--></td>
-      <td class="mooncontent"><!--[$row.abundance]--></td>
-    <td class="mooncontent"><!--[$row.notes|escape:'htmlall']--></td>
-      <td class="mooncontent"><!--[if $row.taken]-->Yes<!--[else]-->No<!--[/if]--></td>
+      <td class="billcontent"><!--[$row.regionName]--></td>
+      <td class="billcontent"><!--[$row.systemName]--></td>
+      <td class="billcontent"><!--[$row.moonName]--></td>
+      <td class="billcontent"><!--[$row.material_name]--></td>
+      <td class="billcontent"><!--[$row.abundance]--></td>
+      <td class="billcontent"><!--[$row.notes|escape:'htmlall']--></td>
+      <td class="billcontent"><!--[if $row.taken]-->Yes<!--[else]-->No<!--[/if]--></td>
     </tr>
   <!--[/foreach]-->
   </table>
-  <p style="text-align:center;"><a href="module.php?name=MoonDB&amp;func=AddNew" title="Add new material">Add a new material</a></p>
+  <p class="mcenter"><a class="link" href="module.php?name=MoonDB&amp;func=AddNew" title="Add new material">Add a new material</a></p>
