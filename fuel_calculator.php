@@ -26,7 +26,7 @@
  * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: fuel_calculator.php 243 2009-04-26 16:10:33Z stephenmg $
+ * @version    SVN: $Id$
  * @link       https://sourceforge.net/projects/pos-tracker2/
  * @link       http://www.eve-online.com/
  */
@@ -48,7 +48,8 @@ $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 $access = $eve->SessionGetVar('access');
 $eveRender->Assign('access', $access);
 
@@ -58,17 +59,17 @@ if (!empty($pos_to_refuel)) {
     $days               = $eve->VarCleanFromInput('days');
     $hours              = $eve->VarCleanFromInput('hours');
     $use_current_levels = $eve->VarCleanFromInput('use_current_levels');
+	$display_optimal	= $eve->VarCleanFromInput('display_optimal');
     $use_hanger_levels  = 0;//$eve->VarCleanFromInput('use_hanger_levels');
     $cargosize          = $eve->VarCleanFromInput('size');
-
-    //$tower = $posgmt->GetTowerInfo($pos_to_refuel);
 
     $args['days_to_refuel']     = $days + ($hours/24);
     $args['pos_ids'][]          = $pos_to_refuel;
     $args['use_current_levels'] = $use_current_levels;
 
+	
     $bill = $posmgmt->GetFuelBill($args);
-
+	
     $tower = $bill[$pos_to_refuel];
 
     $required_H_isotope  = 0;
@@ -169,14 +170,94 @@ if (!empty($pos_to_refuel)) {
         $fuel['trips'] = ceil($total_size / $cargosize);
     }
 
+	if ($display_optimal == 1) {
+		$tower = $posmgmt->GetTowerInfo($pos_to_refuel);
+	
+		if ($tower) {
+			$pos_size                = $tower['pos_size'];
+            $pos_race                = $tower['pos_race'];
+            $current_isotope         = $tower['isotope'];
+            $current_oxygen          = $tower['oxygen'];
+            $current_mechanical_parts= $tower['mechanical_parts'];
+            $current_coolant         = $tower['coolant'];
+            $current_robotics        = $tower['robotics'];
+            $current_uranium         = $tower['uranium'];
+            $current_ozone           = $tower['ozone'];
+            $current_heavy_water     = $tower['heavy_water'];
+			$tower_pg                = $tower['powergrid'];
+            $tower_cpu               = $tower['cpu'];
+			$systemID                = $tower['systemID'];
+            $location                = $tower['moonName'];
+			$tower['sovereignty']    = $posmgmt->getSovereignty($systemID);
+			$allianceid              = $tower['allianceid'];
+            $tower['sovfriendly']    = $posmgmt->getSovereigntyStatus($systemID, $allianceid);
+		}
+	
+		$db = $posmgmt->selectstaticdb($systemID, $allianceid);
+	
+		$row = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
+
+        if ($row) {
+            $tower['required_isotope']           = $row['isotopes'];
+            $tower['required_oxygen']            = $row['oxygen'];
+            $tower['required_mechanical_parts']  = $row['mechanical_parts'];
+            $tower['required_coolant']           = $row['coolant'];
+            $tower['required_robotics']          = $row['robotics'];
+            $tower['required_uranium']           = $row['uranium'];
+            $tower['required_ozone']             = $row['ozone'];
+            $tower['required_heavy_water']       = $row['heavy_water'];
+            $tower['required_strontium']         = $row['strontium'];
+            $tower['required_charters']          = $charters_needed?1:0;
+            $tower['race_isotope']               = $result['race_isotope'];
+            $tower['total_pg']                   = $row['pg'];
+            $tower['total_cpu']                  = $row['cpu'];
+            $required_isotope                    = $row['isotopes'];
+            $required_oxygen                     = $row['oxygen'];
+            $required_mechanical_parts           = $row['mechanical_parts'];
+            $required_coolant                    = $row['coolant'];
+            $required_robotics                   = $row['robotics'];
+            $required_uranium                    = $row['uranium'];
+            $required_ozone                      = $row['ozone'];
+            $required_heavy_water                = $row['heavy_water'];
+            $required_strontium                  = $row['strontium'];
+            $required_charters                   = $charters_needed?1:0;
+            $race_isotope                        = $result['race_isotope'];
+            $total_pg                            = $row['pg'];
+            $total_cpu                           = $row['cpu'];
+          //  $tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
+            $tower['pos_capacity']=$tower['fuel_hangar']=$row['fuel_hangar'];
+
+        }
+	
+		if($current_cpu<=0 && $tower['cpu']>0) {
+            $current_cpu=$tower_cpu;
+        }
+		if($current_pg<=0 && $tower_pg>0) {
+            $current_pg=$tower_pg;
+        }
+		
+		$tower['current_pg']  = $current_pg;
+		$tower['current_cpu'] = $current_cpu;
+	
+		$optimal=$posmgmt->posoptimaluptime($tower);
+		$optimalDiff=$posmgmt->getOptimalDifference($optimal, $tower);
+	
+	if($cargosize > 0) {
+       $fuel['trips2'] = ceil($optimalDiff['totalDiff'] / $cargosize);
+    }
+	
+	$eveRender->Assign('optimal',   $optimal);
+    $eveRender->Assign('optimalDiff',   $optimalDiff);
+}
+	
     $eveRender->Assign('fuel',           $fuel);
     $eveRender->Assign('hours',          $hours);
     $eveRender->Assign('cargosize',      $cargosize);
     $eveRender->Assign('pos_to_refuel',  $pos_to_refuel);
-    $eveRender->Assign('days_to_refuel', $args['days_to_refuel']);
-
-    //echo '<pre>';print_r($fuel); echo '</pre>';exit;
-
+    $eveRender->Assign('days_to_refuel', $args['days_to_refuel']);	
+	$eveRender->Assign('display_optimal',   $display_optimal);
+	$eveRender->Assign('use_current_levels',   $use_current_levels);
+	
 }
 
 $towers = $posmgmt->GetAllPos2();
@@ -194,9 +275,6 @@ foreach ($towers as $tower) {
 }
 
 $eveRender->Assign('opttowers', $opttowers);
-//echo '<pre>';print_r($towers); echo '</pre>';exit;
-
-
 $eveRender->Display('fuel_calc.tpl');
 exit;
 

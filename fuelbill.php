@@ -1,36 +1,4 @@
 <?php
-/**
- * Pos-Tracker2
- *
- * Starbase Fuel bill page
- *
- * PHP version 5
- *
- * LICENSE: This file is part of POS-Tracker2.
- * POS-Tracker2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3 of the License.
- *
- * POS-Tracker2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with POS-Tracker2.  If not, see <http://www.gnu.org/licenses/>.
- *
-
- * @author     Stephen Gulickk <stephenmg12@gmail.com>
- * @author     DeTox MinRohim <eve@onewayweb.com>
- * @author      Andy Snowden <forumadmin@eve-razor.com>
- * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
- * @package    POS-Tracker2
- * @version    SVN: $Id$
- * @link       https://sourceforge.net/projects/pos-tracker2/
- * @link       http://www.eve-online.com/
- */
-
 include_once 'eveconfig/config.php';
 include_once 'includes/dbfunctions.php';
 include_once 'includes/pos_val.php';
@@ -49,25 +17,12 @@ $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 $access = $eve->SessionGetVar('access');
 $highly_trusted = $eve->SessionGetVar('highly_trusted');
 $eveRender->Assign('access', $access);
 if ($access >= '2') {
-
-
-    /* -- Data settings and controls -- */
-    //usecargo =0 use optimal=1
-
-    //$use_current_levels = "0";
-    $use_optimals       = "1";
-    $use_cargo          = "0";
-
-    /* -- Fuel calculation -- */
-
-
-
-    // Clear total values
 
     $fuel_uranium           = 0;
     $fuel_oxygen            = 0;
@@ -81,13 +36,13 @@ if ($access >= '2') {
     $fuel_Hy_isotopes       = 0;
     $fuel_ozone             = 0;
     $fuel_heavy_water       = 0;
-    $default_days           = 30;
+    $default_days           = 0;
 
     $args = array();
     $filter             = $eve->VarCleanFromInput('filter');
     $submit             = $eve->VarCleanFromInput('submit');
-    $use_current_levels = $eve->VarCleanFromInput('use_current_levels');//echo $use_current_levels;exit;
-    //if (empty($use_current_levels)) { $use_current_levels = 1; }
+    $use_current_levels = $eve->VarCleanFromInput('use_current_levels');
+	$display_optimal	= $eve->VarCleanFromInput('display_optimal');
 
     if (!empty($filter) || !empty($submit)) {
 
@@ -96,7 +51,7 @@ if ($access >= '2') {
         if (is_numeric($days_to_refuel)) {
             $args['days_to_refuel'] = $days_to_refuel;
         } else {
-            $default_days = 30;
+            $default_days = 0;
         }
 
         $pos_ids = $eve->VarCleanFromInput('pos_ids');
@@ -121,7 +76,6 @@ if ($access >= '2') {
             $args['regionID'] = $regionID;
         }
 
-        //echo '<pre>';print_r($pos_ids); echo '</pre>';exit;
     } else {
         $pos_id = $eve->VarCleanFromInput('pos_id');
         if (!empty($pos_id) && is_numeric($pos_id)) {
@@ -169,6 +123,7 @@ if ($access >= '2') {
     }
 
     $optlevels = array(1 => 'Current Level - Yes', 0 => 'Current Level - No');
+	$disopt = array(1 => 'Display Optimals - Yes', 0 => 'Display Optimals - No');
 
     $eveRender->Assign('regions',            $regions);
     $eveRender->Assign('optregions',         $optregions);
@@ -182,11 +137,14 @@ if ($access >= '2') {
     $eveRender->Assign('constellationID',    $constellationID);
     $eveRender->Assign('systemID',           $systemID);
     $eveRender->Assign('use_current_levels', $use_current_levels);
+	$eveRender->Assign('display_optimal',    $display_optimal);
     $eveRender->Assign('optlevels',          $optlevels);
+	$eveRender->Assign('disopt',          	 $disopt);
     $eveRender->Assign('optposids',          $optposids);
 
     $count = 0;
     $args['use_current_levels'] = $use_current_levels;
+	$args['display_optimal'] = $display_optimal;
     $towers = $posmgmt->GetFuelBill($args);
 
     foreach ($towers as $key => $tower) {
@@ -205,6 +163,7 @@ if ($access >= '2') {
 			}
 		}
 		
+	
         $required_H_isotope  = 0;
         $required_N_isotope  = 0;
         $required_O_isotope  = 0;
@@ -224,6 +183,7 @@ if ($access >= '2') {
         $pos_id                   = $tower['pos_id'];
         $pos_race                 = $tower['pos_race'];
         $locationName             = $tower['locationName'];
+		$towerName				  = $tower['towerName'];
         $tower['constellationName'] = $posmgmt->getConstellationNameFromMoonID($locationName);
         $tower['regionName']      = $posmgmt->getRegionNameFromMoonID($locationName);
 
@@ -303,8 +263,7 @@ if ($access >= '2') {
     $eveRender->Assign('fuel_heavy_water',            $fuel_heavy_water);
     $eveRender->Assign('total_size',                  $total_size);
     $eveRender->Assign('towers',                      $disp_towers);
-    //echo '<pre>';print_r($disp_towers); echo '</pre>';exit;
-
+	$eveRender->Assign('towerName',                   $towerName);
     $eveRender->Display('fuelbill.tpl');
 
 } else {

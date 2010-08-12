@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: importfit.php 155 2008-09-09 16:24:29Z stephenmg $ */
+/* $Id$ */
 
 include_once 'includes/dbfunctions.php';
 

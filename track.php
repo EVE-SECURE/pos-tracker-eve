@@ -1,35 +1,4 @@
 <?php
-/**
- * Pos-Tracker2
- *
- * Starbase Tracking Page, multiple Tower view
- *
- * PHP version 5
- *
- * LICENSE: This file is part of POS-Tracker2.
- * POS-Tracker2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3 of the License.
- *
- * POS-Tracker2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with POS-Tracker2.  If not, see <http://www.gnu.org/licenses/>.
- *
-
- * @author     Stephen Gulickk <stephenmg12@gmail.com>
- * @author     DeTox MinRohim <eve@onewayweb.com>
- * @author      Andy Snowden <forumadmin@eve-razor.com>
- * @copyright  2007-2008 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
- * @package    POS-Tracker2
- * @version    SVN: $Id$
- * @link       http://code.google.com/p/pos-tracker-eve/
- * @link       http://www.eve-online.com/
- */
 
 include_once 'eveconfig/config.php';
 include_once 'includes/dbfunctions.php';
@@ -40,16 +9,22 @@ include_once 'includes/eveclass.php';
 include_once 'includes/class.pos.php';
 include_once 'includes/eveRender.class.php';
 
+
+
 $eveRender = New eveRender($config, '', false);
-$colors    = $eveRender->themeconfig;
+//$colors    = $eveRender->themeconfig; old.
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
 $eve->SessionSetVar('userlogged', 1);
 $access = $eve->SessionGetVar('access');
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 $eveRender->Assign('access', $access);
+
+include_once 'themes/posmanager/style/theme'.$theme_id.'.php';
+
 //Begin Tower sorting Code
 $sb = $eve->VarCleanFromInput('sb');
 if(is_numeric($sb)) {

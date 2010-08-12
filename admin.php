@@ -48,7 +48,8 @@ $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 if (!$userinfo || $userinfo['access'] < 3) {
     $eve->SessionSetVar('errormsg', 'Admin Access Level Required - Please login!');
     $eve->RedirectUrl('login.php');

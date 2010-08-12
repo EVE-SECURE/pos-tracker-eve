@@ -1,5 +1,4 @@
 <?php
-/* $Id: deletepos.php 51 2008-06-30 14:31:03Z eveoneway $ */
 
 include_once 'includes/dbfunctions.php';
 
@@ -16,7 +15,8 @@ $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 $access = $eve->SessionGetVar('access');
 if ( $access >= 2 ) {
 	$eveRender->Assign('access', $access);
