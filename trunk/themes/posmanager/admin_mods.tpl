@@ -1,4 +1,3 @@
-<!--[* $Id: admin_mods.tpl 208 2008-10-29 10:28:37Z eveoneway $ *]-->
 <!--[include file='header.tpl']-->
 
 
@@ -11,7 +10,7 @@
       <input type="hidden" name="action" value="updatestatus" />
       <table class="mcenter tracktable" style="width:640px;">
       <thead>
-        <tr class="trackheader">
+        <tr>
           <th>Name</th>
           <th>Status</th>
           <th>User</th>
@@ -23,11 +22,11 @@
       <tbody>
       <!--[foreach item='mod' from=$mods]-->
         <tr>
-          <td><!--[if $mod.modstate eq 1]--><a href="module.php?name=<!--[$mod.modname]-->" title="<!--[$mod.modname]-->"><!--[/if]--><!--[$mod.modname]--><!--[if $mod.modstate eq 1]--></a><!--[/if]--></td>
+          <td><!--[if $mod.modstate eq 1]--><a class="link" href="module.php?name=<!--[$mod.modname]-->" title="<!--[$mod.modname]-->"><!--[/if]--><!--[$mod.modname]--><!--[if $mod.modstate eq 1]--></a><!--[/if]--></td>
           <td><!--[$mod.modstate]--></td>
           <td><!--[if $mod.user]-->Yes<!--[else]-->No<!--[/if]--></td>
           <td><!--[if $mod.admin]-->Yes<!--[else]-->No<!--[/if]--></td>
-          <td><!--[if $mod.modstate eq 0]--><a href="admin.php?op=modules&amp;modname=<!--[$mod.modname]-->&amp;func=install" title="Install <!--[$mod.modname]-->">Install</a><!--[elseif $mod.modstate eq 1]--><a href="admin.php?op=modules&amp;modname=<!--[$mod.modname]-->&amp;func=uninstall" title="Install <!--[$mod.modname]-->">Uninstall</a><!--[/if]--></td>
+          <td><!--[if $mod.modstate eq 0]--><a class="link" href="admin.php?op=modules&amp;modname=<!--[$mod.modname]-->&amp;func=install" title="Install <!--[$mod.modname]-->">Install</a><!--[elseif $mod.modstate eq 1]--><a class="link" href="admin.php?op=modules&amp;modname=<!--[$mod.modname]-->&amp;func=uninstall" title="Install <!--[$mod.modname]-->">Uninstall</a><!--[/if]--></td>
         </tr>
       <!--[/foreach]-->
         <tr>

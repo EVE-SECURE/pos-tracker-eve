@@ -1,15 +1,12 @@
-<!--[* $Id: admin_moons.tpl 177 2008-09-28 20:42:42Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
-
-
-  <h2>Administration</h2>
+  <h2>Region Administration</h2>
   <div class="mcenter txtcenter">
     <p>
-      <a class="arialwhite14 txtunderlined" href="admin.php" title="Finish Installation">Done</a>
+      <a class="link" href="admin.php" title="Finish Installation">Done</a>
     </p>
   </div>
-  <table class="tracktable mcenter" style="font-size:11px; font-family: Arial, sans-serif;">
-    <tr style="background-color:#4F0202;">
+  <table class="tracktable mcenter">
+    <tr class="mbground hcolor">
       <td>Region</td>
       <td>Region ID</td>
       <td>File Name</td>

@@ -2,10 +2,23 @@
 
 
   <h2>Welcome to the POS Tracker</h2>
-  <div class="arialwhite14 mcenter txtleft" style="color:#1B3169;">
+  <div class="mcenter txtleft">
     <h3>POS-Tracker Version: (<!--[$version]-->)</h3>
-    <span class="arialwhite14 txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
+    <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br /><br />
+	<strong>Version 5.0.1 to 5.0.2 Changes:</strong>
+    <ul>
+      <li>Fuel Bill layout now matches what is shown while viewing towers to make it easier to look between the two.</li>
+	  <li>Fuel Calculator now allows you to show the optimal fuel levels and see what's required to match the optimal. Hauling trips included.</li>
+	  <li>Fuel Calculator's "Use Current Level" stays to what you set it at while on the page as opposed to being turned back "on" after looking up a tower. Default is now off due to change.</li>
+	  <li>Fuel Bill now displays optimal fueling by default(new option) as it makes far more sense than selecting days that may not be reachable by all POS towers. Please note that when optimal is on, days filter does not take effect at all.</li>
+	  <li>Massive style coding cleanup(CSS file now 1/3rd the size it used to be and pages are much more CSS clean).</li>
+	  <li>Fixed Secretive POS problem not showing towers for directors.</li>
+	  <li>Fixed write/config greyed out bug for new installs that would happen based on server configurations.</li>
+	  <li>Themes! - The FGV Theme will be default but the old theme and a few others are now available for each user under the user panel. (Requires DB Update)</li>
+	  <li>Tower name is now shown on the fuel bill.</li>
+    </ul>
+    <br />
     <strong>Version 3.0 to 5.0.1 Changes:</strong>
     <ul>
       <li>Changed version numbering scheme due to confusion with other people's version and mine. We are now on version 5 because 5 is an awesome number.</li>

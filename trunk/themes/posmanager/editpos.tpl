@@ -11,29 +11,29 @@
   <tbody>
     <tr>
       <td rowspan="14"><img src="images/structures/256_256/<!--[$tower.typeID]-->.png" alt="<!--[$tower.towerName]-->" /></td>
-      <td class="txtleft trackheader">Last Updated:</td>
+      <td class="txtleft mbground hcolor">Last Updated:</td>
       <td class="txtleft"><!--[$last_update]--></td>
     </tr>
     <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">Was updated:</td>
+      <td class="txtleft mbground hcolor">Was updated:</td>
       <td class="txtleft"><!--[$hoursago]--> Hours Ago</td>
     </tr>
     <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">Type:</td>
+      <td class="txtleft mbground hcolor">Type:</td>
       <td class="txtleft"><!--[$arrposize[$tower.pos_size]]--> <!--[$arrporace[$tower.pos_race]]--></td>
     </tr>
     <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">Status:</td>
+      <td class="txtleft mbground hcolor">Status:</td>
       <td class="txtleft">
         <!--[html_options options=$towerstatus name='newstatus' selected=$tower.pos_status]-->
       </td>
     </tr>
   <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">Outpost:</td>
+      <td class="txtleft mbground hcolor">Outpost:</td>
       <td class="txtleft">
 	<!--[if $access >= 2 ]-->
 	        <!--[html_options options=$outpostlist name='outpostlist' selected=$tower.outpost_id]-->
@@ -44,12 +44,12 @@
     </tr>
     <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">Location:</td>
+      <td class="txtleft mbground hcolor">Location:</td>
       <td class="txtleft"><!--[$tower.moonName]--></td>
     </tr>
     <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">Tower Name:</td>
+      <td class="txtleft mbground hcolor">Tower Name:</td>
       <td class="txtleft">
 	<!--[if $access >= 2 ]-->
         	<input name="new_tower_name" type="text" value="<!--[$tower.towerName]-->" />
@@ -59,16 +59,16 @@
       </td>
     </tr>
     <tr>
-      <td class="txtleft trackheader">Sovereignty:</td>
+      <td class="txtleft mbground hcolor">Sovereignty:</td>
       <td class="txtleft"><!--[if $tower.sovereignty]-->Yes<!--[else]-->No<!--[/if]--></td>
     </tr>
     <tr>
-      <td class="txtleft trackheader">Sovereignty Status:</td>
+      <td class="txtleft mbground hcolor">Sovereignty Status:</td>
       <td class="txtleft"><!--[if $tower.sovfriendly]-->Friendly<!--[else]-->Hostile<!--[/if]--></td>
     </tr>
 
 <!--[if $mods]-->
-      <td class="txtleft trackheader">CPU:</td>
+      <td class="txtleft mbground hcolor">CPU:</td>
       <!--[if $tower.current_cpu > $tower.total_cpu]-->
         <td class="txtleft"><!--[$tower.current_cpu]--> / <!--[$tower.total_cpu]--></td>
       <!--[else]-->
@@ -77,30 +77,30 @@
     </tr>
     <tr>
       <!--<td></td>-->
-      <td class="txtleft trackheader">PowerGrid:</td>
+      <td class="txtleft mbground hcolor">PowerGrid:</td>
        <!--[if $tower.current_pg > $tower.total_pg]-->
         <td class="txtleft"><!--[$tower.current_pg]--> / <!--[$tower.total_pg]--></td>
       <!--[else]-->
         <td class="txtleft"><!--[$tower.current_pg]--> / <!--[$tower.total_pg]--></td>
       <!--[/if]-->
 <!--[else]-->
-<td class="txtleft trackheader">CPU:</td>
+<td class="txtleft mbground hcolor">CPU:</td>
 <td class="txtleft"><input name="new_cpu" type="text" value="<!--[$tower.current_cpu]-->" /> /<!--[$tower.total_cpu]--></td></tr><tr>
-<td class="txtleft trackheader">PowerGrid:</td>
+<td class="txtleft mbground hcolor">PowerGrid:</td>
 <td class="txtleft"><input name="new_pg" type="text" value="<!--[$tower.current_pg]-->" /> /<!--[$tower.total_pg]--></td>
 <!--[/if]-->
     </tr>
     <tr>
-      <td class="txtleft trackheader">Fuel Tech:</td>
+      <td class="txtleft mbground hcolor">Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.owner_name]--></td>
     </tr>
     <tr>
-      <td class="txtleft trackheader">Backup Fuel Tech:</td>
+      <td class="txtleft mbground hcolor">Backup Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.secondary_owner_name]--></td>
     </tr>
 	<!--[if $access == 5 || $highly_trusted == 1]-->
 	<tr>
-      <td class="txtleft trackheader">Secretive:</td>
+      <td class="txtleft mbground hcolor">Secretive:</td>
 	  <td class="txtleft"><!--[if $tower.secret_pos]-->Yes<!--[else]-->No<!--[/if]--></td>
     </tr>
 	<!--[/if]-->
@@ -137,14 +137,14 @@
       <th>Fuel</th>
       <th>Currently</th>
       <th>New Values</th>
-      <th>Optimum</th>
+      <th class="mcolor">Optimum</th>
       <th colspan="2">Difference</th>
     </tr>
     <tr>
       <td>Enriched Uranium</td>
       <td><!--[$tower.avail_uranium]--></td>
       <td><input name="uranium" value="<!--[$tower.avail_uranium]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_uranium]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_uranium]--></td>
       <td class="txtright"><!--[$optimalDiff.uranium]--></td>
       <td class="txtright">(<!--[$optimalDiff.uranium_m3]--> m3)</td>
     </tr>
@@ -152,7 +152,7 @@
       <td>Oxygen</td>
       <td><!--[$tower.avail_oxygen]--></td>
       <td><input name="oxygen" value="<!--[$tower.avail_oxygen]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_oxygen]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_oxygen]--></td>
       <td class="txtright"><!--[$optimalDiff.oxygen]--></td>
       <td class="txtright">(<!--[$optimalDiff.oxygen_m3]--> m3)</td>
     </tr>
@@ -160,7 +160,7 @@
       <td>Mechanical Parts</td>
       <td><!--[$tower.avail_mechanical_parts]--></td>
       <td><input name="mechanical_parts" value="<!--[$tower.avail_mechanical_parts]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_mechanical_parts]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_mechanical_parts]--></td>
       <td class="txtright"><!--[$optimalDiff.mechanical_parts]--></td>
       <td class="txtright">(<!--[$optimalDiff.mechanical_parts_m3]--> m3)</td>
     </tr>
@@ -168,7 +168,7 @@
       <td>Coolant</td>
       <td><!--[$tower.avail_coolant]--></td>
       <td><input name="coolant" value="<!--[$tower.avail_coolant]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_coolant]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_coolant]--></td>
       <td class="txtright"><!--[$optimalDiff.coolant]--></td>
       <td class="txtright">(<!--[$optimalDiff.coolant_m3]--> m3)</td>
     </tr>
@@ -176,7 +176,7 @@
       <td>Robotics</td>
       <td><!--[$tower.avail_robotics]--></td>
       <td><input name="robotics" value="<!--[$tower.avail_robotics]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_robotics]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_robotics]--></td>
       <td class="txtright"><!--[$optimalDiff.robotics]--></td>
       <td class="txtright">(<!--[$optimalDiff.robotics_m3]--> m3)</td>
     </tr>
@@ -184,7 +184,7 @@
       <td>Charters</td>
       <td><!--[$tower.avail_charters]--></td>
       <td><input name="charters" value="<!--[$tower.avail_charters]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_charters]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_charters]--></td>
       <td class="txtright"><!--[$optimalDiff.charters]--></td>
       <td class="txtright">(<!--[$optimalDiff.charters_m3]--> m3)</td>
     </tr>
@@ -192,7 +192,7 @@
       <td>Isotopes</td>
       <td><!--[$tower.avail_isotope]--></td>
       <td><input name="isotope" value="<!--[$tower.avail_isotope]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_isotope]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_isotope]--></td>
       <td class="txtright"><!--[$optimalDiff.isotopes]--></td>
       <td class="txtright">(<!--[$optimalDiff.isotopes_m3]--> m3)</td>
     </tr>
@@ -200,7 +200,7 @@
       <td>Liquid Ozone</td>
       <td><!--[$tower.avail_ozone]--></td>
       <td><input name="ozone" value="<!--[$tower.avail_ozone]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_ozone]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_ozone]--></td>
       <td class="txtright"><!--[$optimalDiff.ozone]--></td>
       <td class="txtright">(<!--[$optimalDiff.ozone_m3]--> m3)</td>
     </tr>
@@ -208,7 +208,7 @@
       <td>Heavy Water</td>
       <td><!--[$tower.avail_heavy_water]--></td>
       <td><input name="heavy_water" value="<!--[$tower.avail_heavy_water]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_heavy_water]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_heavy_water]--></td>
       <td class="txtright"><!--[$optimalDiff.heavy_water]--></td>
       <td class="txtright">(<!--[$optimalDiff.heavy_water_m3]--> m3)</td>
     </tr>
@@ -216,7 +216,7 @@
       <td>Strontium Calthrates</td>
       <td><!--[$tower.avail_strontium]--></td>
       <td><input name="strontium" value="<!--[$tower.avail_strontium]-->" size="10" type="text" /></td>
-      <td><!--[$optimal.optimum_strontium]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_strontium]--></td>
       <td class="txtright"><!--[$optimalDiff.strontium]--></td>
       <td class="txtright">(<!--[$optimalDiff.strontium_m3]--> m3)</td>
     </tr>

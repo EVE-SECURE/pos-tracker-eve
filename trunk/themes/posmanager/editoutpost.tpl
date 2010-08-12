@@ -1,4 +1,3 @@
-<!--[* $Id: editoutpost.tpl 168 2008-09-20 07:24:02Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
 <table width='893' border='0'>
 <tr>

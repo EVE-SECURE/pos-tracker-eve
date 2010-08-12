@@ -7,59 +7,59 @@
     <div>
       <table class="tracktable mcenter txtright" style="width:400px;">
         <tr>
-          <td class="trackheader txtleft">Outpost Name:</td>
+          <td class="txtleft mbground hcolor">Outpost Name:</td>
           <td><input name="outpostName" size="20" type="text" value="" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Enriched Uranium</td>
+          <td class="txtleft mbground hcolor">Enriched Uranium</td>
           <td><input name="uranium" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Oxygen</td>
+          <td class="txtleft mbground hcolor">Oxygen</td>
           <td><input name="oxygen" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Mechanical Parts</td>
+          <td class="txtleft mbground hcolor">Mechanical Parts</td>
           <td><input name="mechanical_parts" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Coolant</td>
+          <td class="txtleft mbground hcolor">Coolant</td>
           <td><input name="coolant" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Robotics</td>
+          <td class="txtleft mbground hcolor">Robotics</td>
           <td><input name="robotics" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Helium Isotopes</td>
+          <td class="txtleft mbground hcolor">Helium Isotopes</td>
           <td><input name="heisotope" size="20" type="text" value="0" /></td>
         </tr>
             <tr>
-          <td class="trackheader txtleft">Hydrogen Isotopes</td>
+          <td class="txtleft mbground hcolor">Hydrogen Isotopes</td>
           <td><input name="hyisotope" size="20" type="text" value="0" /></td>
         </tr>
             <tr>
-          <td class="trackheader txtleft">Oxygen Isotopes</td>
+          <td class="txtleft mbground hcolor">Oxygen Isotopes</td>
           <td><input name="oxisotope" size="20" type="text" value="0" /></td>
         </tr>
             <tr>
-          <td class="trackheader txtleft">Nitrogen Isotopes</td>
+          <td class="txtleft mbground hcolor">Nitrogen Isotopes</td>
           <td><input name="niisotope" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Liquid Ozone</td>
+          <td class="txtleft mbground hcolor">Liquid Ozone</td>
           <td><input name="ozone" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Heavy Water</td>
+          <td class="txtleft mbground hcolor">Heavy Water</td>
           <td><input name="heavy_water" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Strontium Calthrates</td>
+          <td class="txtleft mbground hcolor">Strontium Calthrates</td>
           <td><input name="strontium" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Charters</td>
+          <td class="txtleft mbground hcolor">Charters</td>
           <td><input name="charters" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
@@ -69,3 +69,5 @@
     </div>
     </form>
   </div>
+  
+  <!--[include file='footer.tpl']-->

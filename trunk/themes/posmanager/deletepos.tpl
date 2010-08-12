@@ -1,7 +1,4 @@
-<!--[* $Id: deletepos.tpl 131 2008-07-21 06:18:41Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
-
-
   <div class="mcenter">
     Are you sure you want to delete <!--[$pos_size_name]--> <!--[$pos_type_name]--> in <!--[$moonName]--><br /><br />
     <form method="post" action="deletepos.php">

@@ -1,22 +1,21 @@
-<!--[* $Id: admin.tpl 244 2009-04-26 17:25:32Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
 
 
   <h2>Administration</h2>
   <p class="mcenter">
-    <span style="color:#1B3169;">
+    <span>
     <!--[if $access]-->
-      &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;
-      <a style="color:#1B3169;" href="#apiupdate" title="API Data Updates">API Data</a>
-      &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;
-      <a style="color:#1B3169;" href="#apikeys" title="API Key Management">API Keys</a>
-      &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;
-      <a style="color:#1B3169;" href="admin.php?action=moons" title="Moons Management">Moons</a>
-      &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;
-      <a style="color:#1B3169;" href="#users" title="Users Management">Users</a>
-      &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp;
-      <a style="color:#1B3169;" href="admin.php?op=modules" title="Addons Management">Addons</a>
-      &nbsp; &nbsp; &nbsp; |
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+      <a href="#apiupdate" title="API Data Updates">API Data</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+      <a href="#apikeys" title="API Key Management">API Keys</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+      <a href="admin.php?action=moons" title="Moons Management">Moons</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+      <a href="#users" title="Users Management">Users</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+      <a href="admin.php?op=modules" title="Addons Management">Addons</a>
+      &nbsp; &nbsp; |
     <!--[/if]-->
       <br /><br />
     </span>
@@ -30,7 +29,7 @@
         Total Number of Alliances: <!--[$results.counttotal]--><br />
         Total Number of Updates: <!--[$results.updatestotal]-->
         <br /><br />
-        <a class="arialwhite14 txtunderlined" href="admin.php" title="Done">Done</a>
+        <a href="admin.php" title="Done">Done</a>
         <br /><br />
         <!--[if $results.updatestotal]-->
         Alliances Added:<br />
@@ -51,7 +50,7 @@
         Total Number of POS Updated: <!--[$results.count_updated]--><br />
         Total POSes updated from API: <!--[$results.count_towers]--><br />
 	<br />
-        <a class="arialwhite14 txtunderlined" href="admin.php" title="Done">Done</a>
+        <a class="link" href="admin.php" title="Done">Done</a>
         <br /><br />
         <!--[if $results]-->
         Towers List:<br />
@@ -75,7 +74,7 @@
         ERROR!!
       <!--[/if]-->
         <br /><br />
-        <a class="arialwhite14 txtunderlined" href="admin.php" title="Done">Done</a>
+        <a href="admin.php" title="Done">Done</a>
       </p>
 
     <!--[elseif $action eq 'getcharacters']-->
@@ -101,14 +100,14 @@
 
     <!--[/if]-->
   <!--[else]-->
-    <h4 class="pageTitle"><a style="color:#ffffff;" name="moons"></a>Manage Moons</h4>
+    <h4 class="pageTitle"><a name="moons"></a>Manage Moons</h4>
     <div class="mcenter">
-      <a href="admin.php?action=moons" title="Moon Database">Managed Moon Database</a>
+      <a class="link" href="admin.php?action=moons" title="Moon Database">Managed Moon Database</a>
       <br />
     </div>
     <hr />
 
-    <h4 class="pageTitle"><a style="color:#ffffff;" name="apiupdates"></a>API Data</h4>
+    <h4 class="pageTitle"><a name="apiupdates"></a>API Data</h4>
     <div>
       <!--[if $allyupdate]-->
       <span style="color:red;font-weight:bold;">Warning, Your Alliance data is out of date. <!--[$allytime]--></span><br />
@@ -124,10 +123,10 @@
       <div>
         <table class="mcenter tracktable" style="width:640px;">
         <thead>
-          <tr class="trackheader">
-            <th style="color:#CCCCCC;">API Type</th>
-            <th style="color:#CCCCCC;">Last Updated</th>
-            <th style="color:#CCCCCC;">Manual Update</th>
+          <tr>
+            <th class="mbground hcolor">API Type</th>
+            <th class="mbground hcolor">Last Updated</th>
+            <th class="mbground hcolor">Manual Update</th>
           </tr>
         </thead>
         <tbody>
@@ -158,11 +157,11 @@
         <input type="hidden" name="action" value="updatekey" />
         <table class="mcenter tracktable" style="width:640px;">
         <thead>
-          <tr class="trackheader">
-            <th style="color:#CCCCCC;">Corp</th>
-            <th style="color:#CCCCCC;">UserID</th>
-            <th style="color:#CCCCCC;">API Key (first 5 characters)</th>
-            <th style="color:#CCCCCC;">Remove</th>
+          <tr>
+            <th class="mbground hcolor">Corp</th>
+            <th class="mbground hcolor">UserID</th>
+            <th class="mbground hcolor">API Key (first 5 characters)</th>
+            <th class="mbground hcolor">Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -191,21 +190,21 @@
     </div>
 
     <hr />
-    <h4 class="pageTitle"><a style="color:#ffffff;" name="users"></a>Registered Users</h4>
+    <h4 class="pageTitle"><a name="users"></a>Registered Users</h4>
     <div class="mcenter">
       <form method="post" action="admin.php">
       <div>
         <input type="hidden" name="action" value="updateusers" />
         <table class="mcenter tracktable" style="width:640px;">
         <thead>
-          <tr class="trackheader">
-            <th style="color:#CCCCCC;">Name</th>
-            <th style="color:#CCCCCC;">Corp</th>
-            <th style="color:#CCCCCC;">Email</th>
-            <th style="color:#CCCCCC;">Away</th>
-            <th style="color:#CCCCCC;">Access</th>
-            <th style="color:#CCCCCC;">Highly Trusted</th>
-            <th style="color:#CCCCCC;">Remove</th>
+          <tr>
+            <th class="mbground hcolor">Name</th>
+            <th class="mbground hcolor">Corp</th>
+            <th class="mbground hcolor">Email</th>
+            <th class="mbground hcolor">Away</th>
+            <th class="mbground hcolor">Access</th>
+            <th class="mbground hcolor">Highly Trusted</th>
+            <th class="mbground hcolor">Remove</th>
             <!--<th>Modify</th>-->
           </tr>
         </thead>

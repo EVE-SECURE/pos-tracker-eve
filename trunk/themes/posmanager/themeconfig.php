@@ -1,7 +1,6 @@
 <?php
-/* $Id: themeconfig.php 131 2008-07-21 06:18:41Z stephenmg $ */
 
-/* --- Pos tracker variables ---*/
+/* --- Pos tracker variables --- NO LONGER USED in FGV 5.0.2 and beyond.*/
 
 $themecfg['focus_fuel']                     = 72;         # Fuel level that trigger a "pre" warning color.
 $themecfg['minimal_fuel']                   = 48;         # Minimal fuel that should be kept in the towers at any time

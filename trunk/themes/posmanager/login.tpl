@@ -2,7 +2,7 @@
 <!--[include file='header.tpl']-->
 
   <div>
-    <span class="arialwhite14 txtleft">If you are using the in-game browser, you must <strong>click</strong> the "Login" button!<br /><br /></span>
+    <span>If you are using the in-game browser, you must <strong>click</strong> the "Login" button!<br /><br /></span>
   </div>
   <!--[if $IS_IGB]-->
     <form method="post" action="login.php">

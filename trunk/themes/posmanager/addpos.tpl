@@ -9,7 +9,7 @@
       <input name="step" value="<!--[math equation='x+1' x=$step]-->" type="hidden" />
       <table class="tracktable mcenter txtleft">
         <tr>
-          <td class="trackheader">Select Region:</td>
+          <td class="mbground hcolor">Select Region:</td>
           <td><!--[html_options name='regionID' options=$arrregions]--></td>
         </tr>
         <tr>
@@ -25,7 +25,7 @@
       <input name="regionID" value="<!--[$regionID]-->" type="hidden" />
       <table class="tracktable mcenter txtleft">
         <tr>
-          <td class="trackheader">Select Constellation:</td>
+          <td class="mbground hcolor">Select Constellation:</td>
           <td><!--[html_options name='constellationID' options=$arrconstellation]--></td>
         </tr>
         <tr>
@@ -42,7 +42,7 @@
       <input name="constellationID" value="<!--[$constellationID]-->" type="hidden" />
       <table class="tracktable mcenter txtleft">
         <tr>
-          <td class="trackheader">Select System:</td>
+          <td class="mbground hcolor">Select System:</td>
           <td><!--[html_options name='solarSystemID' options=$arrsystems]--></td>
         </tr>
         <tr>
@@ -60,7 +60,7 @@
       <input name="constellationID" value="<!--[$constellationID]-->" type="hidden" />
       <table class="tracktable mcenter txtleft">
         <tr>
-          <td class="trackheader">Select Moon:</td>
+          <td class="mbground hcolor">Select Moon:</td>
           <td><!--[html_options name='moonID' options=$arrmoons]--></td>
         </tr>
         <tr>
@@ -79,59 +79,59 @@
       <input name="constellationID" value="<!--[$constellationID]-->" type="hidden" />
       <table class="tracktable mcenter txtright" style="width:400px;">
         <tr>
-          <td class="trackheader txtleft">Size:</td>
+          <td class="txtleft mbground hcolor">Size:</td>
           <td><!--[html_options name='pos_size' options=$arrposize]--></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Race:</td>
+          <td class="txtleft mbground hcolor">Race:</td>
           <td><!--[html_options name='pos_race' options=$arrporace]--></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Tower Name:</td>
+          <td class="txtleft mbground hcolor">Tower Name:</td>
           <td><input name="towerName" size="20" type="text" value="" /></td>
         </tr>
         <!--[*<tr>
-          <td class="trackheader txtleft">Sovereignity:</td>
+          <td class="txtleft mbground hcolor">Sovereignity:</td>
           <td><input name="sovereignity" type="checkbox" /></td>
         </tr>*]-->
         <tr>
-          <td class="trackheader txtleft">Enriched Uranium</td>
+          <td class="txtleft mbground hcolor">Enriched Uranium</td>
           <td><input name="uranium" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Oxygen</td>
+          <td class="txtleft mbground hcolor">Oxygen</td>
           <td><input name="oxygen" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Mechanical Parts</td>
+          <td class="txtleft mbground hcolor">Mechanical Parts</td>
           <td><input name="mechanical_parts" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Coolant</td>
+          <td class="txtleft mbground hcolor">Coolant</td>
           <td><input name="coolant" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Robotics</td>
+          <td class="txtleft mbground hcolor">Robotics</td>
           <td><input name="robotics" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Isotopes</td>
+          <td class="txtleft mbground hcolor">Isotopes</td>
           <td><input name="isotope" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Liquid Ozone</td>
+          <td class="txtleft mbground hcolor">Liquid Ozone</td>
           <td><input name="ozone" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Heavy Water</td>
+          <td class="txtleft mbground hcolor">Heavy Water</td>
           <td><input name="heavy_water" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader txtleft">Strontium Calthrates</td>
+          <td class="txtleft mbground hcolor">Strontium Calthrates</td>
           <td><input name="strontium" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td class="trackheader">Status:</td>
+          <td class="txtleft mbground hcolor">Status:</td>
           <td>
             <select name="status">
               <option value="0"></option>

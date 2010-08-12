@@ -2,27 +2,27 @@
 <!--[include file='header.tpl']-->
 
   <h3 class="pageTitle">Production Overview</h3>
-  <form style="text-align: center;" method="post" action="production.php">
-  <p style="text-align:center;">
+  <form class="mcenter" method="post" action="production.php">
+  <p class="mcenter">
     <!--[html_options name='filter_regionID' options=$optregions selected=$filter_regionID]-->
     <!--[if $access > 2 ]--><!--[html_options name='filter_systemID' options=$optsystems selected=$filter_systemID]--><!--[/if]-->
     <!--[html_options name='filter_pos_id'   options=$optposids  selected=$filter_pos_id]-->
-    <input type="submit" name="submit" value="Filter" /> - <a href="production.php" title="Clear Filter">Clear Filter</a>
+    <input type="submit" name="submit" value="Filter" /> - <a class="link" href="production.php" title="Clear Filter">Clear Filter</a>
   </p>
   </form>
-  <table class="mcenter" style="padding:0; width:70%; border:1px #336699 solid; font-family: Arial,sans-serif; font-style: normal; font-variant: normal; font-weight: normal; font-size: 11px; line-height: normal; font-size-adjust: none; font-stretch: normal;" cellspacing="1">
+  <table class="mcenter tracktable" style="padding:0; width:70%;" cellspacing="1">
   <tbody>
-    <tr class="arialwhitebold12" style="background-color:#336699;">
-	  <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Tower</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">System</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Id</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Type</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">&nbsp;M3&nbsp;</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Starting Amount</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Amount in Silo</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Amount in Silo (M3)</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Input/Output</td>
-      <td class="txtcenter arialwhite12 billheader" style="border:1px #336699 solid;">Time Until Full/Empty</td>
+    <tr class="mbground">
+	  <td class="txtcenter hcolor billheader">Tower</td>
+      <td class="txtcenter hcolor billheader">System</td>
+      <td class="txtcenter hcolor billheader">Id</td>
+      <td class="txtcenter hcolor billheader">Type</td>
+      <td class="txtcenter hcolor billheader">&nbsp;M3&nbsp;</td>
+      <td class="txtcenter hcolor billheader">Starting Amount</td>
+      <td class="txtcenter hcolor billheader">Amount in Silo</td>
+      <td class="txtcenter hcolor billheader">Amount in Silo (M3)</td>
+      <td class="txtcenter hcolor billheader">Input/Output</td>
+      <td class="txtcenter hcolor billheader">Time Until Full/Empty</td>
     </tr>
 
   <!--[assign var='systemback' value=$allsilos[0].systemID]-->
@@ -39,9 +39,9 @@
     <!--[assign var='systemback' value=$tower.systemID]-->
   <!--[/if]-->
   <!--[foreach item='silo' from=$tower.silos]-->
-    <tr style="border:1px #aaaaaa solid;background-color:#F2EFE9;">
-	  <td><a style="color:#1B3169;" href="viewpos.php?i=<!--[$tower.pos_id]-->" title="<!--[$tower.towerName]-->"><!--[$tower.towerName]--></a></td>
-      <td><a style="color:#1B3169;" href="viewpos.php?i=<!--[$tower.pos_id]-->" title="<!--[$tower.locationName]-->"><!--[$tower.locationName]--></a></td>
+    <tr>
+	  <td><a class="link" href="viewpos.php?i=<!--[$tower.pos_id]-->" title="<!--[$tower.towerName]-->"><!--[$tower.towerName]--></a></td>
+      <td><a class="link" href="viewpos.php?i=<!--[$tower.pos_id]-->" title="<!--[$tower.locationName]-->"><!--[$tower.locationName]--></a></td>
       <td><!--[$silo.silo_id]--></td>
       <td><!--[$silo.material_name]--></td>
       <td class="txtcenter">&nbsp;<!--[$silo.material_volume]-->&nbsp;</td>
