@@ -45,7 +45,8 @@ $eveRender->Assign('config', $config);
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 $access = $eve->SessionGetVar('access');
 $highly_trusted = $eve->SessionGetVar('highly_trusted');
 $eve_id = $eve->SessionGetVar('eve_id');

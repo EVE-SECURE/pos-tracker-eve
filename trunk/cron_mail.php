@@ -26,7 +26,7 @@
  * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
  * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
  * @package    POS-Tracker2
- * @version    SVN: $Id: cron_mail.php 243 2009-04-26 16:10:33Z stephenmg $
+ * @version    SVN: $Id$
  * @link       https://sourceforge.net/projects/pos-tracker2/
  * @link       http://www.eve-online.com/
  */

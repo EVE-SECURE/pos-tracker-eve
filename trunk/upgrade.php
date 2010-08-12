@@ -48,6 +48,8 @@ $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 
 if (!$userinfo || $userinfo['access'] < 5) {
     $eve->SessionSetVar('errormsg', 'User Not Logged In!');
@@ -67,7 +69,8 @@ $upgradeList=array(
 292=>'Dominion Sovereignty and Manual Powergrid and CPU - 3.0.0.292 RC 4',
 305=>'Material Volume Fix - 3.0.0.305 RC 5',
 333=>'FG Update for Tyrannis',
-501=>'Material Volume Fix - v5.0.1'
+501=>'Material Volume Fix - v5.0.1',
+502=>'Theme Install - v5.0.2'
 );
 
 $eveRender->Assign('upgradeList', $upgradeList);

@@ -50,7 +50,8 @@ $userinfo = $posmgmt->GetUserInfo();
 $access = $eve->SessionGetVar('access');
 $highly_trusted = $eve->SessionGetVar('highly_trusted');
 $eve_id = $eve->SessionGetVar('eve_id');
-
+$theme_id = $eve->SessionGetVar('theme_id');
+$eveRender->Assign('theme_id', $theme_id);
 $eveRender->Assign('access', $access);
 $eveRender->Assign('highly_trusted', $highly_trusted);
 $eveRender->Assign('config', $config);
