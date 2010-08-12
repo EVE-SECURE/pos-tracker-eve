@@ -1,7 +1,4 @@
-<!--[* $Id: addstructures.tpl 131 2008-07-21 06:18:41Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
-
-
   <form method="post" action="addstructure.php">
   <div>
     <input name="pos_id" value="<!--[$pos_id]-->" type="hidden" />

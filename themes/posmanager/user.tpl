@@ -1,4 +1,3 @@
-<!--[* $Id: user.tpl 131 2008-07-21 06:18:41Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
 
 
@@ -11,28 +10,32 @@
       <table class="mcenter tracktable txtleft" style="width:500px;">
       <thead>
         <tr>
-          <td class="trackheader txtcenter" style="color:#CCCCCC;" colspan=2>User Information</th>
+          <td class="mbground hcolor txtcenter" colspan=2>User Information</th>
         <tr>
       </thead>
       <tbody>
         <tr>
-          <td class="trackheader" style="color:#CCCCCC;">Username</th>
+          <td class="mbground hcolor">Username</th>
           <td><!--[$name]--></td>
         </tr>
         <tr>
-          <td class="trackheader" style="color:#CCCCCC;" rowspan="2">New password</th>
+          <td class="mbground hcolor" rowspan="2">New password</th>
           <td><input size=40 type="password" name="newpass" value="" /></td>
         </tr>
         <tr>
           <td><input size=40 type="password" name="newpass2" value="" /></td>
         </tr>
         <tr>
-          <td class="trackheader" style="color:#CCCCCC;">Your email</th>
+          <td class="mbground hcolor">Your email</th>
           <td><input size=40 type="text" name="email" value="<!--[$email]-->" /></td>
         </tr>
         <tr>
-          <td class="trackheader" style="color:#CCCCCC;">Away Status</td>
+          <td class="mbground hcolor">Away Status</td>
           <td><!--[html_options options=$awaystatus name='away' selected=$away]--></td>
+        </tr>
+		<tr>
+          <td class="mbground hcolor">Theme</td>
+          <td><!--[html_options options=$themeset name='theme_id' selected=$theme_id]--></td>
         </tr>
         <tr class="txtcenter">
           <td colspan="2"><input type="submit" value="Change Info" /></td>
@@ -53,7 +56,7 @@
       <table class="mcenter tracktable" style="width:500px;">
       <tbody>
         <tr>
-          <td class="trackheader" style="color:#CCCCCC;">Update Corp/Alliance</td>
+          <td class="mbground hcolor">Update Corp/Alliance</td>
           <td>ERROR: Need to use the in-game browser</td>
         </tr>
       </tbody>

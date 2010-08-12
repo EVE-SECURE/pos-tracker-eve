@@ -16,21 +16,21 @@
   </form>
   <table class="mcenter tracktable" style="width:100%;" cellspacing="0">
   <tbody>
-    <tr class="trackheader">
+    <tr class="mbground">
       <!--[*<td>Parent Outpost</td>*]-->
-      <td class="arialwhite12">Status</td>
-      <td class="arialwhite12">Pos type</td>
-      <td class="arialwhite12">Tower Name</td>
-      <td class="arialwhite12">Location</td>
-      <td class="arialwhite12">Region</td>
-      <td class="arialwhite12">Owner</td>
-      <td class="arialwhite12">Last Update</td>
+      <td class="hcolor">Status</td>
+      <td class="hcolor">POS Type</td>
+      <td class="hcolor">Tower Name</td>
+      <td class="hcolor">Location</td>
+      <td class="hcolor">Region</td>
+      <td class="hcolor">Owner</td>
+      <td class="hcolor">Last Update</td>
 	  <!--[if $st == 1]-->
-	  <td class="arialwhite12">Stront Status</td>
+	  <td class="hcolor">Stront Status</td>
 	  <!--[else]-->
-      <td class="arialwhite12">Status</td>
+      <td class="hcolor">Status</td>
       <!--[/if]-->
-	  <td class="arialwhite12">Action</td>
+	  <td class="hcolor">Action</td>
     </tr>
 
   <!--[foreach item='pos' from=$poses]-->
@@ -41,9 +41,9 @@
       <td><!--[if $pos.pos_status_img]--><img src="themes/<!--[$config.theme]-->/images/<!--[$pos.pos_status_img]-->" alt="<!--[$pos.pos_status_img]-->" /><!--[else]-->&nbsp;<!--[/if]--></td>
       <td><!--[$arrposize.$pos_size]--> <!--[$arrporace.$pos_race]--></td>
       <td><!--[$pos.towerName]--></td>
-      <td><a href="http://evemaps.dotlan.net/system/<!--[$pos.MoonName|regex_replace:"/ [XIV]+ - Moon.*/":""]-->/moons" target="_blank"><!--[$pos.MoonName]--></td>
-      <td><a href="http://evemaps.dotlan.net/region/<!--[$pos.region|regex_replace:"/[^'a-z0-9-\.:,]/i":"_"]-->/moons" target="_blank"><!--[$pos.region]--></a></td>
-      <td><a href="http://evemaps.dotlan.net/corp/<!--[$pos.corp|regex_replace:"/[^'a-z0-9-\.:,]/i":"_"]-->" target="_blank"><!--[$pos.corp]--></a><br><!--[$pos.name|default:"-"]--> / <!--[$pos.backup|default:"-"]--></td>
+      <td><a class="link" href="http://evemaps.dotlan.net/system/<!--[$pos.MoonName|regex_replace:"/ [XIV]+ - Moon.*/":""]-->/moons" target="_blank"><!--[$pos.MoonName]--></td>
+      <td><a class="link" href="http://evemaps.dotlan.net/region/<!--[$pos.region|regex_replace:"/[^'a-z0-9-\.:,]/i":"_"]-->/moons" target="_blank"><!--[$pos.region]--></a></td>
+      <td><a class="link" href="http://evemaps.dotlan.net/corp/<!--[$pos.corp|regex_replace:"/[^'a-z0-9-\.:,]/i":"_"]-->" target="_blank"><!--[$pos.corp]--></a><br><!--[$pos.name|default:"-"]--> / <!--[$pos.backup|default:"-"]--></td>
       <td><!--[$pos.last_update]--></td>
 	  <!--[if $st == 1]-->
 	  <td style="color:<!--[$pos.textcolor]-->;"><!--[$pos.strontium]--> (<!--[daycalc hours=$pos.uptimecalc.strontium]-->)</td>
@@ -65,5 +65,5 @@
   </tbody>
   </table>
   <!--[pager numitems=$pager.numitems limit=$pager.limit]-->
-  <!--[if $access > 1 ]--><div class="mcenter"><a href="addpos.php" title="Add a new Tower">Add a New Tower</a></div><!--[/if]-->
+  <!--[if $access > 1 ]--><div class="mcenter"><a class="link" href="addpos.php" title="Add a new Tower">Add a New Tower</a></div><!--[/if]-->
 <!--[include file='footer.tpl']-->
