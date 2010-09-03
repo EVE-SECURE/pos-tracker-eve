@@ -14,33 +14,13 @@
       <tr>
         <td class="mbground hcolor">Use Current Level</td>
         <td>
-		<!--[if $use_current_levels == 1]-->
-		 <select name="use_current_levels">
-            <option value="1" selected="selected">Yes</option>
-            <option value="0">No</option>
-          </select>
-		<!--[else]-->
-		<select name="use_current_levels">
-			<option value="0" selected="selected">No</option>
-            <option value="1">Yes</option>
-          </select>
-		<!--[/if]-->
+		<!--[html_options name='use_current_levels' options=$optlevels  selected=$use_current_levels]-->
         </td>
       </tr>
 	  <tr>
         <td class="mbground hcolor">Display Optimal</td>
         <td>
-		  <!--[if $display_optimal == 1]-->
-          <select name="display_optimal">
-			<option value="1" selected="selected">Yes</option>
-            <option value="0">No</option>
-          </select>
-		  <!--[else]-->
-		  <select name="display_optimal">  
-            <option value="0" selected="selected">No</option>
-			<option value="1">Yes</option>
-          </select>
-		  <!--[/if]-->
+		<!--[html_options name='display_optimal' options=$disopt  selected=$display_optimal]-->
         </td>
       </tr>
  <!-- Hard Disabled in the PHP Code    <tr>
