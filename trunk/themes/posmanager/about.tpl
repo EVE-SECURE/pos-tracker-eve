@@ -1,11 +1,16 @@
 <!--[include file='header.tpl']-->
 
-
   <h2>Welcome to the POS Tracker</h2>
   <div class="mcenter txtleft">
     <h3>POS-Tracker Version: (<!--[$version]-->)</h3>
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br /><br />
+	<strong>Version 5.0.2 to 5.0.3 Changes:</strong>
+    <ul>
+      <li>Fuel Calculator bug fixed where days didn't affect the amount of fuel needed.</li>
+	  <li>Fuel Calculator options current levels and optimal levels are now set to on by default.</li>
+    </ul>
+    <br />
 	<strong>Version 5.0.1 to 5.0.2 Changes:</strong>
     <ul>
       <li>Fuel Bill layout now matches what is shown while viewing towers to make it easier to look between the two.</li>

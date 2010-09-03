@@ -1,8 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-en">
-<!--POS-Tracker 5.0.2 FGV-->
 <head>
-  <title>POS-Tracker 5.0.2 - FG Version</title>
+  <title>POS-Tracker 5.0.3 - FG Version</title>
   <!--[if $theme_id >= 1]-->
   <link href="themes/<!--[$config.theme]-->/style/theme<!--[$theme_id]-->.css" rel="stylesheet" type="text/css" />
   <!--[else]-->
