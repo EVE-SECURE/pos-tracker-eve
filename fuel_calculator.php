@@ -1,36 +1,4 @@
 <?php
-/**
- * Pos-Tracker2
- *
- * Starbase Fuel calculator page
- *
- * PHP version 5
- *
- * LICENSE: This file is part of POS-Tracker2.
- * POS-Tracker2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3 of the License.
- *
- * POS-Tracker2 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with POS-Tracker2.  If not, see <http://www.gnu.org/licenses/>.
- *
-
- * @author     Stephen Gulickk <stephenmg12@gmail.com>
- * @author     DeTox MinRohim <eve@onewayweb.com>
- * @author      Andy Snowden <forumadmin@eve-razor.com>
- * @copyright  2007-2009 (C)  Stephen Gulick, DeTox MinRohim, and Andy Snowden
- * @license    http://www.gnu.org/licenses/gpl-3.0.html GPL 3.0
- * @package    POS-Tracker2
- * @version    SVN: $Id$
- * @link       https://sourceforge.net/projects/pos-tracker2/
- * @link       http://www.eve-online.com/
- */
-
 include_once 'eveconfig/config.php';
 include_once 'includes/dbfunctions.php';
 include_once 'includes/pos_val.php';
@@ -40,7 +8,7 @@ EveDBInit();
 include_once 'includes/eveclass.php';
 include 'includes/class.pos.php';
 include_once 'includes/eveRender.class.php';
-include_once 'eveconfig/config.php';
+
 $eveRender = New eveRender($config, $mod, false);
 $eveRender->Assign('config',    $config);
 
@@ -55,6 +23,11 @@ $eveRender->Assign('access', $access);
 
 $pos_to_refuel = $eve->VarCleanFromInput('pos_to_refuel');
 
+$optlevels = array(1 => 'Current Level - Yes', 0 => 'Current Level - No');
+$disopt = array(1 => 'Display Optimals - Yes', 0 => 'Display Optimals - No');
+$eveRender->Assign('optlevels', $optlevels);
+$eveRender->Assign('disopt', $disopt);
+
 if (!empty($pos_to_refuel)) {
     $days               = $eve->VarCleanFromInput('days');
     $hours              = $eve->VarCleanFromInput('hours');
@@ -63,10 +36,13 @@ if (!empty($pos_to_refuel)) {
     $use_hanger_levels  = 0;//$eve->VarCleanFromInput('use_hanger_levels');
     $cargosize          = $eve->VarCleanFromInput('size');
 
+	
+	
     $args['days_to_refuel']     = $days + ($hours/24);
     $args['pos_ids'][]          = $pos_to_refuel;
     $args['use_current_levels'] = $use_current_levels;
-
+	$args['display_optimal'] = $display_optimal;
+	$args['calc_fuel'] = 1;
 	
     $bill = $posmgmt->GetFuelBill($args);
 	
@@ -173,6 +149,8 @@ if (!empty($pos_to_refuel)) {
 	if ($display_optimal == 1) {
 		$tower = $posmgmt->GetTowerInfo($pos_to_refuel);
 	
+			
+			
 		if ($tower) {
 			$pos_size                = $tower['pos_size'];
             $pos_race                = $tower['pos_race'];
@@ -248,7 +226,10 @@ if (!empty($pos_to_refuel)) {
 	
 	$eveRender->Assign('optimal',   $optimal);
     $eveRender->Assign('optimalDiff',   $optimalDiff);
+	
 }
+	
+	
 	
     $eveRender->Assign('fuel',           $fuel);
     $eveRender->Assign('hours',          $hours);
