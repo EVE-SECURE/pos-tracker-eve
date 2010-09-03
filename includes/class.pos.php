@@ -3994,6 +3994,11 @@ class POSMGMT
             $display_optimal = 1;
         }
 		
+		if (isset($args['calc_fuel'])) {
+            $calc_fuel = $args['calc_fuel'];
+        } else {
+            $calc_fuel = 0;
+        }
 		
         //$days_to_refuel = $eve->VarCleanFromInput('days'); if (empty($days_to_refuel)) { $days_to_refuel = 20; }
         $days_to_refuel = 30; //$eve->VarCleanFromInput('days'); if (empty($days_to_refuel)) { $days_to_refuel = 20; }
@@ -4319,6 +4324,20 @@ class POSMGMT
         $needed_ozone            = ceil(($current_pg / $total_pg) * $required_ozone) * $optimum_cycles;
         $needed_heavy_water      = ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $optimum_cycles;
         $needed_charters        = $required_charters * $optimum_cycles;
+		
+		if ($calc_fuel) { //override numbers, user is using the Fuel Calc
+			$needed_hours               = (integer) (abs($days_to_refuel*24) + abs($hours_to_refuel)) ;
+			$needed_uranium          = $required_uranium * $needed_hours ;
+            $needed_oxygen           = $required_oxygen * $needed_hours ;
+            $needed_mechanical_parts = $required_mechanical_parts * $needed_hours ;
+            $needed_coolant          = $required_coolant * $needed_hours ;
+            $needed_robotics         = $required_robotics * $needed_hours ;
+            $needed_isotopes         = $required_isotope * $needed_hours ;
+            $needed_ozone            = $real_required_ozone * $needed_hours ;
+            $needed_heavy_water      = $real_required_heavy_water * $needed_hours ;
+            $needed_charters         = $required_charters * $needed_hours;
+			}
+		
 		}
 		else {
 		
