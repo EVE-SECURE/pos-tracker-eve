@@ -4333,8 +4333,8 @@ class POSMGMT
             $needed_coolant          = $required_coolant * $needed_hours ;
             $needed_robotics         = $required_robotics * $needed_hours ;
             $needed_isotopes         = $required_isotope * $needed_hours ;
-            $needed_ozone            = $real_required_ozone * $needed_hours ;
-            $needed_heavy_water      = $real_required_heavy_water * $needed_hours ;
+            $needed_ozone            = $required_ozone * $needed_hours ;
+            $needed_heavy_water      = $required_heavy_water * $needed_hours ;
             $needed_charters         = $required_charters * $needed_hours;
 			}
 		
