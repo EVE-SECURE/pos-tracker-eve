@@ -261,7 +261,7 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
     </tr>
     <tr>
       <td>Strontium Calthrates</td>
-      <td class="mcolor">!--[$tower.required_strontium]--></td>
+      <td class="mcolor"><!--[$tower.required_strontium]--></td>
       <td><!--[$hangar.strontium]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.strontium]--></td>-->
     </tr>
