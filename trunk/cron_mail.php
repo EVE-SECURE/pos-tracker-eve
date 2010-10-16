@@ -52,7 +52,7 @@ $mail->mailinit();
 
 $userinfo = $posmgmt->GetUserInfo();
 $eve->SessionSetVar('userlogged', 1);
-$access = 4;
+$access = 5;
 $eve->SessionSetVar('access', $access);
 
 $eveRender->Assign('access', $access);
