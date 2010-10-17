@@ -19,7 +19,7 @@ $eveRender->Assign('theme_id', $theme_id);
 $eveRender->Assign('access', $userinfo['access']);
 $eveRender->Assign('config', $config);
 
-$version = '5.0.3 FGV';//$posmgmt->GetVersion();
+$version = '5.0.4 FGV';//$posmgmt->GetVersion();
 
 $eveRender->Assign('version', $version);
 
