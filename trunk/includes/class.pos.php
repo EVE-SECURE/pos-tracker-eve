@@ -1645,7 +1645,7 @@ class POSMGMT
         $towerName        = Eve::VarPrepForStore($args['towerName']);
 
         $security=$this->getSystemSecurity($systemID);
-        if($security>=0.35)
+        if($security>=0.45)
         {
             $charters_needed=1;
         }
@@ -5110,7 +5110,7 @@ class POSMGMT
                             (integer) $pos_race = $towerinfo['pos_race'];
 
                             $security=$this->getSystemSecurity($systemID);
-                            if($security>0.35)
+                            if($security>0.45)
                             {
                                 (integer) $charters_needed=1;
                             }
