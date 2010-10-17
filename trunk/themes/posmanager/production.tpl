@@ -10,6 +10,7 @@
     <input type="submit" name="submit" value="Filter" /> - <a class="link" href="production.php" title="Clear Filter">Clear Filter</a>
   </p>
   </form>
+  <form style="margin: 0pt; padding: 0pt;" method="post" action="production.php">
   <table class="mcenter tracktable" style="padding:0; width:70%;" cellspacing="1">
   <tbody>
     <tr class="mbground">
@@ -18,7 +19,7 @@
       <td class="txtcenter hcolor billheader">Id</td>
       <td class="txtcenter hcolor billheader">Type</td>
       <td class="txtcenter hcolor billheader">&nbsp;M3&nbsp;</td>
-      <td class="txtcenter hcolor billheader">Starting Amount</td>
+      <td class="txtcenter hcolor billheader">New Amount</td>
       <td class="txtcenter hcolor billheader">Amount in Silo</td>
       <td class="txtcenter hcolor billheader">Amount in Silo (M3)</td>
       <td class="txtcenter hcolor billheader">Input/Output</td>
@@ -45,7 +46,7 @@
       <td><!--[$silo.silo_id]--></td>
       <td><!--[$silo.material_name]--></td>
       <td class="txtcenter">&nbsp;<!--[$silo.material_volume]-->&nbsp;</td>
-      <td class="txtcenter"><form style="margin: 0pt; padding: 0pt;" method="post" action="production.php"><div><input name="referer" value="production.php" type="hidden" /><input name="filter_systemID" value="<!--[$filter_regionID]-->" type="hidden" /><input name="filter_pos_id" value="<!--[$filter_pos_id]-->" type="hidden" /><input name="filter_systemID" value="<!--[$filter_systemID]-->" type="hidden" /><input name="structure_id" value="<!--[$silo.silo_id]-->" type="hidden" /><input size="7" name="new_amount" value="" style="text-align:right;" type="text" /> <input name="action" value="Update Amount" class="mainoption" type="submit" /></div></form></td>
+      <td class="txtcenter"><div><input name="referer" value="production.php" type="hidden" /><input name="filter_systemID" value="<!--[$filter_regionID]-->" type="hidden" /><input name="filter_pos_id" value="<!--[$filter_pos_id]-->" type="hidden" /><input name="filter_systemID" value="<!--[$filter_systemID]-->" type="hidden" /><input name="structure_id_<!--[$silo.silo_id]-->" value="<!--[$silo.silo_id]-->" type="hidden" /><input size="7" name="new_amount_<!--[$silo.silo_id]-->" value="<!--[$silo.material_amount]-->" type="text" /></div></td>
       <td class="txtright" ><!--[formatnumber value=$silo.material_amount]-->&nbsp;&nbsp;</td>
       <!--[math equation="x*y" x=$silo.material_amount y=$silo.material_volume|default:0 assign='matvolume']-->
       <td class="txtright"><!--[formatnumber value=$matvolume]-->&nbsp;&nbsp;</td>
@@ -59,6 +60,7 @@
   <!--[/foreach]-->
   </tbody>
   </table>
-
+  <center><input name="action" value="Update Amount" class="mainoption" type="submit" /></center>
+</form>
 
 <!--[include file='footer.tpl']-->
