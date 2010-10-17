@@ -5,6 +5,16 @@
     <h3>POS-Tracker Version: (<!--[$version]-->)</h3>
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br /><br />
+	<strong>Version 5.0.3 to 5.0.4 Changes:</strong>
+    <ul>
+      <li>Updated access for mailer. Due to added security changes, the mailer program lost access to check towers correctly in some cases.</li>
+	  <li>posmail.sh file added to help people utilize the mailer program. Recommend cron job runs every 12 hours.</li>
+	  <li>Fixed viewpos.tpl typo. - Thx Donna Vecchi</li>
+	  <li>Tyrannis change added. Removed charters requirement from 0.4 systems. Towers already within the program will have to removed and readded to reflect the change or manual DB update for charters_needed on the tower needs to be set to 0. </li>
+	  <li>Production page now has one update button to update all rows at once based on what's changed.</li>
+	  <li>Production page now has full on security. (e.g. If a fuel tech you can only see your tower's production.)</li>
+	</ul>
+    <br />
 	<strong>Version 5.0.2 to 5.0.3 Changes:</strong>
     <ul>
       <li>Fuel Calculator bug fixed where days didn't affect the amount of fuel needed.</li>
