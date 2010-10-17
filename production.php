@@ -19,10 +19,10 @@ $posmgmt = New POSMGMT();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 $access = $eve->SessionGetVar('access');
-//$eveRender->Assign('access', $access);
-
+$highly_trusted = $eve->SessionGetVar('highly_trusted');
 $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
+$eveRender->Assign('highly_trusted', $highly_trusted);
 
 $user_id = $_SESSION['delsid'];
 if ($access >= 2) {
@@ -30,10 +30,17 @@ if ($access >= 2) {
     $action = $eve->VarCleanFromInput('action');
 
     if ($action == 'Update Amount') {
-        $new_amount   = $eve->VarCleanFromInput('new_amount');
-        $structure_id = $eve->VarCleanFromInput('structure_id');
-        UpdateSiloAmount(array('new_amount' => $new_amount, 'structure_id' => $structure_id));
-    }
+		$sql = "SELECT * FROM ".TBL_PREFIX."silo_info";
+        $result = mysql_query($sql) or die('Could not get access to the user/pos database; ' . mysql_error());
+		while ($value = mysql_fetch_array($result)) {
+		$new_amount   = $eve->VarCleanFromInput('new_amount_'.$value[0]);
+        $structure_id = $eve->VarCleanFromInput('structure_id_'.$value[0]);
+			if ($value[4] != $new_amount)
+			{
+			UpdateSiloAmount(array('new_amount' => $new_amount, 'structure_id' => $structure_id));
+			}
+		}
+	}
 
     $regions = $posmgmt->GetInstalledRegions();
     $systems = $posmgmt->GetSystemsWithPos();
@@ -83,7 +90,6 @@ if ($access >= 2) {
     $eveRender->Assign('optposids',          $optposids);
     $eveRender->Assign('allsilos', $allsilos);
     $eveRender->Assign('access', $access);
-//echo '<pre>';print_r($allsilos);echo '</pre>';exit;
     $eveRender->Display('production.tpl');
 } else {
 	$eve->SessionSetVar('errormsg', 'Access Denied - Redirecting you back!');
@@ -139,7 +145,7 @@ function GetallProd($args)
 {
 
     global $eve, $posmgmt;
-//echo '<pre>';print_r($args);echo '</pre>';exit;
+
     $towers = $posmgmt->GetAllTowers($args);
 
     $silocap = array(1  => 30000,
@@ -160,7 +166,38 @@ function GetallProd($args)
     $allsilos = array();
     foreach($towers as $tower) {
         $pos_id = $tower['pos_id'];
+		$access = $eve->SessionGetVar('access');
+		$highly_trusted = $eve->SessionGetVar('highly_trusted');
+		$owner_id				 = $tower['owner_id'];
+		$sec_owner_id			 = $tower['secondary_owner_id'];
+		
+		$owner_info=$posmgmt->GetUserInfofromID($tower['owner_id']);
+        $tower['owner_name']=$owner_info['name'];
 
+        $sec_owner_info=$posmgmt->GetUserInfofromID($tower['secondary_owner_id']);
+        $tower['secondary_owner_name']=$sec_owner_info['name'];
+		$secret_pos         = $tower['secret_pos'];
+		
+		if ($secret_pos == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
+			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $sec_owner_id) {
+				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $sec_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
+					continue;
+				}
+			}
+			else {
+				echo $access;
+				continue;
+			}
+		}
+		
+		if ($access == 1) { //View Only Access Check, should make sure they are ONLY looking at their own towers.
+			if ($eve_id == $owner_id || $eve_id == $secondary_owner_id) {
+			}
+			else {
+					continue;
+			}
+		}
+		
         if ($tower['moonID']) {
             $sql = "SELECT ".TBL_PREFIX."evemoons.moonName FROM `".TBL_PREFIX."evemoons` WHERE ".TBL_PREFIX."evemoons.moonID='".$tower['moonID']."'";
             $result = mysql_query($sql) or die('Could not get access to the user/pos database; ' . mysql_error());
