@@ -247,8 +247,8 @@ class Eve {
 
     function SessionStart()
     {
-//echo '<pre>';print_r($_SESSION);echo '</pre>';exit;
-
+		$r = substr((base64_encode(dirname($_SERVER['REQUEST_URI']))), 4, 7); //Lock down the session per install
+		session_name($r); //See line above
         session_start();
         output_reset_rewrite_vars();
         if (!session_id()) {
@@ -257,6 +257,9 @@ class Eve {
 
     }
 
+	
+	
+	
     function SessionDestroy()
     {
         //if (session_id() != "") {
