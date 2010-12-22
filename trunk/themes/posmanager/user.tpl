@@ -50,6 +50,7 @@
       <div>
         <input type="hidden" name="action" value="updatecorpinfo" />
         <input type="submit" value="Update Corp/Alliance" />
+		<BR><b>Note:</b> You must have this tracker site page trusted in order for the changes to go through correctly.<br><br> Directions: While on this page click Options -> Trusted Sites. Click Trust Site.
       </div>
       </form>
     <!--[else]-->
