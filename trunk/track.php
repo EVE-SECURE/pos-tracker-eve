@@ -18,10 +18,14 @@ $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
 $eve->SessionSetVar('userlogged', 1);
+
 $access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-$eveRender->Assign('access', $access);
+
 
 include_once 'themes/posmanager/style/theme'.$theme_id.'.php';
 
@@ -53,10 +57,8 @@ switch($action) {
 
 
 
-if ($access >= "1") {
-    if ($access >= "2") {
-        //semi moved out of user login to remove delays, basically it checks the age then complains if the data is old to admin level only accounts, which can then go and update the data via the admin panel..this should never been seen by the cron tab users, unless it fails.
-        if ($access >= "4") {
+if (in_array('1', $access) || in_array('5', $access)) {
+
             //sets current time
             $time = time();
 
@@ -83,8 +85,8 @@ if ($access >= "1") {
             if ($errormsg) {
                 $eve->SessionSetVar('errormsg', $errormsg);
             }
-        }
-    }
+
+			
   $userlimit = $eve->SessionGetVar('usrlimit');
   //Following will be removed after BETA
   if(isset($config['pagelimit'])) {
@@ -103,7 +105,7 @@ if ($access >= "1") {
     $args['startnum'] = $eve->VarCleanFromInput('startnum');
 
     $rows       = $posmgmt->GetAllPos2($args);
-    $towercount = $posmgmt->GetAllPos2Count();
+    $towercount = count($rows);
 
     $bgcolor   = "#111111";
     $textcolor = "#FFFFFF";
