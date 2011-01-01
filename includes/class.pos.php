@@ -938,49 +938,74 @@ class POSMGMT
             $orderstatus=true;
         }
 		
-        switch($userinfo['access']) {
-          case 0:
-          default:
-          // This should never happen anyways, so we're going to make sure it won't.
-              $where = "WHERE 0=1";
-          break;
-          case 1:
-          // Access Level 1 = Show Towers User is Fuel Tech(View Only Access - No Secret POS[Unless of course they are a fuel tech for it])
-              $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
-                        OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id'];
-          break;
-          case 2:
-          // Access Level 2 = Show Towers User is Fuel Tech(Fuel Tech Access - No Secret POS[Unless of course they are a fuel tech for it])
-			$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']."
-                      OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']."
-                      OR ( ".TBL_PREFIX."tower_info.owner_id = 0
-                      AND ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
-          break;
-          case 3:
-		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - Secret POS Access)
-		   if ($userinfo['highly_trusted'] == 1){
-		   $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
-		   }
-		   else {
-		  // Access Level 3 = Show Towers User is of Same Corp(View-All Manager - No Secret POS)
-			$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0";
-		   }
-		  break;
-          case 4:
-		  // Access Level 4 = Show Towers User is of Same Corp(Directors - Secret POS Access)
-		  if ($userinfo['highly_trusted'] == 1){
-		  $where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
-		   }
-		   else {
-		  // Access Level 4 = Show Towers User is of Same Corp(Directors - No Secret POS)
-			$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR (".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
-		   }
-		  break;
-          case 5:
-          // Access Level 5 = Admin Account(Access to Everything)
-            $where = "WHERE 1=1";
-          break;
-        }
+		$access = explode('.',$userinfo['access']);
+		
+		if (in_array('1', $access)) { //(1.!20.!21) Normal User, doesn't have access to see all towers 
+		
+			if ((in_array('20', $access) || in_array('21', $access) || in_array('22', $access)) && !in_array('50', $access) && !in_array('51', $access) && !in_array('52', $access)) { //(20.21.22.!50.!51.!52) Access to see all his corp towers but can't see other corp towers
+			
+				if (in_array('22', $access)) { //(22) See his corps secret towers
+		
+					$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."'";
+				
+				}
+				else { //(!22) See all his corp towers except secretive
+
+					$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR (".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
+				
+				} 
+
+			}
+			elseif ((in_array('20', $access) || in_array('21', $access) ||  in_array('22', $access)) && (in_array('50', $access) || in_array('51', $access) ||  in_array('52', $access))) { //(20.21.22.50.51.52) Access to see all towers including other corps
+
+				if (in_array('22', $access) && !in_array('52', $access)) { //(22.!52) See his corps secret towers but not other corps
+
+					$where = "WHERE  ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' OR (".TBL_PREFIX."tower_info.corp != '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
+				
+				}
+				elseif (in_array('22', $access) && in_array('52', $access)) { // (22.52) See everything. Just like an admin. All secretives shown
+	
+					$where = "WHERE 1=1";
+					
+				}
+				elseif (!in_array('22', $access) && in_array('52', $access)) { // (!22.52) See all but his own corps secret towers. Can see other corps secret towers. Unsure why someone would do this but just incase.
+
+					$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR (".TBL_PREFIX."tower_info.corp = '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0) OR ".TBL_PREFIX."tower_info.corp != '".$userinfo['corp']."'";
+				
+				}
+				else { //(!22.!52) See all towers except secretive
+
+					$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secret_pos = 0";
+				
+				}
+		
+			}
+			elseif (!in_array('20', $access) && !in_array('21', $access) && !in_array('50', $access) && !in_array('51', $access) && !in_array('52', $access)) { //(!20.!21.!50.!51.!52)
+
+				$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']; //Show Towers where they are a fuel tech. Doesn't matter if tower is secretive.
+			
+			}
+			elseif (!in_array('20', $access) && !in_array('21', $access) && (in_array('50', $access) || in_array('51', $access))) { //(!20.!21.50.51)
+				
+				$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR (".TBL_PREFIX."tower_info.corp != '".$userinfo['corp']."' AND ".TBL_PREFIX."tower_info.secret_pos = 0)";
+
+			}
+			elseif (in_array('52', $access)) { //(52) For some reason someone selected show other corps secret towers and nothing to their own which makes no sense so this should rarely be accessed.
+			
+				$where = "WHERE ".TBL_PREFIX."tower_info.owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.secondary_owner_id = ".$userinfo['eve_id']." OR ".TBL_PREFIX."tower_info.corp != '".$userinfo['corp']."'";
+
+			}
+			
+			
+		}
+		elseif (in_array('5', $access)) { //(5) Admin user
+
+			$where = "WHERE 1=1";
+		}
+		else {
+
+			$where = "WHERE 1=0";
+		}
 
         $dbconn =& DBGetConn(true);
 
@@ -1004,7 +1029,7 @@ class POSMGMT
             //$result = $dbconn->SelectLimit($sql, $limit, $startnum);
 
             $result = $dbconn->Execute($sql);
-
+			
         if ($dbconn->ErrorNo() != 0) {
             Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             return false;
@@ -1044,7 +1069,7 @@ class POSMGMT
     }
 
     /**
-     * POSMGMT::GetAllPos2Count()
+     * POSMGMT::GetAllPos2Count() --Pointless function that is being replaced by a count command
      *
      * @return
      */
@@ -1258,7 +1283,7 @@ class POSMGMT
         $optimal['optimum_isotope']          = $required_isotope * $optimum_cycles;
         $optimal['optimum_ozone']            = ceil(($current_pg / $total_pg) * $required_ozone) * $optimum_cycles;
         $optimal['optimum_heavy_water']      = ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $optimum_cycles;
-        $optimal['optimum_charters']         = $required_charters * $optimum_cycles;
+        $optimal['optimum_charters']         = $optimum_cycles;
         $optimal['optimum_strontium']        = $required_strontium * $optimal_strontium_cycles;
         return $optimal;
     }
@@ -2239,6 +2264,69 @@ class POSMGMT
 
     }
 
+	/**
+     * POSMGMT::GetAllIndustrialJobs()
+     *
+     * @return
+     */
+    function GetAllIndustrialJobs()
+    {
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "SELECT * FROM ".TBL_PREFIX."jobs
+                WHERE completed=0
+                ORDER BY jobID";
+
+        $result = $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            //Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        for(; !$result->EOF; $result->MoveNext()) {
+            $jobs[] = $result->GetRowAssoc(2);
+        }
+
+        $result->Close();
+
+        return $jobs;
+
+    }
+	
+	/**
+     * POSMGMT::GetAllStaticItems()
+     *
+     * @return
+     */
+    function GetAllStaticItems()
+    {
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "SELECT DISTINCT typeID, typeName FROM ".TBL_PREFIX."invTypes
+                ORDER BY typeID";
+
+        $result = $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            //Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        for(; !$result->EOF; $result->MoveNext()) {
+            $itemDB[] = $result->GetRowAssoc(2);
+        }
+
+        $result->Close();
+
+        return $itemDB;
+
+    }
+	
     /**
      * POSMGMT::separate()
      *
@@ -4282,7 +4370,7 @@ class POSMGMT
             $bill[$pos_to_refuel]['outpost_id'] = $outpost_id;
             $bill[$pos_to_refuel]['locationName'] = $locationName;
             $bill[$pos_to_refuel]['towerName']    = $towerName;
-
+			
             $sql = 'SELECT * FROM `'.TBL_PREFIX.'system_status` WHERE solarSystemID =\''.Eve::VarPrepForStore($systemID).'\' LIMIT 1 ';
             $result = mysql_query($sql);
             $row99 = mysql_fetch_array($result);
@@ -5223,6 +5311,284 @@ class POSMGMT
 
     }
 
+	/**
+     * POSMGMT::API_UpdateIndustryJobs()
+     *
+     *
+     *
+     *
+     */
+	function API_UpdateIndustryJobs()
+    {
+		date_default_timezone_set(GMT);
+		$keys = $this->API_GetKeyInfo();
+
+        if (!$keys) {
+            Eve::SessionSetVar('errormsg', 'Could not get any key from the DB!');
+            return false;
+        }
+	    //$url = "http://api.eve-online.com/corp/IndustryJobs.xml.aspx";
+        $url = "/corp/IndustryJobs.xml.aspx";
+		
+		$time=time();
+        foreach ($keys as $key) {
+            if ($key['apitimer'] < ($time-3600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
+
+                $userid         = $key['userID'];
+                $apikey         = $key['apikey'];
+                $characterID    = $key['characterID'];
+                $corp           = $key['corp'];
+                $allianceID     = $key['allianceID'];
+                $fail           = 0;
+                $data = array('userID'      => $userid,
+                              'apiKey'      => $apikey,
+                              'version'     => $version,
+                              'characterID' => $characterID);
+
+                $extensions = get_loaded_extensions();
+                $curl = in_array('curl', $extensions);
+
+                if ($curl) {
+                    $ch = curl_init();
+
+                    curl_setopt($ch, CURLOPT_URL, "http://api.eve-online.com".$url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_HEADER, false);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                    $curl_error = curl_errno($ch);
+
+                    if ($curl_error != 0) {
+                        $fail = 1;
+                        //$this->API_UpdateKeyTimer($userid, $time);
+                        Eve::VarSessionSetVar('errormsg', 'CURL ERROR : '.$curl_error);
+                        return false;
+                    }
+
+                    $content = curl_exec($ch);
+                    curl_close($ch);
+
+                } else {
+                    $target  = "POST ".$url." HTTP/1.1\r\n";
+                    $header .= "Host: api.eve-online.com\r\n";
+                    $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+                    $header .= "Content-Length: " . strlen(http_build_query($data)) . "\r\n";
+                    $header .= "Connection: close\r\n\r\n";
+
+                    $fp = fsockopen ('api.eve-online.com', 80, $errno, $errstr, 30);
+
+                    if (!$fp) {
+                        echo 'meh! Eve server is such a n00b! '.$errstr; exit;
+                    }
+
+                    fputs ($fp, $target . $header . $req);
+                    $content = '';
+                    $done = false;
+                    while (!feof($fp)) {
+                        $content .= fgets ($fp, 1024);
+                    }
+                    $start = '<eveapi';
+                    $end   = '</eveapi>';
+                    $null = eregi("$start(.*)$end", $content, $data);
+                    $content = "<?xml version='1.0' encoding='UTF-8'?>\n".$data[0];
+                }
+
+                try {
+                    $xml = new SimpleXMLElement($content);
+                } catch (Exception $e) {
+                    Eve::SessionSetVar('errormsg', 'Error: '.$e->getMessage());
+                    return false;
+                }
+
+                foreach ($xml->xpath('//error') as $error) {
+                    Eve::SessionSetVar('errormsg', 'Error Code: '.$error['code'].'::'.$error.'. User ID: '.$userID.' Character ID: '.$characterID.' Corp: '.$corp);
+                    return false; //$fail = 1;
+                }
+                foreach ($xml->xpath('//cachedUntil') as $cachedUntil) {
+                  $updateTime=(strtotime($cachedUntil)-21600);
+                }
+                $dbconn =& DBGetConn(true);
+
+                if(defined('POS_CACHE_XML')) {
+                //hash for cache
+                    $unique=md5($userID.$characterID);
+                //Cache XML
+                    $cacheName='IndustrialJobs'.$unique;
+                    $this->API_cacheXML($xml->asXML(), $cacheName);
+                }
+
+
+        /*$xml = $this->API_Connect($url);
+
+        if (!$xml) { return false; }
+
+        $dbconn =& DBGetConn(true); */
+
+        $count = 0;
+		
+        foreach ($xml->xpath('//row') as $row) {
+					(integer) $jobID			       						= strval($row['jobID']);
+			        (integer) $assemblyLineID       						= strval($row['assemblyLineID']);
+                    (integer) $containerID       						    = strval($row['containerID']);
+                    (integer) $installedItemID        						= strval($row['installedItemID']);
+					(integer) $installedItemLocationID       				= strval($row['installedItemLocationID']);
+                    (integer) $installedItemProductivityLevel         		= strval($row['installedItemProductivityLevel']);
+					(integer) $installedItemMaterialLevel           		= strval($row['installedItemMaterialLevel']);
+                    (integer) $installedItemLicensedProductionRunsRemaining = strval($row['installedItemLicensedProductionRunsRemaining']);
+					(integer) $outputLocationID           					= strval($row['outputLocationID']);
+                    (integer) $installerID         							= strval($row['installerID']);
+					(integer) $runs           								= strval($row['runs']);
+                    (integer) $licensedProductionRuns         				= strval($row['licensedProductionRuns']);
+					(integer) $installedInSolarSystemID           			= strval($row['installedInSolarSystemID']);
+                    (integer) $containerLocationID         					= strval($row['containerLocationID']);
+					(integer) $materialMultiplier           				= strval($row['materialMultiplier']);
+                    (integer) $charMaterialMultiplier         				= strval($row['charMaterialMultiplier']);
+					(integer) $installedItemTypeID           				= strval($row['installedItemTypeID']);
+                    (integer) $outputTypeID         						= strval($row['outputTypeID']);
+					(integer) $containerTypeID           					= strval($row['containerTypeID']);
+                    (integer) $installedItemCopy         					= strval($row['installedItemCopy']);
+					(integer) $completed           							= strval($row['completed']);
+                    (integer) $completedSuccessfully         				= strval($row['completedSuccessfully']);
+					(integer) $installedItemFlag           					= strval($row['installedItemFlag']);
+                    (integer) $outputFlag         							= strval($row['outputFlag']);
+					(integer) $activityID           						= strval($row['activityID']);
+                    (integer) $completedStatus         						= strval($row['completedStatus']);
+					(integer) $installTime         							= strval($row['installTime']);
+					(integer) $beginProductionTime         					= strval($row['beginProductionTime']);
+					(integer) $endProductionTime         					= strval($row['endProductionTime']);
+					(integer) $pauseProductionTime         					= strval($row['pauseProductionTime']);
+			
+						$sql = "SELECT * FROM ".TBL_PREFIX."jobs WHERE jobID = '".Eve::VarPrepForStore($jobID)."'";
+                        $result = $dbconn->Execute($sql);
+                        if ($dbconn->ErrorNo() != 0) {
+                            Eve::SessionSetVar('errormsg', 'ERROR getting Job Info ; ' . $dbconn->ErrorMsg());
+                            return false;
+                        }
+                        if (!$result->EOF) {
+                            $posinfo = $result->GetRowAssoc(2);
+                            $sql = "UPDATE ".TBL_PREFIX."jobs
+                                    SET    assemblyLineID       						= '" . Eve::VarPrepForStore($assemblyLineID) . "',
+                                           containerID          						= '" . Eve::VarPrepForStore($containerID) . "',
+                                           installedItemID           					= '" . Eve::VarPrepForStore($installedItemID) . "',
+                                           installedItemLocationID 						= '" . Eve::VarPrepForStore($installedItemLocationID) . "',
+                                           installedItemQuantity          				= '" . Eve::VarPrepForStore($installedItemQuantity) . "',
+                                           installedItemProductivityLevel         		= '" . Eve::VarPrepForStore($installedItemProductivityLevel) . "',
+                                           installedItemMaterialLevel          			= '" . Eve::VarPrepForStore($installedItemMaterialLevel) . "',
+                                           installedItemLicensedProductionRunsRemaining = '" . Eve::VarPrepForStore($installedItemLicensedProductionRunsRemaining) . "',
+                                           outputLocationID      						= '" . Eve::VarPrepForStore($outputLocationID) . "',
+                                           installerID        							= '" . Eve::VarPrepForStore($installerID) . "',
+                                           runs         								= '" . Eve::VarPrepForStore($runs) ."',
+                                           licensedProductionRuns      					= '" . Eve::VarPrepForStore($licensedProductionRuns) ."',
+										   installedInSolarSystemID      				= '" . Eve::VarPrepForStore($installedInSolarSystemID) ."',
+										   containerLocationID      					= '" . Eve::VarPrepForStore($containerLocationID) ."',
+										   materialMultiplier      						= '" . Eve::VarPrepForStore($materialMultiplier) ."',
+										   charMaterialMultiplier      					= '" . Eve::VarPrepForStore($charMaterialMultiplier) ."',
+										   timeMultiplier      							= '" . Eve::VarPrepForStore($timeMultiplier) ."',
+										   charTimeMultiplier      						= '" . Eve::VarPrepForStore($charTimeMultiplier) ."',
+										   installedItemTypeID      					= '" . Eve::VarPrepForStore($installedItemTypeID) ."',
+										   outputTypeID      							= '" . Eve::VarPrepForStore($outputTypeID) ."',
+										   containerTypeID      						= '" . Eve::VarPrepForStore($containerTypeID) ."',
+										   installedItemCopy     						= '" . Eve::VarPrepForStore($installedItemCopy) ."',
+										   completed      								= '" . Eve::VarPrepForStore($completed) ."',
+										   completedSuccessfully      					= '" . Eve::VarPrepForStore($completedSuccessfully) ."',
+										   installedItemFlag      						= '" . Eve::VarPrepForStore($installedItemFlag) ."',
+										   outputFlag      								= '" . Eve::VarPrepForStore($outputFlag) ."',
+										   activityID      								= '" . Eve::VarPrepForStore($activityID) ."',
+										   completedStatus      						= '" . Eve::VarPrepForStore($completedStatus) ."',
+										   installTime      							= '" . Eve::VarPrepForStore($installTime) ."',
+										   beginProductionTime      					= '" . Eve::VarPrepForStore($beginProductionTime) ."',
+										   endProductionTime      						= '" . Eve::VarPrepForStore($endProductionTime) ."',
+                                           pauseProductionTime       					= '" . Eve::VarPrepForStore($pauseProductionTime) ."'
+                                    WHERE  jobID           								= '" . Eve::VarPrepForStore($jobID) . "'";
+                            $dbconn->Execute($sql);
+                            if ($dbconn->ErrorNo() != 0) {
+                                Eve::SessionSetVar('errormsg', 'ERROR Failed to update Job info ; ' . $dbconn->ErrorMsg());
+                                return false;
+                            }
+                            $result->Close();
+							
+						}
+						else {
+						
+						$sql = "INSERT INTO ".TBL_PREFIX."jobs (jobID,
+                                             assemblyLineID,
+                                             containerID,
+                                             installedItemID,
+                                             installedItemLocationID,
+                                             installedItemQuantity,
+                                             installedItemProductivityLevel,
+                                             installedItemMaterialLevel,
+                                             installedItemLicensedProductionRunsRemaining,
+                                             outputLocationID,
+                                             installerID,
+                                             runs,
+                                             licensedProductionRuns,
+                                             installedInSolarSystemID,
+                                             containerLocationID,
+                                             materialMultiplier,
+                                             charMaterialMultiplier,
+                                             timeMultiplier,
+                                             charTimeMultiplier,
+                                             installedItemTypeID,
+                                             outputTypeID,
+                                             containerTypeID,
+                                             installedItemCopy,
+                                             completed,
+                                             completedSuccessfully,
+                                             installedItemFlag,
+                                             outputFlag,
+											 activityID,
+											 completedStatus,
+											 installTime,
+											 beginProductionTime,
+											 endProductionTime,
+                                             pauseProductionTime)
+                                    VALUES     ('" . Eve::VarPrepForStore($jobID) . "',
+                                                '" . Eve::VarPrepForStore($assemblyLineID) . "',
+                                                '" . Eve::VarPrepForStore($containerID) . "',
+                                                '" . Eve::VarPrepForStore($installedItemID) . "',
+                                                '" . Eve::VarPrepForStore($installedItemLocationID) . "',
+                                                '" . Eve::VarPrepForStore($installedItemQuantity) . "',
+                                                '" . Eve::VarPrepForStore($installedItemProductivityLevel) . "',
+                                                '" . Eve::VarPrepForStore($installedItemMaterialLevel) . "',
+                                                '" . Eve::VarPrepForStore($installedItemLicensedProductionRunsRemaining) . "',
+                                                '" . Eve::VarPrepForStore($outputLocationID) . "',
+												'" . Eve::VarPrepForStore($installerID) . "',
+                                                '" . Eve::VarPrepForStore($runs) . "',
+                                                '" . Eve::VarPrepForStore($licensedProductionRuns) . "',
+                                                '" . Eve::VarPrepForStore($installedInSolarSystemID) . "',
+                                                '" . Eve::VarPrepForStore($containerLocationID) . "',
+                                                '" . Eve::VarPrepForStore($materialMultiplier) . "',
+                                                '" . Eve::VarPrepForStore($charMaterialMultiplier) . "',
+                                                '" . Eve::VarPrepForStore($timeMultiplier) . "',
+                                                '" . Eve::VarPrepForStore($charTimeMultiplier) . "',
+                                                '" . Eve::VarPrepForStore($installedItemTypeID) . "',
+                                                '" . Eve::VarPrepForStore($outputTypeID) . "' ,
+                                                '" . Eve::VarPrepForStore($containerTypeID) . "',
+                                                '" . Eve::VarPrepForStore($installedItemCopy) . "',
+												'" . Eve::VarPrepForStore($completed) . "' ,
+                                                '" . Eve::VarPrepForStore($completedSuccessfully) . "',
+                                                '" . Eve::VarPrepForStore($installedItemFlag) . "',
+												'" . Eve::VarPrepForStore($outputFlag) . "' ,
+                                                '" . Eve::VarPrepForStore($activityID) . "',
+                                                '" . Eve::VarPrepForStore($completedStatus) . "',
+												'" . Eve::VarPrepForStore($installTime) . "' ,
+                                                '" . Eve::VarPrepForStore($beginProductionTime) . "',
+                                                '" . Eve::VarPrepForStore($endProductionTime) . "',
+                                                '" . Eve::VarPrepForStore($pauseProductionTime) ."')";
+                            $dbconn->Execute($sql);
+                            if ($dbconn->ErrorNo() != 0) {
+                                Eve::SessionSetVar('errormsg', 'ERROR Failed to Add Job info ; ' . $dbconn->ErrorMsg());
+                                return false;
+                            }							
+						}
+						$result->Close();
+					$count = $count + 1;
+				}
+				return $count;
+			}
+		}
+	}
     /**
      * POSMGMT::posdetail()
      *
