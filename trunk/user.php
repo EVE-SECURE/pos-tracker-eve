@@ -25,7 +25,7 @@ if (!$userinfo) {
 
 $IS_IGB = $eve->IsMiniBrowser();
 
-if (!$userinfo['access']) {
+if (!$userinfo['access'] || in_array('-1', $access)) {
     $eve->SessionSetVar('errormsg', 'You don\'t have access to this tracker!');
     $eve->RedirectUrl('index.php');
 }
@@ -80,6 +80,8 @@ if ($action == 'updatecorpinfo') {
         $eve->RedirectUrl('user.php');
     }
 }
+
+$userinfo['access'] = explode('.',$userinfo['access']);
 
 $eveRender->Assign($userinfo);
 $eveRender->Assign('awaystatus', array( 2 => 'No', 1 => 'Yes'));
