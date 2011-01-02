@@ -47,16 +47,16 @@ $eve->SessionSetVar('userlogged', 1);
 
 $userinfo = $posmgmt->GetUserInfo();
 
-$access = $eve->SessionGetVar('access');
-$highly_trusted = $eve->SessionGetVar('highly_trusted');
 $eve_id = $eve->SessionGetVar('eve_id');
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-$eveRender->Assign('access', $access);
-$eveRender->Assign('highly_trusted', $highly_trusted);
 $eveRender->Assign('config', $config);
 
-if ($access >= 1) {
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
+if (in_array('1', $access) || in_array('5', $access)) {
     $pos_id = $eve->VarCleanFromInput('i');
     if (!empty($pos_id)) {
 
@@ -107,29 +107,71 @@ if ($access >= 1) {
         }
 
 				
-		if ($secret_pos == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
-			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $sec_owner_id) {
-				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $sec_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
-					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
-					$eve->RedirectUrl('index.php');
-					die();
-				}
-			}
-			else {
-				$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
-				$eve->RedirectUrl('index.php');
-				die();
-			}
-		}
+       if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
 		
-		if ($access == 1) { //View Only Access Check, should make sure they are ONLY looking at their own towers.
-			if ($eve_id == $owner_id || $eve_id == $secondary_owner_id) {
-			}
-			else {
+			$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+			$eve->RedirectUrl('index.php');
+			die();
+			
+		}
+		elseif (in_array('5', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
+		
+		//Admin or tower owner logged in so kill the checkers so show the tower
+		
+		}
+		elseif ($tower['secret_pos'] == 0) { //Not secret towers
+		
+			if ($tower['corp'] == $userinfo['corp']) { 
+				
+					if (!in_array('20', $access) && !in_array('21', $access) && !in_array('22', $access)) {
+			
 					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
 					$eve->RedirectUrl('index.php');
 					die();
+			
+					}
+				
 			}
+
+			else {
+			
+				if (!in_array('50', $access) && !in_array('51', $access) && !in_array('52', $access)) {
+			
+					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+					$eve->RedirectUrl('index.php');
+					die();
+			
+				}
+			
+			}
+		
+		}
+		elseif ($tower['secret_pos'] == 1) { //Secret towers
+		
+			if ($tower['corp'] == $userinfo['corp']) {
+				
+					if (!in_array('22', $access)) {
+			
+						$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+						$eve->RedirectUrl('index.php');
+						die();
+			
+					}
+				
+			}
+
+			else {
+			
+				if (!in_array('52', $access)) {
+			
+					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+					$eve->RedirectUrl('index.php');
+					die();
+			
+				}
+			
+			}
+		
 		}
 		
 		
