@@ -45,18 +45,17 @@ $eveRender->Assign('config', $config);
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
+$userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-$access = $eve->SessionGetVar('access');
-$highly_trusted = $eve->SessionGetVar('highly_trusted');
-$eve_id = $eve->SessionGetVar('eve_id');
 
-if ($access < 2) {
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
+if (!in_array('1', $access) && !in_array('5', $access)) {
     $eve->RedirectUrl('login.php');
 }
-
-$eveRender->Assign('access', $access);
-$eveRender->Assign('highly_trusted', $highly_trusted);
 
 $pos_id = $eve->VarCleanFromInput('i');
 // Dirty fix
@@ -249,21 +248,74 @@ if ($tower) {
 	$secret_pos         = $tower['secret_pos'];
 }
 
-if ($secret_pos == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
-			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $sec_owner_id) {
-				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $sec_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
+       if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+		
+			$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+			$eve->RedirectUrl('index.php');
+			die();
+			
+		}
+		elseif (in_array('5', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
+		
+		//Admin or tower owner logged in so kill the checkers so show the tower
+		
+		}
+		elseif ($tower['secret_pos'] == 0) { //Not secret towers
+		
+			if ($tower['corp'] == $userinfo['corp']) { 
+				
+					if (!in_array('21', $access) && !in_array('22', $access)) {
+			
 					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
 					$eve->RedirectUrl('index.php');
 					die();
-				}
+			
+					}
+				
 			}
+
 			else {
-				$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
-				$eve->RedirectUrl('index.php');
-				die();
+			
+				if (!in_array('51', $access) && !in_array('52', $access)) {
+			
+					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+					$eve->RedirectUrl('index.php');
+					die();
+			
+				}
+			
 			}
+		
+		}
+		elseif ($tower['secret_pos'] == 1) { //Secret towers
+		
+			if ($tower['corp'] == $userinfo['corp']) {
+				
+					if (!in_array('22', $access)) {
+			
+						$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+						$eve->RedirectUrl('index.php');
+						die();
+			
+					}
+				
+			}
+
+			else {
+			
+				if (!in_array('52', $access)) {
+			
+					$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
+					$eve->RedirectUrl('index.php');
+					die();
+			
+				}
+			
+			}
+		
 		}
 
+		
 //Begin Outpost association edit
 $outpost=$posmgmt->GetAllOutpost();
 $ouptost_list=array();
@@ -336,7 +388,6 @@ if ($row) {
 }
 
 $mods = $posmgmt->GetAllPosMods($pos_id);
-//echo '<pre>';print_r($row);echo '</pre>';exit;
 if ($mods) {
     $current_pg  = 0;
     $current_cpu = 0;
@@ -366,34 +417,7 @@ $hoursago = $posmgmt->hoursago($pos_id, 1);
 
 $optimal=$posmgmt->posoptimaluptime($tower);
 $optimalDiff=$posmgmt->getOptimalDifference($optimal, $tower);
-/*
-$volume_per_cycle  = 0;
-$volume_per_cycle += ($required_uranium * $pos_ura);
-$volume_per_cycle += ($required_oxygen * $pos_Oxy);
-$volume_per_cycle += ($required_mechanical_parts * $pos_Mec);
-$volume_per_cycle += ($required_coolant * $pos_Coo);
-$volume_per_cycle += ($required_robotics * $pos_Rob);
-$volume_per_cycle += ($required_isotope * $pos_Iso);
-$volume_per_cycle += round((($current_pg / $total_pg) * $required_ozone) * $pos_Ozo);
-$volume_per_cycle += round((($current_cpu / $total_cpu) * $required_heavy_water) * $pos_Hea);
-$volume_per_cycle += ($required_charters * $pos_Cha);
-$optimum_cycles    = round(($pos_capacity)/$volume_per_cycle);
-
-$tower['optimal_strontium_cycles'] = $optimal_strontium_cycles = floor($strontium_capacity/($required_strontium*3));
-$tower['optimum_uranium']          = $required_uranium * $optimum_cycles;
-$tower['optimum_oxygen']           = $required_oxygen * $optimum_cycles;
-$tower['optimum_mechanical_parts'] = $required_mechanical_parts * $optimum_cycles;
-$tower['optimum_coolant']          = $required_coolant * $optimum_cycles;
-$tower['optimum_robotics']         = $required_robotics * $optimum_cycles;
-$tower['optimum_isotope']          = $required_isotope * $optimum_cycles;
-$tower['optimum_ozone']            = round(($current_pg / $total_pg) * $required_ozone) * $optimum_cycles;
-$tower['optimum_heavy_water']      = round(($current_cpu / $total_cpu) * $required_heavy_water) * $optimum_cycles;
-$tower['optimum_charters']         = $required_charters * $optimum_cycles;
-$tower['optimum_strontium']        = $required_strontium*$optimal_strontium_cycles;
-
-*/
 		
-
 		$avail_uranium          = $current_uranium;
         $avail_oxygen           = $current_oxygen;
         $avail_mechanical_parts = $current_mechanical_parts;
