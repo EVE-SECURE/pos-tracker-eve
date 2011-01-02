@@ -18,7 +18,9 @@ $posmgmt = New POSMGMT();
 $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
+
 $access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
 $pos_to_refuel = $eve->VarCleanFromInput('pos_to_refuel');
@@ -244,14 +246,6 @@ if (!empty($pos_to_refuel)) {
 $towers = $posmgmt->GetAllPos2();
 $opttowers[0] = 'POS List';
 foreach ($towers as $tower) {
-
-    // Users with Access below 3 -> Only Display the Tower if they are Fuel Tech for it.
-    if ($access <= "2") {
-      if ($tower['owner_id'] != $userinfo['eve_id'] && $tower['secondary_owner_id'] != $userinfo['eve_id']) {
-        continue ;
-       }
-    }
-
     $opttowers[$tower['pos_id']] = $tower['MoonName'] . ' - ' . $tower['towerName'];
 }
 
