@@ -19,10 +19,12 @@ $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
+
 $access = $eve->SessionGetVar('access');
-$highly_trusted = $eve->SessionGetVar('highly_trusted');
+$access = explode('.',$access);
 $eveRender->Assign('access', $access);
-if ($access >= '2') {
+
+if (in_array('1', $access) || in_array('5', $access)) {
 
     $fuel_uranium           = 0;
     $fuel_oxygen            = 0;
@@ -39,8 +41,8 @@ if ($access >= '2') {
     $default_days           = 0;
 
     $args = array();
-    $filter             = $eve->VarCleanFromInput('filter');
-    $submit             = $eve->VarCleanFromInput('submit');
+    $filter  = $eve->VarCleanFromInput('filter');
+    $submit = $eve->VarCleanFromInput('submit');
     $use_current_levels = $eve->VarCleanFromInput('use_current_levels');
 	$display_optimal	= $eve->VarCleanFromInput('display_optimal');
 
@@ -149,21 +151,66 @@ if ($access >= '2') {
 
     foreach ($towers as $key => $tower) {
 
-        // Users with Access below 3 -> Only Display the Tower if they are Fuel Tech for it.
-        if ($access <= "2") {
-			if ($tower['owner_id'] != $userinfo['eve_id'] && $tower['secondary_owner_id'] != $userinfo['eve_id']) {
-            continue ;
+        //New Access System Complete for fuelbill.php
+        if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+		
+			continue ; //Hide the tower
+			
+		}
+		elseif (in_array('5', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
+		
+		//Admin or tower owner logged in so kill the checkers so show the tower
+		
+		}
+		elseif ($tower['secret_pos'] == 0) { //Not secret towers
+		
+			if ($tower['corp'] == $userinfo['corp']) { 
+				
+					if (!in_array('20', $access) && !in_array('21', $access) && !in_array('22', $access)) {
+			
+					continue ;
+			
+					}
+				
 			}
-        }
-		else {
-			if ($tower['secret_pos'] == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
-				if ($highly_trusted != 1 && $tower['owner_id'] != $userinfo['eve_id'] && $tower['secondary_owner_id'] != $userinfo['eve_id']) {
+
+			else {
+			
+				if (!in_array('50', $access) && !in_array('51', $access) && !in_array('52', $access)) {
+			
 				continue ;
+			
 				}
+			
 			}
+		
+		}
+		elseif ($tower['secret_pos'] == 1) { //Secret towers
+		
+			if ($tower['corp'] == $userinfo['corp']) {
+				
+					if (!in_array('22', $access)) {
+			
+					continue ;
+			
+					}
+				
+			}
+
+			else {
+			
+				if (!in_array('52', $access)) {
+			
+				continue ;
+			
+				}
+			
+			}
+		
 		}
 		
-	
+
+		
         $required_H_isotope  = 0;
         $required_N_isotope  = 0;
         $required_O_isotope  = 0;
@@ -272,8 +319,4 @@ if ($access >= '2') {
   $eve->RedirectUrl('track.php');
 
 }
-
-
-
-
 ?>
