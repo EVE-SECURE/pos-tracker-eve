@@ -97,6 +97,10 @@ $eveRender->Assign('access', $access);
 		'isotope'=>$row['result_optimal']['optimum_isotope']-$row['isotope'],
 		'ozone'=>$row['result_optimal']['optimum_ozone']-$row['ozone'],
 		'heavy_water'=>$row['result_optimal']['optimum_heavy_water']-$row['heavy_water']);
+		
+		if($row['pos_status'] >=2)
+		{
+		
 		if($characterInfo['away']!=1 && isset($characterInfo['email']))
 		{
 			if($row['result_online']<$config['minimal_fuel'])
@@ -125,6 +129,9 @@ $eveRender->Assign('access', $access);
 				$mail->criticalpossalert($director['email'], $director['name'], $characterInfo['name'], $row, $row3, $diff);
 			}
 		}
+		}
+		
+		
     }
 
 ?>
