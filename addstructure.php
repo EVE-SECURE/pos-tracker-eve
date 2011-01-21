@@ -16,17 +16,18 @@ $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 
-$access = $eve->SessionGetVar('access');
-
-if ($access < 2) {
-    $eve->RedirectUrl('login.php');
-}
-
 $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo',    $userinfo);
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
+
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
 $eveRender->Assign('access', $access);
+
+if ((!in_array('1', $access) && !in_array('83', $access)) && !in_array('5', $access)) {
+    $eve->RedirectUrl('login.php');
+}
 
 $pos_id = $eve->VarCleanFromInput('i');
 if (empty($pos_id)) {

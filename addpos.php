@@ -28,11 +28,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-
-if ((in_array('1', $access) && in_array('83', $access)) || in_array('5', $access)) {
-
-} else {
-    $eve->SessionSetVar('errormsg', 'Access Denied - Please login!');
+if ((!in_array('1', $access) && !in_array('83', $access)) && !in_array('5', $access)) {
     $eve->RedirectUrl('login.php');
 }
 
