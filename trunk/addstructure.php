@@ -25,8 +25,8 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if ((!in_array('1', $access) && !in_array('83', $access)) && !in_array('5', $access)) {
-    $eve->RedirectUrl('login.php');
+if (!in_array('5', $access) && !in_array('83', $access)) {
+		$eve->RedirectUrl('track.php');
 }
 
 $pos_id = $eve->VarCleanFromInput('i');

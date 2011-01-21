@@ -17,12 +17,13 @@ $posmgmt = New POSMGMT();
 $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
+
 $access = $eve->SessionGetVar('access');
-if ( $access >= 2 ) {
-	$eveRender->Assign('access', $access);
-} else {
-    $eve->SessionSetVar('errormsg', 'Access Denied - Please login!');
-    $eve->RedirectUrl('login.php');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
+if (!in_array('5', $access) && !in_array('83', $access)) {
+		$eve->RedirectUrl('track.php');
 }
 
 $pos_id = $eve->VarCleanFromInput('i');
@@ -62,20 +63,15 @@ if (!$pos) {
 $action = $eve->VarCleanFromInput('action');
 
 if ($action == 'deletepos') {
-    if ($access <= 2) {
-	if ($access == 2 && ($pos['owner_id'] == $userinfo['eve_id'] || $pos['secondary_owner_id'] == $userinfo['eve_id'])) {
-		if ($posmgmt->DeletePOS($pos_id)) {
+		if (in_array('5', $access) || (in_array('83', $access) && ($pos['owner_id'] == $userinfo['eve_id'] || $pos['secondary_owner_id'] == $userinfo['eve_id']))) {
+			if ($posmgmt->DeletePOS($pos_id)) {
 	        	$eve->SessionSetVar('statusmsg', 'POS deleted!');
 		        $eve->RedirectUrl('track.php');
-		}
-	} else {
-	        $eve->SessionSetVar('statusmsg', 'ERROR - You are not allowed to delete this POS');
+			}
+		} else {
+	    $eve->SessionSetVar('statusmsg', 'ERROR - You are not allowed to delete this POS');
 		$eve->RedirectUrl('track.php');
-	}
-    } elseif ($posmgmt->DeletePOS($pos_id)) {
-        $eve->SessionSetVar('statusmsg', 'POS deleted!');
-        $eve->RedirectUrl('track.php');
-    }
+		}
 }
 
 $eveRender->Assign($pos);
