@@ -23,10 +23,14 @@ $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo',    $userinfo);
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-$access = $eve->SessionGetVar('access');
 
-if ( $access >= 2 ) {
-	$eveRender->Assign('access', $access);
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
+
+if ((in_array('1', $access) && in_array('83', $access)) || in_array('5', $access)) {
+
 } else {
     $eve->SessionSetVar('errormsg', 'Access Denied - Please login!');
     $eve->RedirectUrl('login.php');
