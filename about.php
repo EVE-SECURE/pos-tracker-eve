@@ -7,22 +7,20 @@ EveDBInit();
 include_once 'includes/eveclass.php';
 include_once 'includes/class.pos.php';
 include_once 'includes/eveRender.class.php';
+include_once 'version.php';
+
 $eveRender = New eveRender($config, $mod, false);
 $colors    = $eveRender->themeconfig;
 
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
-
 $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
 $eveRender->Assign('theme_id', $theme_id);
-$eveRender->Assign('access', $userinfo['access']);
+$eveRender->Assign('access', $access);
 $eveRender->Assign('config', $config);
-
-$version = '5.0.4 FGV';//$posmgmt->GetVersion();
-
-$eveRender->Assign('version', $version);
-
+$eveRender->Assign('version', VERSION);
 $eveRender->Display('about.tpl');
-
 ?>
