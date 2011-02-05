@@ -1,10 +1,11 @@
 <!--[include file='header.tpl']-->
 
-
   <h2>Administration</h2>
   <p class="mcenter">
+  <!--[if $installchecker]-->
+      <span style="color:red;font-weight:bold;">WARNING: install.php is still accessible. Please rename/remove install.php from the POS Tracker install directory.</span><br /><br />
+  <!--[/if]-->
     <span>
-    <!--[if $access]-->
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="#apiupdate" title="API Data Updates">API Data</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
@@ -16,7 +17,6 @@
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="admin.php?op=modules" title="Addons Management">Addons</a>
       &nbsp; &nbsp; |
-    <!--[/if]-->
       <br /><br />
     </span>
   </p>
@@ -76,7 +76,19 @@
         <br /><br />
         <a href="admin.php" title="Done">Done</a>
       </p>
-
+	
+	<!--[elseif $action eq 'updatejobs']-->
+      <p>
+      <!--[if $results]-->
+        Success<br />
+        <!--[$results]--><br />
+      <!--[else]-->
+        ERROR!!
+      <!--[/if]-->
+        <br /><br />
+        <a href="admin.php" title="Done">Done</a>
+      </p>
+	
     <!--[elseif $action eq 'getcharacters']-->
       <!--[foreach item='character' from=$characters]-->
       <!--[assign var='alliance' value=$character.alliance]-->
@@ -141,6 +153,11 @@
 	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatesovereignty" /><input type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
+	    <td>Industrial Jobs Update</td>
+	    <td>Meow</td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input type="submit" value="UPDATE NOW" /></form></td>
+	  </tr>
+	  <tr>
 	    <td>POS Update from API</td>
 	    <td><!--[$apitime]--></td>
 	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatedatafromapi" /><input type="submit" value="UPDATE NOW" /></form></td>
@@ -188,8 +205,8 @@
       </form>
      <br />
     </div>
-
-    <hr />
+	
+<hr />
     <h4 class="pageTitle"><a name="users"></a>Registered Users</h4>
     <div class="mcenter">
       <form method="post" action="admin.php">
@@ -198,36 +215,123 @@
         <table class="mcenter tracktable" style="width:640px;">
         <thead>
           <tr>
-            <th class="mbground hcolor">Name</th>
-            <th class="mbground hcolor">Corp</th>
-            <th class="mbground hcolor">Email</th>
-            <th class="mbground hcolor">Away</th>
-            <th class="mbground hcolor">Access</th>
-            <th class="mbground hcolor">Highly Trusted</th>
-            <th class="mbground hcolor">Remove</th>
+			
+			<th class="mbground hcolor" width="25">Corp</th>
+			
+			<th class="mbground hcolor">Other Corps</th>
+			
+            <th class="mbground hcolor">Jobs</th>
+			
+			<th class="mbground hcolor">Production</th>
+			
+			<th class="mbground hcolor">ReStocker</th>
+			
+			<th class="mbground hcolor">Notes</th>
+			
+			<th class="mbground hcolor">Trusted</th>
+			
+			<th class="mbground hcolor">Enabled</th>
+			
+			<th class="mbground"><font color="red">Remove</font></th>
+			
             <!--<th>Modify</th>-->
           </tr>
         </thead>
-        <tbody>
-        <!--[foreach item='user' from=$users]-->
-          <tr>
-            <td><!--[$user.name]--></td>
-            <td><!--[$user.corp|default:"&nbsp;"]--></td>
-            <td><!--[$user.email|default:"&nbsp;"]--></td>
-            <td><!--[$awaylevel[$user.away]]--></td>
-            <td><!--[if $user.access < $userinfo.access]--><select name="useraccess[<!--[$user.id]-->]"><!--[html_options options=$optaccess selected=$user.access]--></select><!--[else]--><!--[$accesslevel[$user.access]]--><input type="hidden" name="access[<!--[$user.id]-->]" value="<!--[$user.access]-->" /><!--[/if]--></td>
-            <td><!--[if $userinfo.access > 4]--><select name="usertrust[<!--[$user.id]-->]"><!--[html_options options=$opttrust selected=$user.highly_trusted]--></select><!--[else]--><!--[$opttrust[$user.highly_trusted]]--><input type="hidden" name="usertrust[<!--[$user.id]-->]" value="<!--[$user.highly_trusted]-->" /><!--[/if]--></td>
-            <td><!--[if $user.access < $userinfo.access]--><input type="checkbox" name="userremove[<!--[$user.id]-->]" /><!--[else]-->&nbsp;<!--[/if]--></td>
-          </tr>
+		<tbody>
+		<!--[foreach item='user' from=$users]-->
+		<!--[assign var=meow value="."|explode:$user.access]-->
+		<!--[if $user.name != "Admin"]-->
+		<input type="hidden" name="UserList[<!--[$user.id]-->]" value="<!--[$user.id]-->">
+		<tr>
+		<td colspan="2"><b><!--[$user.name]--></b></td>
+		<td colspan="2">Corp: <!--[$user.corp|default:"&nbsp;"]--></td>
+		<td colspan="3">Email: <!--[$user.email|default:"&nbsp;"]--></td>
+		<td colspan="2">Email Status: <!--[$awaylevel[$user.away]]--></td>
+		</tr>
+		<tr>
+		<td>
+		<select name="CorpAccess[<!--[$user.id]-->]">
+		<option value="">No Access</option>
+		<option value="20" <!--[if (in_array('20', $meow))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="21" <!--[if (in_array('21', $meow))]-->selected="yes"<!--[/if]-->>Edit</option>
+		<option value="22" <!--[if (in_array('22', $meow))]-->selected="yes"<!--[/if]-->>Secret</option>
+		</select>
+		</td>
+		<td>
+		<select name="OtherCorpAccess[<!--[$user.id]-->]">
+		<option value="">No Access</option>
+		<option value="50" <!--[if (in_array('50', $meow))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="51" <!--[if (in_array('51', $meow))]-->selected="yes"<!--[/if]-->>Edit</option>
+		<option value="52" <!--[if (in_array('52', $meow))]-->selected="yes"<!--[/if]-->>Secret</option>
+		</select>
+		</td>
+		
+		<td>
+		<select name="JobAccess[<!--[$user.id]-->]">
+		<option value="">No Access</option>
+		<option value="40" <!--[if (in_array('40', $meow))]-->selected="yes"<!--[/if]-->>Current</option>
+		<option value="41" <!--[if (in_array('41', $meow))]-->selected="yes"<!--[/if]-->>Past</option>
+		<option value="45" <!--[if (in_array('45', $meow))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
+		</select>
+		</td>
+		
+		<td>
+		<select name="ProdAccess[<!--[$user.id]-->]">
+		<option value="">No Access</option>
+		<option value="42" <!--[if (in_array('42', $meow))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="43" <!--[if (in_array('43', $meow))]-->selected="yes"<!--[/if]-->>Edit</option>
+		<option value="44" <!--[if (in_array('44', $meow))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
+		</select>
+		</td>
+		
+		<td>
+		<select name="ReStockerAccess[<!--[$user.id]-->]">
+		<option value="">N/A</option>
+		</select>
+		</td>
+		
+		<td>
+		<select name="NotesAccess[<!--[$user.id]-->]">
+		<option value="">N/A</option>
+		</select>
+		</td>
+		
+		<td><input type="checkbox" name="TrustAccess[<!--[$user.id]-->]" value="83" <!--[if (in_array('83', $meow))]-->checked<!--[/if]-->></td>
+		<td><input type="checkbox" name="UserEnabled[<!--[$user.id]-->]" value="1" <!--[if (in_array('1', $meow))]-->checked<!--[/if]-->></td>
+		<td><input type="checkbox" name="userremove[<!--[$user.id]-->]" /></td>
+		
+		</tr>
+        <!--[/if]-->
         <!--[/foreach]-->
           <tr>
-            <td colspan="7"><input type="submit" value="Update/Remove" /></td>
+            <td colspan="9"><input type="submit" value="Update/Remove" /></td>
           </tr>
         </tbody>
         </table>
       </div>
       </form>
-	  Highly Trusted requires the person to be View-All Manager or Director in order to function. Secret POS will show to Fuel Techs if they are actually assigned to it and do not need Highly Trusted selected.
+	<hr />
+    <h4 class="pageTitle"><a name="users"></a>Version Checker</h4>
+    <div class="mcenter">
+	<form method="post" action="admin.php">
+      <div>
+        <input type="hidden" name="action" value="versioncheck" />
+		<table class="mcenter tracktable" style="width:640px;">
+        <thead>
+          <tr>
+		  <th class="mbground hcolor">Installed Version</th>
+          <th class="mbground hcolor">Latest Version</th>
+		<tbody>
+		  <tr>
+		  <td width="25%"><!--[$version]--></td><td width="75%"><!--[$vcheck]--></td>
+		  </tr>
+		  <tr>
+		  <td colspan="2"><input type="submit" value="Check Version" /></td>
+		  </tr>
+		  </tbody>
+        </table>
+	  </div>
+    </form>
     </div>
   <!--[/if]-->
 
