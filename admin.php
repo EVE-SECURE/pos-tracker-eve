@@ -39,10 +39,12 @@ EveDBInit();
 include_once 'includes/eveclass.php';
 include_once 'includes/class.pos.php';
 include_once 'includes/eveRender.class.php';
+include_once 'version.php';
 
 $eveRender = New eveRender($config, $mod, false);
 $colors    = $eveRender->themeconfig;
 $eveRender->Assign('config', $config);
+$eveRender->Assign('version', VERSION);
 
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
@@ -50,13 +52,19 @@ $posmgmt = New POSMGMT();
 $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-if (!$userinfo || $userinfo['access'] < 3) {
-    $eve->SessionSetVar('errormsg', 'Admin Access Level Required - Please login!');
-    $eve->RedirectUrl('login.php');
-}
-$access = $userinfo['access'];
 
-$eveRender->Assign('access', $access);
+if (!$userinfo || $userinfo['access'] != 5) {
+		$eve->SessionSetVar('errormsg', 'Admin Access Level Required - Please login!');
+		$eve->RedirectUrl('login.php');
+	}
+	else {
+	$access = explode('.',$userinfo['access']);
+	$eveRender->Assign('access', $access);
+}
+
+$file_check = 'install.php';
+$installchecker = ((file_exists($file_check)) ? true : false);
+$eveRender->Assign('installchecker',    $installchecker);
 
 $op = $eve->VarCleanFromInput('op');
 
@@ -89,7 +97,6 @@ if ($op == 'modules') {
     } else {
 
         $modlist = $posmgmt->GetModList();
-        //echo '<pre>';print_r($GLOBALS);echo '</pre>';exit;
 
         $eveRender->Assign('mods', $modlist);
 
@@ -115,6 +122,14 @@ if ($action == 'updatealliance') {
 
     $eveRender->Assign('action',   $action);
     $eveRender->Assign('sovcount', $sovcount);
+
+    $eveRender->Display('admin.tpl');
+    exit;
+} elseif ($action == 'updatejobs') {
+    $sovcount = $posmgmt->API_UpdateIndustryJobs();
+
+    $eveRender->Assign('action',   $action);
+    $eveRender->Assign('results', $results);
 
     $eveRender->Display('admin.tpl');
     exit;
@@ -204,10 +219,14 @@ if ($action == 'updatealliance') {
     $eveRender->Display('admin.tpl');
     exit;
 } elseif ($action == 'updateusers') {
-    $usertrust  = $eve->VarCleanFromInput('usertrust');
-    $useraccess = $eve->VarCleanFromInput('useraccess');
     $userremove = $eve->VarCleanFromInput('userremove');
-//echo '<pre>';print_r($userremove);echo '</pre>';exit;
+	$UserList = $eve->VarCleanFromInput('UserList');
+	$UserEnabled = $eve->VarCleanFromInput('UserEnabled');
+	$CorpAccess = $eve->VarCleanFromInput('CorpAccess');
+	$OtherCorpAccess = $eve->VarCleanFromInput('OtherCorpAccess');
+	$JobAccess = $eve->VarCleanFromInput('JobAccess');
+	$ProdAccess = $eve->VarCleanFromInput('ProdAccess');
+	$TrustAccess = $eve->VarCleanFromInput('TrustAccess');
 
     foreach ($userremove as $id => $remove) {
         if (!$posmgmt->DeleteUser($id)) {
@@ -217,15 +236,20 @@ if ($action == 'updatealliance') {
         unset($usertrust[$id]);
     }
 
-    foreach ($useraccess as $id => $uaccess) {
-        $uinfo = array('id' => $id, 'access' => $uaccess, 'highly_trusted' => $usertrust[$id]);
+    foreach ($UserList as $id => $uaccess) {
+
+		$AccessArray = array($UserEnabled[$id], $CorpAccess[$id], $OtherCorpAccess[$id], $JobAccess[$id], $ProdAccess[$id], $TrustAccess[$id]);
+		$uaccess = implode(".", $AccessArray);
+
+        $uinfo = array('id' => $id, 'access' => $uaccess);
 
         if (!$posmgmt->UpdateUserAccess($uinfo)) {
             $eve->RedirectUrl('admin.php');
         }
     }
-
+	
     $eve->SessionSetVar('statusmsg', 'Information Saved!');
+	
     $eve->RedirectUrl('admin.php');
 
 } elseif ($action == 'moons') {
@@ -242,49 +266,17 @@ if ($action == 'updatealliance') {
 
     $regionID = $eve->VarCleanFromInput('regionID');
 
-/*
-    if (!empty($regionID)) {
-
-        $dbconn =& DBGetConn(true);
-        switch($regions[$regionID]['installed']) {
-            case 0:
-                $sql = file_get_contents('install/'.$regions[$regionID]['file_name']);
-        $sql = preg_replace('/pos2_/', TBL_PREFIX, $sql);
-                $sql = explode(';', $sql);
-                foreach ($sql as $query) {
-                    $query = trim($query);
-                    if (empty($query)) { continue; }
-                    $query = str_replace("%prefix%", TBL_PREFIX, $query); // Need a more dynamic way.
-                    $dbconn->Execute($query);
-
-                    if ($dbconn->ErrorNo() != 0) {
-                        $eve->SessionSetVar('errormsg', $dbconn->ErrorMsg() . '<br />' . $query);
-                        $eveRender->RedirectUrl('admin.php?action=moons');
-                    }
-                }
-                $sql = "UPDATE ".TBL_PREFIX."moonsinstalled SET installed = '1' WHERE regionID = '".$eve->VarPrepForStore($regionID)."'";
-                $dbconn->Execute($sql);
-                $eve->SessionSetVar('statusmsg', $regions[$regionID]['regionName'].' Installed!');
-                //$regions[$regionID]['installed'] = 1;
-                break;
-            case 1:
-                $sql = "DELETE FROM ".TBL_PREFIX."evemoons WHERE regionID = '".$eve->VarPrepForStore($regionID)."'";
-                $dbconn->Execute($sql);
-                $sql = "UPDATE ".TBL_PREFIX."moonsinstalled SET installed = '0' WHERE regionID = '".$eve->VarPrepForStore($regionID)."'";
-                $dbconn->Execute($sql);
-                $eve->SessionSetVar('statusmsg', $regions[$regionID]['regionName'].' Uninstalled!');
-                //$regions[$regionID]['installed'] = 0;
-                break;
-        }
-        $eve->RedirectUrl('admin.php?action=moons');
-    }*/
-
-    //$eveRender->Assign('step',    $step);
     $eveRender->Assign('regions', $regions);
     $eveRender->Display('admin_moons.tpl');
     exit;
 
+} elseif ($action == 'versioncheck') {
+
+$vcheck = isUpToDate();
+$eveRender->Assign('vcheck', $vcheck);
+
 }
+
 //Begin API KEy Mangager
 $keys=$posmgmt->API_GetKeyInfo();
 foreach($keys as $index => $key) {
@@ -292,40 +284,12 @@ $shortkey     = substr($key['apikey'], 0, 5);
 $keys[$index]['shortkey']=$shortkey;
 }
 $eveRender->Assign('keys',     $keys);
-//echo"<pre>";print_r($keys);echo"</pre>";exit;
-
 
 $users = $posmgmt->GetAllUsers();
 
-for ($x = 0; $x < $access; $x++) {
-  switch ($x) {
-	case 0:
-		$optaccess[] = 'No Access';
-	break;
-	case 1:
-		$optaccess[] = 'View Only';
-	break;
-	case 2:
-		$optaccess[] = 'Fuel Tech';
-	break;
-	case 3:
-		$optaccess[] = 'View-All Manager';
-	break;
-	case 4:
-		$optaccess[] = 'Director';
-	break;
-	case 5:
-		$optaccess[] = 'Admin';
-	break;
-  }
-}
-//echo '<pre>';print_r($userinfo);echo '</pre>';exit;
 $eveRender->Assign('users',     $users);
 $eveRender->Assign('userinfo',  $userinfo);
-$eveRender->Assign('optaccess', $optaccess);
 $eveRender->Assign('awaylevel',  array(0 => 'Default', 1 => 'Away', 2 => 'Receive eMails'));
-$eveRender->Assign('accesslevel',  array(0 => 'No Access', 1 => 'View Only', 2 => 'Fuel Tech', 3 => 'View-All Manager', 4 => 'Director', 5 => 'Admin'));
-$eveRender->Assign('opttrust',  array(0 => 'No', 1 => 'Yes'));
 
 $time = time();
 $pulltime     = $posmgmt->GetLastSystemUpdate();
@@ -645,5 +609,17 @@ function modify_file($src, $dest, $reg_src, $reg_rep)
     fclose($out_original);
     // Success!
     return "$src updated with $lines lines of changes".((!empty($dest)) ? ", backup is called $dest" : "");
+}
+
+function isUpToDate()
+{
+    $latestVersion=trim(file_get_contents(REMOTE_VERSION));
+	if (version_compare(VERSION, $latestVersion, 'ge') == 1) {
+	return "$latestVersion - Your installation is up to date!";
+	}
+	else {
+	return "$latestVersion - <font color='red'>Your installation is not up to date!</font><BR>Get the latest version here: <a href='http://www.iceneko.com/eve/index.html' target='_blank'>Click Me!</a>";
+	}
+	
 }
 ?>
