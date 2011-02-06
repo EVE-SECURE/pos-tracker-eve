@@ -16,12 +16,14 @@ $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
 $eve->SessionSetVar('userlogged', 1);
-$access = $eve->SessionGetVar('access');
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
+
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if ($access >= '3') {
+if (in_array('1', $access) || in_array('5', $access)) {
 
 	$outposts = $posmgmt->GetAllOutpost();
 
