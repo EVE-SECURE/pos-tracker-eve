@@ -154,7 +154,7 @@
 	  </tr>
 	  <tr>
 	    <td>Industrial Jobs Update</td>
-	    <td>Meow</td>
+	    <td>auser</td>
 	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
@@ -237,50 +237,53 @@
             <!--<th>Modify</th>-->
           </tr>
         </thead>
-		<tbody>
+		
 		<!--[foreach item='user' from=$users]-->
-		<!--[assign var=meow value="."|explode:$user.access]-->
+		<!--[assign var=auser value="."|explode:$user.access]-->
 		<!--[if $user.name != "Admin"]-->
 		<input type="hidden" name="UserList[<!--[$user.id]-->]" value="<!--[$user.id]-->">
+		<tbody class="auser">
 		<tr>
 		<td colspan="2"><b><!--[$user.name]--></b></td>
 		<td colspan="2">Corp: <!--[$user.corp|default:"&nbsp;"]--></td>
 		<td colspan="3">Email: <!--[$user.email|default:"&nbsp;"]--></td>
 		<td colspan="2">Email Status: <!--[$awaylevel[$user.away]]--></td>
 		</tr>
+		
 		<tr>
 		<td>
 		<select name="CorpAccess[<!--[$user.id]-->]">
 		<option value="">No Access</option>
-		<option value="20" <!--[if (in_array('20', $meow))]-->selected="yes"<!--[/if]-->>View</option>
-		<option value="21" <!--[if (in_array('21', $meow))]-->selected="yes"<!--[/if]-->>Edit</option>
-		<option value="22" <!--[if (in_array('22', $meow))]-->selected="yes"<!--[/if]-->>Secret</option>
+		<option value="20" <!--[if (in_array('20', $auser))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="21" <!--[if (in_array('21', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
+		<option value="22" <!--[if (in_array('22', $auser))]-->selected="yes"<!--[/if]-->>Secret</option>
 		</select>
 		</td>
+		
 		<td>
 		<select name="OtherCorpAccess[<!--[$user.id]-->]">
 		<option value="">No Access</option>
-		<option value="50" <!--[if (in_array('50', $meow))]-->selected="yes"<!--[/if]-->>View</option>
-		<option value="51" <!--[if (in_array('51', $meow))]-->selected="yes"<!--[/if]-->>Edit</option>
-		<option value="52" <!--[if (in_array('52', $meow))]-->selected="yes"<!--[/if]-->>Secret</option>
+		<option value="50" <!--[if (in_array('50', $auser))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="51" <!--[if (in_array('51', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
+		<option value="52" <!--[if (in_array('52', $auser))]-->selected="yes"<!--[/if]-->>Secret</option>
 		</select>
 		</td>
 		
 		<td>
 		<select name="JobAccess[<!--[$user.id]-->]">
 		<option value="">No Access</option>
-		<option value="40" <!--[if (in_array('40', $meow))]-->selected="yes"<!--[/if]-->>Current</option>
-		<option value="41" <!--[if (in_array('41', $meow))]-->selected="yes"<!--[/if]-->>Past</option>
-		<option value="45" <!--[if (in_array('45', $meow))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
+		<option value="40" <!--[if (in_array('40', $auser))]-->selected="yes"<!--[/if]-->>Current</option>
+		<option value="41" <!--[if (in_array('41', $auser))]-->selected="yes"<!--[/if]-->>Past</option>
+		<option value="45" <!--[if (in_array('45', $auser))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
 		</select>
 		</td>
 		
 		<td>
 		<select name="ProdAccess[<!--[$user.id]-->]">
 		<option value="">No Access</option>
-		<option value="42" <!--[if (in_array('42', $meow))]-->selected="yes"<!--[/if]-->>View</option>
-		<option value="43" <!--[if (in_array('43', $meow))]-->selected="yes"<!--[/if]-->>Edit</option>
-		<option value="44" <!--[if (in_array('44', $meow))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
+		<option value="42" <!--[if (in_array('42', $auser))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="43" <!--[if (in_array('43', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
+		<option value="44" <!--[if (in_array('44', $auser))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
 		</select>
 		</td>
 		
@@ -296,16 +299,17 @@
 		</select>
 		</td>
 		
-		<td><input type="checkbox" name="TrustAccess[<!--[$user.id]-->]" value="83" <!--[if (in_array('83', $meow))]-->checked<!--[/if]-->></td>
-		<td><input type="checkbox" name="UserEnabled[<!--[$user.id]-->]" value="1" <!--[if (in_array('1', $meow))]-->checked<!--[/if]-->></td>
+		<td><input type="checkbox" name="TrustAccess[<!--[$user.id]-->]" value="83" <!--[if (in_array('83', $auser))]-->checked<!--[/if]-->></td>
+		<td><input type="checkbox" name="UserEnabled[<!--[$user.id]-->]" value="1" <!--[if (in_array('1', $auser))]-->checked<!--[/if]-->></td>
 		<td><input type="checkbox" name="userremove[<!--[$user.id]-->]" /></td>
 		
 		</tr>
+		</tbody>
         <!--[/if]-->
         <!--[/foreach]-->
-          <tr>
-            <td colspan="9"><input type="submit" value="Update/Remove" /></td>
-          </tr>
+		
+		<tbody>
+          <tr><td colspan="9"><input type="submit" value="Update/Remove" /></td></tr>
         </tbody>
         </table>
       </div>
