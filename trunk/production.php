@@ -18,14 +18,18 @@ $posmgmt = New POSMGMT();
 
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-$access = $eve->SessionGetVar('access');
-$highly_trusted = $eve->SessionGetVar('highly_trusted');
+$eve_id = $eve->SessionGetVar('eve_id');
+
 $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
-$eveRender->Assign('highly_trusted', $highly_trusted);
+
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
 
 $user_id = $_SESSION['delsid'];
-if ($access >= 2) {
+if (in_array('1', $access) || in_array('5', $access)) {
 
     $action = $eve->VarCleanFromInput('action');
 
@@ -59,9 +63,6 @@ if ($access >= 2) {
     $filter_systemID = $eve->VarCleanFromInput('filter_systemID');
     $filter_pos_id   = $eve->VarCleanFromInput('filter_pos_id');
 
-    if ($access <= 2) {
-	$args['ownerID'] = $userinfo['eve_id'];
-    }
     if ($filter_regionID) {
         $eveRender->Assign('filter_regionID', $filter_regionID);
         $args['regionID'] = $filter_regionID;
@@ -167,7 +168,8 @@ function GetallProd($args)
     foreach($towers as $tower) {
         $pos_id = $tower['pos_id'];
 		$access = $eve->SessionGetVar('access');
-		$highly_trusted = $eve->SessionGetVar('highly_trusted');
+		$access = explode('.',$access);
+		$userinfo = $posmgmt->GetUserInfo();
 		$owner_id				 = $tower['owner_id'];
 		$sec_owner_id			 = $tower['secondary_owner_id'];
 		
@@ -176,26 +178,123 @@ function GetallProd($args)
 
         $sec_owner_info=$posmgmt->GetUserInfofromID($tower['secondary_owner_id']);
         $tower['secondary_owner_name']=$sec_owner_info['name'];
-		$secret_pos         = $tower['secret_pos'];
 		
-		if ($secret_pos == 1 && $access != 5) { //Secret POS Access Check. Will go through if highly trusted or are a fuel tech of the tower.
-			if ($highly_trusted == 1 || $eve_id == $owner_id || $eve_id == $sec_owner_id) {
-				if ($access <= 2 && $eve_id != $owner_id && $eve_id != $sec_owner_id) { //Must be at View-All Manager or higher access to see secret POS.
-					continue;
-				}
+        if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+		
+			continue ; //Hide the tower
+			
+		}
+		elseif (in_array('5', $access))  {
+		
+		//Admin  
+		
+		}
+		elseif ($tower['secret_pos'] == 0) { //Not secret towers
+
+			if ($tower['corp'] == $userinfo['corp']) { 
+				
+					if (!in_array('20', $access) && !in_array('21', $access) && !in_array('22', $access) && !in_array('42', $access) && !in_array('43', $access) && !in_array('44', $access)) {
+			
+						continue ;
+					
+					}
+					elseif (in_array('42', $access) && ($tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+					
+					//Owner/Fuel Tech of the tower and allowed to see own production(42)
+					
+					}
+					elseif ((in_array('43', $access) || in_array('44', $access)) && (in_array('20', $access) || in_array('21', $access) || in_array('22', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+					
+					//Same corp and allowed to see corp production(43 or 44) or owner/fuel tech
+					
+					}
+					else {
+					
+						continue ; //Didn't match requirements. Don't show tower.
+					
+					}
+					
 			}
 			else {
-				echo $access;
-				continue;
+			
+					if (!in_array('50', $access) && !in_array('51', $access) && !in_array('52', $access) && !in_array('42', $access) && !in_array('44', $access)) {
+			
+						continue ;
+			
+					}
+					elseif (in_array('42', $access) && ($tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+					
+					//Owner/Fuel Tech of the tower and allowed to see own production(42)
+					
+					}
+					elseif (in_array('44', $access) && (in_array('50', $access) || in_array('51', $access) || in_array('52', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+				
+					//Not of same corp but allowed to see other corp's tower information(44)
+			
+					}
+					else {
+					
+						continue ; //Didn't match requirements. Don't show tower.
+					
+					}	
+					
 			}
 		}
-		
-		if ($access == 1) { //View Only Access Check, should make sure they are ONLY looking at their own towers.
-			if ($eve_id == $owner_id || $eve_id == $secondary_owner_id) {
+		elseif ($tower['secret_pos'] == 1) { //Secret towers
+
+			if ($tower['corp'] == $userinfo['corp']) { 
+				
+					if (!in_array('22', $access) && !in_array('42', $access) && !in_array('43', $access) && !in_array('44', $access)) {
+			
+						continue ;
+			
+					}
+					elseif (in_array('42', $access) && ($tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+					
+					//Owner/Fuel Tech of the tower and allowed to see own production(42)
+					
+					}
+					elseif ((in_array('43', $access) || in_array('44', $access)) && (in_array('22', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+					
+					//Same corp and allowed to see corp production(43 or 44) or owner/fuel tech
+					
+					}
+					else {
+					
+						continue ; //Didn't match requirements. Don't show tower.
+					
+					}
+					
 			}
 			else {
-					continue;
+			
+					if (!in_array('52', $access) && !in_array('42', $access) && !in_array('44', $access)) {
+			
+						continue ;
+			
+					}
+					elseif (in_array('42', $access) && ($tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+					
+					//Owner/Fuel Tech of the tower and allowed to see own production(42)
+					
+					}
+					elseif (in_array('44', $access) && (in_array('52', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id'])) {
+				
+					//Not of same corp but allowed to see other corp's tower information(44)
+			
+					}
+					else {
+					
+						continue ; //Didn't match requirements. Don't show tower.
+					
+					}	
+					
 			}
+		}
+		else {
+		
+		continue ; //Didn't match requirements. Don't show tower.
+		
 		}
 		
         if ($tower['moonID']) {
