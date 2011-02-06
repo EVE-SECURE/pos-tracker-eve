@@ -95,3 +95,7 @@ table {
 .collapse {
   border-collapse:collapse;
 }
+
+.auser:hover {
+   background-color: #2f314a;
+}
