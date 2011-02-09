@@ -126,7 +126,7 @@ if ($action == 'updatealliance') {
     $eveRender->Display('admin.tpl');
     exit;
 } elseif ($action == 'updatejobs') {
-    $sovcount = $posmgmt->API_UpdateIndustryJobs();
+    $results = $posmgmt->API_UpdateIndustryJobs();
 
     $eveRender->Assign('action',   $action);
     $eveRender->Assign('results', $results);
@@ -239,7 +239,7 @@ if ($action == 'updatealliance') {
     foreach ($UserList as $id => $uaccess) {
 
 		$AccessArray = array($UserEnabled[$id], $CorpAccess[$id], $OtherCorpAccess[$id], $JobAccess[$id], $ProdAccess[$id], $TrustAccess[$id]);
-		$uaccess = implode(".", $AccessArray);
+		$uaccess = implode(".",array_filter($AccessArray));
 
         $uinfo = array('id' => $id, 'access' => $uaccess);
 
@@ -294,24 +294,30 @@ $eveRender->Assign('awaylevel',  array(0 => 'Default', 1 => 'Away', 2 => 'Receiv
 $time = time();
 $pulltime     = $posmgmt->GetLastSystemUpdate();
 $pulltimeally = $posmgmt->GetLastAllianceUpdate();
+$pulljobtime = $posmgmt->GetLastJobUpdate();
 $pullapitimer = $posmgmt->GetLastAPITimer();
 $sovtime      = $posmgmt->get_formatted_timediff($pulltime, $now = false);
 $allytime     = $posmgmt->get_formatted_timediff($pulltimeally, $now = false);
+$jobtime     = $posmgmt->get_formatted_timediff($pulljobtime, $now = false);
 $apitime      = $posmgmt->get_formatted_timediff($pullapitimer, $now = false);
 
 $sovtimedifference  = $time - $pulltime;
 $allytimedifference = $time - $pulltimeally;
+$jobtimedifference = $time - $pulljobtime;
 $apitimedifference  = $time - $pullapitimer;
 
 $allyupdate = (($allytimedifference >= INT_DAY) ? true : false);
 $systupdate = (($sovtimedifference  >= INT_DAY) ? true : false);
+$jobupdate = (($jobtimedifference  >= INT_DAY) ? true : false);
 $apiupdate  = (($apitimedifference  >= INT_DAY) ? true : false);
 
 $eveRender->Assign('sovtime',    $sovtime);
 $eveRender->Assign('allytime',   $allytime);
+$eveRender->Assign('jobtime',    $jobtime);
 $eveRender->Assign('apitime',    $apitime);
 $eveRender->Assign('allyupdate', $allyupdate);
 $eveRender->Assign('systupdate', $systupdate);
+$eveRender->Assign('jobupdate', $jobupdate);
 $eveRender->Assign('apiupdate',  $apiupdate);
 
 $eveRender->Display('admin.tpl');
