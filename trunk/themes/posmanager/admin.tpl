@@ -81,7 +81,7 @@
       <p>
       <!--[if $results]-->
         Success<br />
-        <!--[$results]--><br />
+        Jobs Checked and Updated: <!--[$results]--><br />
       <!--[else]-->
         ERROR!!
       <!--[/if]-->
@@ -153,8 +153,8 @@
 	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatesovereignty" /><input type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
-	    <td>Industrial Jobs Update</td>
-	    <td>auser</td>
+	    <td>Industrial Jobs from API</td>
+	    <td><!--[$jobtime]--></td>
 	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
@@ -197,7 +197,7 @@
         </table>
       </div>
       </form>
-     <h4 class="pageTitle">Add an API Key</h4>
+     <h4 class="pageTitle">Add an <a href="http://www.eveonline.com/api/default.asp" target="_blank">API Key</a></h4>
       <form method="post" action="admin.php?action=getcharacters">
       <div>
         USERID: <input type="text" name="userid" size="10" /> APIKEY: <input type="text" name="apikey" size="35" /> <input type="submit" value="Select Character" />
@@ -216,7 +216,7 @@
         <thead>
           <tr>
 			
-			<th class="mbground hcolor" width="25">Corp</th>
+			<th class="mbground hcolor">Corp</th>
 			
 			<th class="mbground hcolor">Other Corps</th>
 			
@@ -274,16 +274,16 @@
 		<option value="">No Access</option>
 		<option value="40" <!--[if (in_array('40', $auser))]-->selected="yes"<!--[/if]-->>Current</option>
 		<option value="41" <!--[if (in_array('41', $auser))]-->selected="yes"<!--[/if]-->>Past</option>
-		<option value="45" <!--[if (in_array('45', $auser))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
+		<option value="45" <!--[if (in_array('45', $auser))]-->selected="yes"<!--[/if]-->>All Corps</option>
 		</select>
 		</td>
 		
 		<td>
 		<select name="ProdAccess[<!--[$user.id]-->]">
 		<option value="">No Access</option>
-		<option value="42" <!--[if (in_array('42', $auser))]-->selected="yes"<!--[/if]-->>View</option>
-		<option value="43" <!--[if (in_array('43', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
-		<option value="44" <!--[if (in_array('44', $auser))]-->selected="yes"<!--[/if]-->>Limit Breaker</option>
+		<option value="42" <!--[if (in_array('42', $auser))]-->selected="yes"<!--[/if]-->>Own</option>
+		<option value="43" <!--[if (in_array('43', $auser))]-->selected="yes"<!--[/if]-->>Same Corp</option>
+		<option value="44" <!--[if (in_array('44', $auser))]-->selected="yes"<!--[/if]-->>All Corps</option>
 		</select>
 		</td>
 		
