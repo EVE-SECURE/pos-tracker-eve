@@ -25,7 +25,7 @@
 	  <a href="outpost.php" title="Outpost Tracking">Outpost Track</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
 	
-	<!--[if (in_array('42', $access)) || (in_array('43', $access)) || (in_array('44', $access)) || (in_array('45', $access)) || (in_array('46', $access)) || (in_array('5', $access))]-->
+	<!--[if (in_array('42', $access)) || (in_array('43', $access)) || (in_array('44', $access)) || (in_array('5', $access))]-->
       <a href="production.php" title="Production">Production</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
     <!--[/if]-->  
