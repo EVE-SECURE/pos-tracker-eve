@@ -1,11 +1,10 @@
-<!--[* $Id: production.tpl 223 2008-12-26 17:40:57Z eveoneway $ *]-->
 <!--[include file='header.tpl']-->
 
   <h3 class="pageTitle">Production Overview</h3>
   <form class="mcenter" method="post" action="production.php">
   <p class="mcenter">
     <!--[html_options name='filter_regionID' options=$optregions selected=$filter_regionID]-->
-    <!--[if $access > 2 ]--><!--[html_options name='filter_systemID' options=$optsystems selected=$filter_systemID]--><!--[/if]-->
+    <!--[html_options name='filter_systemID' options=$optsystems selected=$filter_systemID]-->
     <!--[html_options name='filter_pos_id'   options=$optposids  selected=$filter_pos_id]-->
     <input type="submit" name="submit" value="Filter" /> - <a class="link" href="production.php" title="Clear Filter">Clear Filter</a>
   </p>
