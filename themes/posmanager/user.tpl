@@ -38,7 +38,7 @@
           <td><!--[html_options options=$themeset name='theme_id' selected=$theme_id]--></td>
         </tr>
         <tr class="txtcenter">
-          <td colspan="2"><input type="submit" value="Change Info" /></td>
+          <td colspan="2"><input type="submit" value="Update Profile" /></td>
         </tr>
       </tbody>
       </table>
