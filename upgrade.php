@@ -47,30 +47,24 @@ $eveRender->Assign('config', $config);
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
-$userinfo = $posmgmt->GetUserInfo();
+//$userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 
-if (!$userinfo || $userinfo['access'] < 5) {
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
+if (!in_array('5', $access)) {
     $eve->SessionSetVar('errormsg', 'User Not Logged In!');
     $eve->RedirectUrl('login.php');
 }
-$access = $userinfo['access'];
-
-$eveRender->Assign('access', $access);
 
 $upgradeList=array(
-134=>'3.0.0.134 Black Rise',
-176=>'3.0.0.174 Beta 3',
-179=>'Experimental - 3.0.0.178 Beta 3 Material ID Fix',
-222=>'3.0.0.222 Beta 5',
-246=>'3.0.0.268',
-272=>'Alchemy Update - Use at your own risk',
-292=>'Dominion Sovereignty and Manual Powergrid and CPU - 3.0.0.292 RC 4',
-305=>'Material Volume Fix - 3.0.0.305 RC 5',
 333=>'FG Update for Tyrannis',
-501=>'Material Volume Fix - v5.0.1',
-502=>'Theme Install - v5.0.2'
+501=>'v5.0.1 - Material Volume Fix',
+502=>'v5.0.2 - Theme Install',
+511=>'v5.1.1 - Incursion DB & Corp Jobs Install'
 );
 
 $eveRender->Assign('upgradeList', $upgradeList);
