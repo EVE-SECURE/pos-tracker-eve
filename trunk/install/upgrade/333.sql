@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `pos3_sovereignty_static`;
-CREATE TABLE IF NOT EXISTS `pos3_sovereignty_static` (
+DROP TABLE IF EXISTS `%prefix%sovereignty_static`;
+CREATE TABLE IF NOT EXISTS `%prefix%sovereignty_static` (
   `typeID` bigint(20) NOT NULL,
   `typeName` varchar(255) collate latin1_general_ci NOT NULL,
   `pos_race` tinyint(3) NOT NULL default '0',
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `pos3_sovereignty_static` (
   PRIMARY KEY  (`typeID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
-INSERT INTO `pos3_sovereignty_static` (`typeID`, `typeName`, `pos_race`, `pos_size`, `race_isotope`, `pg`, `cpu`, `fuel_hangar`, `strontium_hangar`, `isotopes`, `oxygen`, `mechanical_parts`, `coolant`, `robotics`, `uranium`, `ozone`, `heavy_water`, `strontium`) VALUES
+INSERT INTO `%prefix%sovereignty_static` (`typeID`, `typeName`, `pos_race`, `pos_size`, `race_isotope`, `pg`, `cpu`, `fuel_hangar`, `strontium_hangar`, `isotopes`, `oxygen`, `mechanical_parts`, `coolant`, `robotics`, `uranium`, `ozone`, `heavy_water`, `strontium`) VALUES
 (12235, 'Amarr Control Tower', 1, 3, 'Helium', 5000000, 5500, 110000, 50000, 338, 19, 4, 6, 1, 3, 112.50, 112.50, 300),
 (20059, 'Amarr Control Tower Medium', 1, 2, 'Helium', 2500000, 2750, 55000, 25000, 169, 10, 3, 3, 1, 2, 56.25, 56.25, 150),
 (20060, 'Amarr Control Tower Small', 1, 1, 'Helium', 1250000, 1375, 27500, 12500, 85, 6, 2, 2, 1, 1, 28.50, 28.50, 75),
