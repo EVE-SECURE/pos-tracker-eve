@@ -1,1 +1,1 @@
-ALTER TABLE `pos3_user` ADD `theme_id` TINYINT( 2 ) NOT NULL AFTER `highly_trusted` ;
+ALTER TABLE `%prefix%_user` ADD `theme_id` TINYINT( 2 ) NOT NULL AFTER `highly_trusted` ;
