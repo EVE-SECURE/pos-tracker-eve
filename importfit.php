@@ -16,14 +16,14 @@ $eveRender->Assign('config', $config);
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
-
 $access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
 
-if ($access < 1) {
+if (!in_array('1', $access) || !in_array('5', $access)) {
     $eve->RedirectUrl('login.php');
 }
 
-$eveRender->Assign('access', $access);
 if (empty($pos_id)) {
     $pos_id = $eve->VarCleanFromInput('pos_id');
 }
@@ -34,7 +34,7 @@ if (empty($pos_id)) {
 $tower['pos_id']=$pos_id;
 $action = $eve->VarCleanFromInput('action');
 
-if ($access < 3) {
+if (!in_array('1', $access) || !in_array('5', $access)) {
     $eve->RedirectUrl('track.php');
 }
 
