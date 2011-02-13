@@ -51,8 +51,6 @@
       <a href="register.php" title="Register">Register</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="about.php" title="About">About</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="about.php" title="Help">Help</a>
       &nbsp; &nbsp; |
     <!--[/if]-->
       <br /><br />
