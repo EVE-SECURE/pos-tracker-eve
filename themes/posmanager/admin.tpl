@@ -16,6 +16,8 @@
       <a href="#users" title="Users Management">Users</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="admin.php?op=modules" title="Addons Management">Addons</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+	  <a href="upgrade.php" title="DB Upgrades">DB Upgrades</a>
       &nbsp; &nbsp; |
       <br /><br />
     </span>

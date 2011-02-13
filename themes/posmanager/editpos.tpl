@@ -51,7 +51,7 @@
       <!--<td></td>-->
       <td class="txtleft mbground hcolor">Tower Name:</td>
       <td class="txtleft">
-	<!--[if $access >= 2 ]-->
+	<!--[if (in_array('1', $access) || in_array('5', $access)) ]-->
         	<input name="new_tower_name" type="text" value="<!--[$tower.towerName]-->" />
 	<!--[else]-->
 		<!--[$tower.towerName]-->
@@ -98,13 +98,13 @@
       <td class="txtleft mbground hcolor">Backup Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.secondary_owner_name]--></td>
     </tr>
-	<!--[if $access == 5 || $highly_trusted == 1]-->
+	<!--[if (in_array('5', $access))]-->
 	<tr>
       <td class="txtleft mbground hcolor">Secretive:</td>
 	  <td class="txtleft"><!--[if $tower.secret_pos]-->Yes<!--[else]-->No<!--[/if]--></td>
     </tr>
 	<!--[/if]-->
-	<!--[if $access == 5]-->
+	<!--[if (in_array('5', $access))]-->
 	<tr>
 	  <input type="hidden" name="new_secret" value="<!--[$tower.secret_pos]-->" />
       <td colspan="3" class="tracktable txtcenter"><input type="submit" name="action" value="Change POS Secretive Status" /></td>
@@ -377,6 +377,7 @@
 
 <!--[assign var='mods' value=$tower.mods]-->
 <div>
+<!--[if (in_array('5', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access)) ]-->
 <hr />
   <form method="post" action="addstructure.php">
   <div>
@@ -389,6 +390,7 @@
     <input type="submit" name="action" value="Import Structures" />
   </div>
   </form>
+<!--[/if]-->
 
 </div>
 <!--[if $mods]-->

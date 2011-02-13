@@ -10,10 +10,8 @@
   <p style="text-align:center;">
     <span class="mcolor">Days <input name="days_to_refuel" size="5" value="<!--[$days_to_refuel]-->" type="text" /></span>
     <!--[html_options name='regionID'           options=$optregions selected=$regionID]-->
-    <!--[if $access > 2 ]-->
 	<!--[html_options name='constellationID'    options=$optconstellations selected=$constellationID]-->
 	<!--[html_options name='systemID'           options=$optsystems selected=$systemID]-->
-    <!--[/if]-->
     <!--[html_options name='use_current_levels' options=$optlevels  selected=$use_current_levels]-->
 	<!--[html_options name='display_optimal' options=$disopt  selected=$display_optimal]-->
     <input type="submit" name="submit" value="Filter" /> - <a class="link" href="fuelbill.php" title="Clear Filter">Clear Filter</a>
