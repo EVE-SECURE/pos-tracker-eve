@@ -1,10 +1,27 @@
 <!--[include file='header.tpl']-->
 
-  <h2>Welcome to the POS Tracker</h2>
+  <h2>Welcome to the POS Tracker FGV</h2>
   <div class="mcenter txtleft">
     <h3>POS-Tracker Version: (<!--[$version]-->)</h3>
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br /><br />
+	<strong>Version 5.0.4 to 5.1.1 Beta 1 Changes:</strong>
+    <ul>
+	  <li>Complete re-write of the POS-Tracker's access system. Administrators/CEOs now have far greater control of what a user can and cannot do in the tracker.</li>
+	  <li>Corporation Jobs Added.</li>
+	  <li>Charters now have optimal correctly.</li>
+	  <li>Fixed Session Security Hole.</li>
+	  <li>Admin page now checks for install.php which should be removed/renamed for security reasons after installation is complete.</li>
+	  <li>Fixed Show Stront Timers from accidentally showing while sorting POS Track listing.</li>
+	  <li>Mailer updated to NOT email about towers in "Unanchored" or "Anchored" status. It will spam on all other statuses.</li>
+	  <li>Directions added for Updating Corp/Alliance on User Page. Page needs to be trusted otherwise corp gets set to null.</li>
+	  <li>Central Version File Added.</li>
+	  <li>Version check added on Admin Panel.</li>
+	  <li>Help page added which is accessable in the footer. Will be adding to this over time.</li>
+	  <li>Tracker now properly supports multiple corporations.</li>
+	  <li>Missing Session Variable Added. - Thx Salvoxia</li>
+	</ul>
+    <br />
 	<strong>Version 5.0.3 to 5.0.4 Changes:</strong>
     <ul>
       <li>Updated access for mailer. Due to added security changes, the mailer program lost access to check towers correctly in some cases.</li>
