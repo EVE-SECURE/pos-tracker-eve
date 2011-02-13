@@ -2,7 +2,7 @@
 <div class="mcenter">
     <div class="txtleft">
     <!--[if $step eq 1]-->
-      <strong><span>Thank you for choosing POS-Tracker 5.0.2. FG Version! Please fill the form to set the database information.</span></strong>
+      <strong><span>Thank you for choosing POS-Tracker FG Version! Please fill the form to set the database information.</span></strong>
       <ul>
         <li>Current PHP version: <!--[$phpversion]--> (Needs to be greater than 5.1.2)</li>
         <li>Your CURL Version: <!--[$curlversion.version]--><!--[if $curlversion.version eq '0']--> (fopen alternative: <!--[$fopen]-->)<!--[/if]--></li>
