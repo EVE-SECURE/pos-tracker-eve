@@ -56,7 +56,7 @@ $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
 if (!in_array('5', $access)) {
-    $eve->SessionSetVar('errormsg', 'User Not Logged In!');
+    $eve->SessionSetVar('errormsg', 'Admin Not Logged In!');
     $eve->RedirectUrl('login.php');
 }
 
