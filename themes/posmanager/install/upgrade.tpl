@@ -1,4 +1,4 @@
-<!--[include file='install/install_header.tpl']-->
+<!--[include file='header.tpl']-->
 
   <div class="mcenter">
     <div class="mcolor txtleft">
