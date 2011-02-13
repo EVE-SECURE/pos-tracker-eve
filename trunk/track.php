@@ -12,12 +12,13 @@ include_once 'includes/eveRender.class.php';
 
 
 $eveRender = New eveRender($config, '', false);
-//$colors    = $eveRender->themeconfig; old.
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
 $eve->SessionSetVar('userlogged', 1);
+$eveRender->Assign('name', $userinfo['name']);
+$eveRender->Assign('corp', $userinfo['corp']);
 
 $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
@@ -48,10 +49,10 @@ switch($action) {
         $eve->SessionSetVar('usrlimit', $usrlimit);
 	break;
 	case 'Show Stront Timers':
-        $eve->RedirectUrl('track.php?st='.$st);
+        $eve->RedirectUrl('track.php?st=1');
 	break;
 	case 'Hide Stront Timers':
-        $eve->RedirectUrl('track.php?st='.$st);
+        $eve->RedirectUrl('track.php');
 	break;
 }
 
@@ -76,11 +77,11 @@ if (in_array('1', $access) || in_array('5', $access)) {
             //gives a difference value for the warning message
             $allytimedifference = $time - $pulltimeally;
             if ($sovtimedifference >= "86400") { //1 day
-                $errormsg = '<b>Warning, Your Sovereignty data is out of date.</b>' . $sovtime . '<br />';
+                $errormsg = '<b>Warning, Your Sovereignty data is out of date.</b> ' . $sovtime . '<br />';
 
             }
             if ($allytimedifference >= "604800") {  #1 week
-                $errormsg .= 'Warning, Your Alliance data is out of date.' . $allytime . '<br />';
+                $errormsg .= 'Warning, Your Alliance data is out of date. ' . $allytime . '<br />';
             }
             if ($errormsg) {
                 $eve->SessionSetVar('errormsg', $errormsg);

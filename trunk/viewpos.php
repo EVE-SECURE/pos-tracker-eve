@@ -174,12 +174,12 @@ if (in_array('1', $access) || in_array('5', $access)) {
 		
 		}
 		
-		
-		
+
         $display_hangar = false;
-
+		
         $hangars = $posmgmt->GetPosHangars($pos_id);
-
+		
+		
         $i = 0;
         if($hangars) {
             foreach ($hangars as $row) { //while ($row = mysql_fetch_assoc($res)) {
@@ -239,7 +239,9 @@ if (in_array('1', $access) || in_array('5', $access)) {
         }
 
         //$mods = $posmgmt->GetPosStructures($pos_id);
+
         $mods = $posmgmt->GetAllPosMods($pos_id);
+		
 //echo '<pre>';print_r($tower);echo '</pre>';exit;
         if ($mods) { //if (mysql_num_rows($result) != 0) {
             $current_pg  = 0;
@@ -538,9 +540,11 @@ if (in_array('1', $access) || in_array('5', $access)) {
             }//if ($x == 89) { echo '<pre>';print_r($silo[$x]);echo '</pre>';exit; }
         }
         //End Silo Tracking Code
-
+		if (in_array('5', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access))
+		{
         $tower['silos'] = $silo;
         $tower['mods']  = $mods;
+		}
         $last_update = gmdate("Y-m-d H:i:s", $row2['datetime']);
 
 
