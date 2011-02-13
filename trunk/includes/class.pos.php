@@ -135,6 +135,27 @@ class POSMGMT
 
     }
 
+	function GetLastJobUpdate()
+    {
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "SELECT * FROM  ".TBL_PREFIX."update_log WHERE action = 'EVEAPI XML JOBS API UPDATE' ORDER BY id DESC LIMIT 0,1";
+
+        $result = $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        $row = $result->GetRowAssoc(2);
+
+        $result->Close();
+
+        return $row['datetime'];
+
+    }
     /**
      * POSMGMT::GetAllianceByName()
      *
@@ -397,7 +418,6 @@ class POSMGMT
         }
 
         $userinfo = $result->GetRowAssoc(2);
-        //echo '<pre>';print_r($userinfo);echo '</pre>';exit;
         $result->Close();
 
         $compare  = false;
@@ -741,8 +761,7 @@ class POSMGMT
         $dbconn =& DBGetConn(true);
 
         $sql = "UPDATE ".TBL_PREFIX."user
-                SET    access         = '".Eve::VarPrepForStore($args['access'])."',
-                       highly_trusted = '".Eve::VarPrepForStore($args['highly_trusted'])."'
+                SET    access         = '".Eve::VarPrepForStore($args['access'])."'
                 WHERE  id             = '".Eve::VarPrepForStore($args['id'])."'";
 
         $dbconn->Execute($sql);
@@ -2128,7 +2147,6 @@ class POSMGMT
         $result = $dbconn->Execute($sql);
 
         if ($dbconn->ErrorNo() != 0) {
-            //Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             return false;
         }
@@ -2153,13 +2171,11 @@ class POSMGMT
 
         $dbconn =& DBGetConn(true);
 
-        $sql = "SELECT DISTINCT typeID, typeName FROM ".TBL_PREFIX."invTypes
-                ORDER BY typeID";
+        $sql = "SELECT DISTINCT typeID, typeName FROM ".TBL_PREFIX."invTypes WHERE typeName LIKE '%Blueprint%' OR marketGroupID IS NOT NULL ORDER BY typeID";
 
         $result = $dbconn->Execute($sql);
 
         if ($dbconn->ErrorNo() != 0) {
-            //Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             return false;
         }
@@ -5176,11 +5192,9 @@ class POSMGMT
         }
 	    //$url = "http://api.eve-online.com/corp/IndustryJobs.xml.aspx";
         $url = "/corp/IndustryJobs.xml.aspx";
-		
 		$time=time();
         foreach ($keys as $key) {
-            if ($key['apitimer'] < ($time-3600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
-
+            if ($key['apitimer'] < ($time-21600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
                 $userid         = $key['userID'];
                 $apikey         = $key['apikey'];
                 $characterID    = $key['characterID'];
@@ -5263,15 +5277,8 @@ class POSMGMT
                     $cacheName='IndustrialJobs'.$unique;
                     $this->API_cacheXML($xml->asXML(), $cacheName);
                 }
-
-
-        /*$xml = $this->API_Connect($url);
-
-        if (!$xml) { return false; }
-
-        $dbconn =& DBGetConn(true); */
-
-        $count = 0;
+		
+		$count = 0;
 		
         foreach ($xml->xpath('//row') as $row) {
 					(integer) $jobID			       						= strval($row['jobID']);
@@ -5430,11 +5437,23 @@ class POSMGMT
                             }							
 						}
 						$result->Close();
-					$count = $count + 1;
+					$count++;
 				}
-				return $count;
-			}
+				
+					$time = time();
+                    $sql = "INSERT INTO ".TBL_PREFIX."update_log VALUES (NULL, '0', '" . Eve::VarPrepForStore($pos_id) . "', '1', 'EVEAPI XML JOBS API UPDATE', '" . Eve::VarPrepForStore($time) . "')"; //$updateTime
+                    $dbconn->Execute($sql);
+                    if ($dbconn->ErrorNo() != 0) {
+                        Eve::SessionSetVar('errormsg', 'ERROR Failed to update log info ; ' . $dbconn->ErrorMsg());
+                        return false;
+                    }
+				
+			} else {
+                Eve::SessionSetVar('errormsg', 'ERROR - Need to wait to pull in API data again.');
+                return false;
+				} 
 		}
+		return $count;
 	}
     /**
      * POSMGMT::posdetail()
