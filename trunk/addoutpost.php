@@ -13,17 +13,20 @@ $eveRender->Assign('config', $config);
 
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
-
+$userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
-$access = $eve->SessionGetVar('access');
 
-if ($access < 3) {
+$access = $eve->SessionGetVar('access');
+$access = explode('.',$access);
+$eveRender->Assign('access', $access);
+
+if (!in_array('1', $access) || !in_array('5', $access)) {
         $eve->SessionSetVar('errormsg', 'Access Denied - Redirecting you back!');
         $eve->RedirectUrl('outpost.php');
 }
 
-$userinfo = $posmgmt->GetUserInfo();
+
 $action = $eve->VarCleanFromInput('action');
 switch($action) {
     case 'Add Outpost':

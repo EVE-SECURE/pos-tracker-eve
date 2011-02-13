@@ -38,7 +38,7 @@ include_once 'includes/pos_val.php';
 
 
 /* --- By default the form is displayed --- */
-if ($_SESSION['access'] >= "2") {
+if (in_array('1', $access) || in_array('5', $access)) {
 	
 /* -- Data settings and controls -- */
 
