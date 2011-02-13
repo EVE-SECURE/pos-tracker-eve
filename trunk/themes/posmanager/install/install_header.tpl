@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-en">
 <!--POS-Tracker 5.0.2 FGV-->
 <head>
-  <title>POS-Tracker 5.0.2 - FG Version - Install</title>
+  <title>POS-Tracker FGV - Install</title>
   <link href="themes/<!--[$config.theme]-->/style/theme1.css" rel="stylesheet" type="text/css" />
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
   <!--[additional_header]-->
