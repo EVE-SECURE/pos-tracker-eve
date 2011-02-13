@@ -698,9 +698,12 @@ foreach($materials as $mat) {
 $optdirections = array('Input' => 'Input', 'Output' => 'Output');
 //$seldirection  = (($silo['status']>0) ? 'Output' : 'Input');
 //echo '<pre>';print_r($miners);echo '</pre>';exit;
+if (in_array('5', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access))
+{
 $tower['silos']  = $silo;
 $tower['mods']   = $mods;
 $tower['miners'] = $miners;
+}
 $last_update = gmdate("Y-m-d H:i:s", $row2['datetime']);
 //echo '<pre>';print_r($tower);echo '</pre>';exit;
 
