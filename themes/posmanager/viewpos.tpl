@@ -66,7 +66,7 @@
       <td class="txtleft mbground hcolor">Backup Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.secondary_owner_name]--></td>
     </tr>
-	<!--[if $access == 5 || $highly_trusted == 1]-->
+	<!--[if (in_array('5', $access))]-->
 	<tr>
       <td class="txtleft mbground hcolor">Secretive:</td>
 	  <td class="txtleft"><!--[if $tower.secret_pos]-->Yes<!--[else]-->No<!--[/if]--></td>
@@ -77,14 +77,12 @@
 
   <hr />
 
-<!--[if $access >= 2 ]-->
   <form method="post" action="editpos.php">
   <p style="text-align:center;">
     <input name="pos_id" value="<!--[$tower.pos_id]-->" type="hidden" />
     <input name="action" value="Edit" type="submit" />
   </p>
   </form>
-<!--[/if]-->
 
   <table class="mcenter tracktable" style="width:600px;font-size: 12px;">
   <!--[assign var='uptimecalc' value=$tower.uptimecalc]-->
@@ -376,9 +374,6 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
   </table>
   <!--[/if]-->
 
-
-
-<!--[if $access >= 2 ]-->
   <!--[assign var='mods' value=$tower.mods]-->
   <!--[if $mods]-->
   <h3>Modules</h3>
@@ -405,6 +400,5 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
   </tbody>
   </table>
   <!--[/if]-->
-<!--[/if]-->
 
 <!--[include file='footer.tpl']-->
