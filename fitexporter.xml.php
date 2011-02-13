@@ -50,8 +50,9 @@ $eve->SessionSetVar('userlogged', 1);
 $userinfo = $posmgmt->GetUserInfo();
 
 $access = $eve->SessionGetVar('access');
-
+$access = explode('.',$access);
 $eveRender->Assign('access', $access);
+
 $eveRender->Assign('config', $config);
 
 if (empty($pos_id)) {
