@@ -1,3 +1,5 @@
+ALTER TABLE `%prefix%user` CHANGE `access` `access` VARCHAR( 100 ) NOT NULL DEFAULT '0';
+
 --
 -- Table structure for table `%prefix%_jobs`
 --
