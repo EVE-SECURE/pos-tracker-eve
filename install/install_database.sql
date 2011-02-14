@@ -16769,7 +16769,7 @@ CREATE TABLE `%prefix%user` (
   `email_valid` tinyint(1) NOT NULL default '0',
   `email_code` varchar(255) default NULL,
   `email_optin` tinyint(1) NOT NULL default '0',
-  `access` tinyint(3) unsigned NOT NULL default '0',
+  `access` varchar(100) NOT NULL default '0',
   `datetime` int(10) unsigned NOT NULL default '0',
   `away` tinyint(1) NOT NULL default 0,
   `highly_trusted` tinyint(1) NOT NULL default 0,
