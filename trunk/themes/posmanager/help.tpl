@@ -85,7 +85,11 @@
 		<li>User is not a fuel tech and not a member of that corp on a secret tower - (Other Corp: Secret | Production: All Corps)</li>
 		<li>Allow user to view all production within the POS Tracker - (Corp: Secret | Other Corp: Secret | Production: All Corps)</li>
 	</ul>
-
+<BR>
+<b><u>Common Errors/Fixes</u></b>
+	<ul>
+			<li>Fatal error: Call to undefined function ADONewConnection() in /pos/includes/dbfunctions.php on line 71<ul><li>You get this error when trying to run the POS Tracker or page in PHP4. If this happens during a Cron Job run, make sure that the job points to your PHP5 install on the server.</li></ul> </li>
+			
 </div>
 	
 	
