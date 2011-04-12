@@ -620,7 +620,7 @@ function modify_file($src, $dest, $reg_src, $reg_rep)
 function isUpToDate()
 {
     $latestVersion=trim(file_get_contents(REMOTE_VERSION));
-	if (version_compare(VERSION, $latestVersion, 'ge') == 1) {
+	if (version_compare(VERSION, $latestVersion, 'eq') == 1) {
 	return "$latestVersion - Your installation is up to date!";
 	}
 	else {
