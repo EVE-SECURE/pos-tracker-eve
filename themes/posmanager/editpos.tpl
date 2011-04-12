@@ -189,7 +189,7 @@
       <td class="txtright">(<!--[$optimalDiff.charters_m3]--> m3)</td>
     </tr>
     <tr>
-      <td>Isotopes</td>
+      <td>Isotopes (<!--[$tower.race_isotope]-->)</td>
       <td><!--[$tower.avail_isotope]--></td>
       <td><input name="isotope" value="<!--[$tower.avail_isotope]-->" size="10" type="text" /></td>
       <td class="mcolor"><!--[$optimal.optimum_isotope]--></td>
