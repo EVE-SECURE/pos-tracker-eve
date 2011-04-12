@@ -1,4 +1,3 @@
-<!--[* $Id: viewpos.tpl 234 2009-04-03 18:26:39Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
 
   <!--[assign var='pos_size' value=$tower.pos_size]-->
@@ -152,7 +151,7 @@
     </tr>
 <!--[/if]-->
     <tr>
-      <td>Isotopes</td>
+      <td>Isotopes (<!--[$tower.race_isotope]-->)</td>
       <td class="mcolor"><!--[$tower.required_isotope]--></td>
       <td><!--[$tower.avail_isotope]--></td>
       <td><!--[daycalc hours=$uptimecalc.isotope]--></td>
