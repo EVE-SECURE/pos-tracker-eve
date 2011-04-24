@@ -23,16 +23,27 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-$eve_id = $eve->SessionGetVar('eve_id');
 $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
-$user_id = $_SESSION['delsid'];
+
+$submit = $eve->VarCleanFromInput('submit');
+$completed = $eve->VarCleanFromInput('completed');
+
 
 if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access) || in_array('45', $access)) || in_array('5', $access)) {
 
-	$jobs = $posmgmt->GetAllIndustrialJobs();
-	$itemDB = $posmgmt->GetAllStaticItems();
+	if (!empty($submit)) {
+		if ($completed == 1 && (in_array('41', $access) || in_array('45', $access) || in_array('5', $access))) {
+		$jobs = $posmgmt->GetAllIndustrialJobs(1);
+		} else {
+		$jobs = $posmgmt->GetAllIndustrialJobs(0);
+		}
+	} else {
+	$jobs = $posmgmt->GetAllIndustrialJobs(0);
+	}
 	
+	$itemDB = $posmgmt->GetAllStaticItems();
+	$userList = $posmgmt->GetAllJobUsers();
 	
 	foreach ($jobs as $key => $value) {
 	
@@ -74,27 +85,22 @@ if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access
 				}
 			}
 			
-		}
-	}
-	   
-/*
-	foreach ($jobs as $key => $value) {
-		foreach ($value as $k => $v) {
-			if ($k == 'containerTypeID') {
-				foreach($itemDB as $key2 => $value2) {
+			if ($k == 'installerID') {
+				foreach($userList as $key2 => $value2) {
 					foreach ($value2 as $k2 => $v2) {
-						if ($k2 == 'typeID') {
+						if ($k2 == 'eve_id') {
 							if ($v == $v2) {
-								$jobs[$key][$k] = $itemDB[$key2]['typeName'];
+								$jobs[$key][$k] = $userList[$key2]['name'];
+							} else {
+							    $jobs[$key][$k] = "----";
 							}
 						}
 					}
 				}
 			}
+			
 		}
 	}
-	
-*/
 	
 	$activ = array(0  => 'None',
 					   1  => 'Manufacturing',
@@ -106,6 +112,7 @@ if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access
                        7  => 'Reverse Engineering',
                        8  => 'Invention');
 					   
+	$eveRender->Assign('completed', $completed);		   
 	$eveRender->Assign('jobs', $jobs);
 	$eveRender->Assign('count', $count);
 	$eveRender->Assign('counts', $counts);
