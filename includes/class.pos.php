@@ -2135,13 +2135,13 @@ class POSMGMT
      *
      * @return
      */
-    function GetAllIndustrialJobs()
+    function GetAllIndustrialJobs($completed)
     {
 
         $dbconn =& DBGetConn(true);
 
         $sql = "SELECT * FROM ".TBL_PREFIX."jobs
-                WHERE completed=0
+                WHERE completed='" . Eve::VarPrepForStore($completed) . "'
                 ORDER BY jobID";
 
         $result = $dbconn->Execute($sql);
@@ -2158,6 +2158,36 @@ class POSMGMT
         $result->Close();
 
         return $jobs;
+
+    }
+	
+		/**
+     * POSMGMT::GetAllJobUsers()
+     *
+     * @return
+     */
+    function GetAllJobUsers()
+    {
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "SELECT id, eve_id, name FROM ".TBL_PREFIX."user
+                ORDER BY id";
+
+        $result = $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        for(; !$result->EOF; $result->MoveNext()) {
+            $userList[] = $result->GetRowAssoc(2);
+        }
+
+        $result->Close();
+
+        return $userList;
 
     }
 	
@@ -4460,45 +4490,16 @@ class POSMGMT
 
         if ($curl) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://api.eve-online.com".$url);
+            curl_setopt($ch, CURLOPT_URL, "https://api.eveonline.com".$url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             if ($data) {
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
             }
             $content = curl_exec($ch);
             curl_close($ch);
-        } else {
-            // TEMPORARY? FIX for GetCharacters Timing out the usual way.
-            if ($conntype == 'GET') {
-                $handle = fopen("http://api.eve-online.com".$url.(($data) ? "?".http_build_query($data) : ""), "r");
-                $content = stream_get_contents($handle);
-                fclose($handle);
-            } else {
-                $target  = "POST ".$url." HTTP/1.0\r\n";
-                $header .= "Host: api.eve-online.com\r\n";
-                $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-                $header .= "Content-Length: " . strlen(http_build_query($data)) . "\r\n";
-                $header .= "Connection: close\r\n\r\n";
-
-                $fp = fsockopen ('api.eve-online.com', 80, $errno, $errstr, 30);
-
-                if (!$fp) {
-                    echo 'meh! Eve server is such a n00b! '.$errstr; exit;
-                }
-
-                fputs ($fp, $target . $header . $req);
-                $content = '';
-                $done = false;
-                while (!feof($fp)) {
-                    $content .= fgets ($fp, 1024);
-                }
-                $start = '<eveapi';
-                $end   = '</eveapi>';
-                $null = eregi("$start(.*)$end", $content, $data);
-                $content = "<?xml version='1.0' encoding='UTF-8'?>\n".$data[0];
-            }
         }
 
         //Create XML Parser
@@ -4520,6 +4521,8 @@ class POSMGMT
 
     }
 
+	
+	
     /**
      * POSMGMT::API_UpdateAlliances()
      *
@@ -4719,38 +4722,16 @@ class POSMGMT
 
         if ($curl) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://api.eve-online.com".$url);
+            curl_setopt($ch, CURLOPT_URL, "https://api.eveonline.com".$url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             if ($data) {
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
             }
             $content = curl_exec($ch);
             curl_close($ch);
-        } else {
-            $target  = "POST ".$url." HTTP/1.1\r\n";
-            $header .= "Host: api.eve-online.com\r\n";
-            $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-            $header .= "Content-Length: " . strlen(http_build_query($data)) . "\r\n";
-            $header .= "Connection: close\r\n\r\n";
-
-            $fp = fsockopen ('api.eve-online.com', 80, $errno, $errstr, 30);
-
-            if (!$fp) {
-                echo 'meh! Eve server is such a n00b! '.$errstr; exit;
-            }
-
-            fputs ($fp, $target . $header . $req);
-            $content = '';
-            $done = false;
-            while (!feof($fp)) {
-                $content .= fgets ($fp, 1024);
-            }
-            $start = '<eveapi';
-            $end   = '</eveapi>';
-            $null = eregi("$start(.*)$end", $content, $data);
-            $content = "<?xml version='1.0' encoding='UTF-8'?>\n".$data[0];
         }
 
         try {
@@ -4888,49 +4869,18 @@ class POSMGMT
                 $curl = in_array('curl', $extensions);
 
                 if ($curl) {
-                    $ch = curl_init();
-
-                    curl_setopt($ch, CURLOPT_URL, "http://api.eve-online.com".$url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_HEADER, false);
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-                    $curl_error = curl_errno($ch);
-
-                    if ($curl_error != 0) {
-                        $fail = 1;
-                        //$this->API_UpdateKeyTimer($userid, $time);
-                        Eve::VarSessionSetVar('errormsg', 'CURL ERROR : '.$curl_error);
-                        return false;
-                    }
-
-                    $content = curl_exec($ch);
-                    curl_close($ch);
-
-                } else {
-                    $target  = "POST ".$url." HTTP/1.1\r\n";
-                    $header .= "Host: api.eve-online.com\r\n";
-                    $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-                    $header .= "Content-Length: " . strlen(http_build_query($data)) . "\r\n";
-                    $header .= "Connection: close\r\n\r\n";
-
-                    $fp = fsockopen ('api.eve-online.com', 80, $errno, $errstr, 30);
-
-                    if (!$fp) {
-                        echo 'meh! Eve server is such a n00b! '.$errstr; exit;
-                    }
-
-                    fputs ($fp, $target . $header . $req);
-                    $content = '';
-                    $done = false;
-                    while (!feof($fp)) {
-                        $content .= fgets ($fp, 1024);
-                    }
-                    $start = '<eveapi';
-                    $end   = '</eveapi>';
-                    $null = eregi("$start(.*)$end", $content, $data);
-                    $content = "<?xml version='1.0' encoding='UTF-8'?>\n".$data[0];
-                }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://api.eveonline.com".$url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            if ($data) {
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            }
+            $content = curl_exec($ch);
+            curl_close($ch);
+            }
 
                 try {
                     $xml = new SimpleXMLElement($content);
@@ -5184,23 +5134,24 @@ class POSMGMT
 	function API_UpdateIndustryJobs()
     {
 		date_default_timezone_set(GMT);
+		
 		$keys = $this->API_GetKeyInfo();
-
+		$JobCheck = $this->GetLastJobUpdate();
         if (!$keys) {
             Eve::SessionSetVar('errormsg', 'Could not get any key from the DB!');
             return false;
         }
-	    //$url = "http://api.eve-online.com/corp/IndustryJobs.xml.aspx";
         $url = "/corp/IndustryJobs.xml.aspx";
 		$time=time();
         foreach ($keys as $key) {
-            if ($key['apitimer'] < ($time-21600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
+            if ($JobCheck < ($time-21600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
                 $userid         = $key['userID'];
                 $apikey         = $key['apikey'];
                 $characterID    = $key['characterID'];
                 $corp           = $key['corp'];
                 $allianceID     = $key['allianceID'];
                 $fail           = 0;
+				$jobs_updated = 0;
                 $data = array('userID'      => $userid,
                               'apiKey'      => $apikey,
                               'version'     => $version,
@@ -5210,49 +5161,18 @@ class POSMGMT
                 $curl = in_array('curl', $extensions);
 
                 if ($curl) {
-                    $ch = curl_init();
-
-                    curl_setopt($ch, CURLOPT_URL, "http://api.eve-online.com".$url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_HEADER, false);
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-                    $curl_error = curl_errno($ch);
-
-                    if ($curl_error != 0) {
-                        $fail = 1;
-                        //$this->API_UpdateKeyTimer($userid, $time);
-                        Eve::VarSessionSetVar('errormsg', 'CURL ERROR : '.$curl_error);
-                        return false;
-                    }
-
-                    $content = curl_exec($ch);
-                    curl_close($ch);
-
-                } else {
-                    $target  = "POST ".$url." HTTP/1.1\r\n";
-                    $header .= "Host: api.eve-online.com\r\n";
-                    $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-                    $header .= "Content-Length: " . strlen(http_build_query($data)) . "\r\n";
-                    $header .= "Connection: close\r\n\r\n";
-
-                    $fp = fsockopen ('api.eve-online.com', 80, $errno, $errstr, 30);
-
-                    if (!$fp) {
-                        echo 'meh! Eve server is such a n00b! '.$errstr; exit;
-                    }
-
-                    fputs ($fp, $target . $header . $req);
-                    $content = '';
-                    $done = false;
-                    while (!feof($fp)) {
-                        $content .= fgets ($fp, 1024);
-                    }
-                    $start = '<eveapi';
-                    $end   = '</eveapi>';
-                    $null = eregi("$start(.*)$end", $content, $data);
-                    $content = "<?xml version='1.0' encoding='UTF-8'?>\n".$data[0];
-                }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://api.eveonline.com".$url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            if ($data) {
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            }
+            $content = curl_exec($ch);
+            curl_close($ch);
+               }
 
                 try {
                     $xml = new SimpleXMLElement($content);
@@ -5278,9 +5198,8 @@ class POSMGMT
                     $this->API_cacheXML($xml->asXML(), $cacheName);
                 }
 		
-		$count = 0;
-		
         foreach ($xml->xpath('//row') as $row) {
+					
 					(integer) $jobID			       						= strval($row['jobID']);
 			        (integer) $assemblyLineID       						= strval($row['assemblyLineID']);
                     (integer) $containerID       						    = strval($row['containerID']);
@@ -5359,10 +5278,10 @@ class POSMGMT
                                 Eve::SessionSetVar('errormsg', 'ERROR Failed to update Job info ; ' . $dbconn->ErrorMsg());
                                 return false;
                             }
+							$jobs_updated++;
                             $result->Close();
 							
-						}
-						else {
+						} else {
 						
 						$sql = "INSERT INTO ".TBL_PREFIX."jobs (jobID,
                                              assemblyLineID,
@@ -5434,26 +5353,24 @@ class POSMGMT
                             if ($dbconn->ErrorNo() != 0) {
                                 Eve::SessionSetVar('errormsg', 'ERROR Failed to Add Job info ; ' . $dbconn->ErrorMsg());
                                 return false;
-                            }							
+                            }
+							$jobs_updated++;
+                            $result->Close();
 						}
-						$result->Close();
-					$count++;
 				}
-				
-					$time = time();
-                    $sql = "INSERT INTO ".TBL_PREFIX."update_log VALUES (NULL, '0', '" . Eve::VarPrepForStore($pos_id) . "', '1', 'EVEAPI XML JOBS API UPDATE', '" . Eve::VarPrepForStore($time) . "')"; //$updateTime
+				$time = time();
+                    $sql = "INSERT INTO ".TBL_PREFIX."update_log VALUES (NULL, '0', '55555', '1', 'EVEAPI XML JOBS API UPDATE', '" . Eve::VarPrepForStore($time) . "')"; //$updateTime
                     $dbconn->Execute($sql);
                     if ($dbconn->ErrorNo() != 0) {
                         Eve::SessionSetVar('errormsg', 'ERROR Failed to update log info ; ' . $dbconn->ErrorMsg());
                         return false;
                     }
-				
 			} else {
-                Eve::SessionSetVar('errormsg', 'ERROR - Need to wait to pull in API data again.');
+                Eve::SessionSetVar('errormsg', 'ERROR - Need to wait to pull in API data again. Industrial Jobs should only be pulled every 6 hours.');
                 return false;
 				} 
 		}
-		return $count;
+		return $jobs_updated;
 	}
     /**
      * POSMGMT::posdetail()
@@ -5483,46 +5400,16 @@ class POSMGMT
 
         if ($curl) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://api.eve-online.com".$url);
+            curl_setopt($ch, CURLOPT_URL, "https://api.eveonline.com".$url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             if ($data) {
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
             }
             $content = curl_exec($ch);
-            $curl_error = curl_errno($ch);
-
-            if ($curl_error != 0) {
-                $fail = 1;
-                //$this->API_UpdateKeyTimer($userid, $time);
-                Eve::SessionSetVar('errormsg', 'CURL ERROR : '.$curl_error);
-                return false;
-            }
             curl_close($ch);
-        } else {
-            $target  = "POST ".$url." HTTP/1.1\r\n";
-            $header .= "Host: api.eve-online.com\r\n";
-            $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-            $header .= "Content-Length: " . strlen(http_build_query($data)) . "\r\n";
-            $header .= "Connection: close\r\n\r\n";
-
-            $fp = fsockopen ('api.eve-online.com', 80, $errno, $errstr, 30);
-
-            if (!$fp) {
-                echo 'meh! Eve server is such a n00b! '.$errstr; exit;
-            }
-
-            fputs ($fp, $target . $header . $req);
-            $content = '';
-            $done = false;
-            while (!feof($fp)) {
-                $content .= fgets ($fp, 1024);
-            }
-            $start = '<eveapi';
-            $end   = '</eveapi>';
-            $null = eregi("$start(.*)$end", $content, $data);
-            $content = "<?xml version='1.0' encoding='UTF-8'?>\n".$data[0];
         }
 
         try {
