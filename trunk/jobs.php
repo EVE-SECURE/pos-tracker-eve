@@ -49,31 +49,7 @@ if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access
 	
 		foreach ($value as $k => $v) {
 
-			if ($k == 'installedItemTypeID') {
-				foreach($itemDB as $key2 => $value2) {
-					foreach ($value2 as $k2 => $v2) {
-						if ($k2 == 'typeID') {
-							if ($v == $v2) {
-								$jobs[$key][$k] = $itemDB[$key2]['typeName'];
-							}
-						}
-					}
-				}
-			}
-			
-			if ($k == 'containerTypeID') {
-				foreach($itemDB as $key2 => $value2) {
-					foreach ($value2 as $k2 => $v2) {
-						if ($k2 == 'typeID') {
-							if ($v == $v2) {
-								$jobs[$key][$k] = $itemDB[$key2]['typeName'];
-							}
-						}
-					}
-				}
-			}
-			
-			if ($k == 'outputTypeID') {
+		if ($k == 'installedItemTypeID' || $k == 'containerTypeID' || $k == 'outputTypeID') {
 				foreach($itemDB as $key2 => $value2) {
 					foreach ($value2 as $k2 => $v2) {
 						if ($k2 == 'typeID') {
