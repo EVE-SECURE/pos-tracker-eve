@@ -5,6 +5,19 @@
     <h3>POS-Tracker Version: (<!--[$version]-->)</h3>
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br /><br />
+	<strong>Version 5.1.1 Beta 1 to 5.1.1 Beta 2 Changes:</strong>
+    <ul>
+	  <li>Subdomain Bug Fixed.</li>
+	  <li>API Pulls now done via HTTPS/SSL.</li>
+	  <li>Isotope type for tower now shown on View and Edit POS pages.</li>
+	  <li>Fixed version checker typo that made it work backwards.</li>
+	  <li>Industrial Job API Timer Fixed.</li>
+	  <li>Past Industrial Jobs now selectable if you have the rights - May take a few minutes to load depending on how many jobs you have loaded into the DB.</li>
+	  <li>Industrial Jobs installer IDs now show if the manufacturer is loaded into the tracker.</li>
+	  <li>View and Edit POS pages now correctly show amounts in silos instead of m3.</li>
+	  <li>Production input silos can no longer go negative.</li>
+	</ul>
+    <br />
 	<strong>Version 5.0.4 to 5.1.1 Beta 1 Changes:</strong>
     <ul>
 	  <li>Complete re-write of the POS-Tracker's access system. Administrators/CEOs now have far greater control of what a user can and cannot do in the tracker.</li>
