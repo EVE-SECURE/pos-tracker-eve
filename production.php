@@ -457,7 +457,7 @@ function GetallProd($args)
                 } else {
                     $linked = $silo[$silo[$x]['silo_link']];
                     if (!$linked['full']) {
-                        $silo[$x]['material_amount']    = 0;
+                        $silo[$x]['material_amount']  = 0;
                         $silo[$x]['available_silo_vol'] = $silo[$x]['silo_capacity'];
                         $silo[$x]['hourstofill']        = @floor(($silo[$x]['available_silo_vol']+$linked['available_silo_vol']) / $rate / $matinfo['material_volume']);
                         $silo[$x]['hourstofill_total']  = @floor(($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']) + $linked['hourstofill']);
@@ -489,6 +489,11 @@ function GetallProd($args)
                 $silo[$x]['hourstogo']       = $silo[$x]['hourstofill'] = @floor($silo[$x]['material_amount']/$rate);
                 $silo[$x]['direction']       = 'Input';
                 $silo[$x]['empty']           = (($silo[$x]['material_amount'] <= 0) ? 1 : 0);//(($silo[$x]['hourstogo'] <= 0) ? 1 : 0);
+				
+				if ($silo[$x]['material_amount']< 0) { //If it's empty, make sure to show it's empty.
+				$silo[$x]['material_amount'] = 0;
+				}
+				
                 if ($silo[$x]['hourstogo'] < 0) {
                     $silo[$x]['hourstogo'] = $silo[$x]['hourstofill'] = 0;
 

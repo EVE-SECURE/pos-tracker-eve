@@ -364,7 +364,7 @@ if ($row) {
     $tower['required_heavy_water']       = $row['heavy_water'];
     $tower['required_strontium']         = $row['strontium'];
     $tower['required_charters']          = $charters_needed?1:0;
-    $tower['race_isotope']               = $result['race_isotope'];
+    $tower['race_isotope']               = $row['race_isotope'];
     $tower['total_pg']                   = $row['pg'];
     $tower['total_cpu']                  = $row['cpu'];
     $required_isotope                    = $row['isotopes'];
@@ -377,7 +377,7 @@ if ($row) {
     $required_heavy_water                = $row['heavy_water'];
     $required_strontium                  = $row['strontium'];
     $required_charters                   = $charters_needed?1:0;
-    $race_isotope                        = $result['race_isotope'];
+    $race_isotope                        = $row['race_isotope'];
     $total_pg                            = $row['pg'];
     $total_cpu                           = $row['cpu'];
     $tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
@@ -615,7 +615,7 @@ foreach ($res0 as $row0) {
 
         if (!$silo[$x]['silo_link']) {
 
-            $silo[$x]['material_amount']      = ($rate_vol*$silo[$x]['hoursago'])+$silo[$x]['material_amount'];///$matinfo['material_volume']+$silo[$x]['material_amount'];
+            $silo[$x]['material_amount']  = ($silo[$x]['rate']*$silo[$x]['hoursago'])+$silo[$x]['material_amount'];
             $silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
             $silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
             if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
@@ -668,6 +668,9 @@ foreach ($res0 as $row0) {
         $silo[$x]['hourstogo']       = $silo[$x]['hourstofill'] = @floor($silo[$x]['material_amount']/$rate);
         $silo[$x]['direction']       = 'Input';
         $silo[$x]['empty']           = (($silo[$x]['material_amount'] <= 0) ? 1 : 0);//(($silo[$x]['hourstogo'] <= 0) ? 1 : 0);
+		if ($silo[$x]['material_amount']< 0) { //If it's empty, make sure to show it's empty.
+				$silo[$x]['material_amount'] = 0;
+				}
         if ($silo[$x]['hourstogo'] < 0) {
             $silo[$x]['hourstogo'] = $silo[$x]['hourstofill'] = 0;
 
