@@ -106,7 +106,8 @@ if (in_array('1', $access) || in_array('5', $access)) {
     $args['startnum'] = $eve->VarCleanFromInput('startnum');
 
     $rows       = $posmgmt->GetAllPos2($args);
-    $towercount = count($rows);
+	$rows2       = $posmgmt->GetAllPos2();
+    $towercount = count($rows2);
 
     $bgcolor   = "#111111";
     $textcolor = "#FFFFFF";
