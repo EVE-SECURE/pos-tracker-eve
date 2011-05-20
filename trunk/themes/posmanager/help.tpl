@@ -31,10 +31,10 @@
 		</li>
 		<li><b><u>Other Corps</u></b>
 			<ul>
-				<li><b>No Access</b> - Can not view any towers of other corporations setup in the POS tracker. Can still view/edit if they are a fuel tech of the tower.</li>
-				<li><b>View</b> - Can view all towers(excluding secret towers) of other corporations setup in the POS tracker.</li>
-				<li><b>Edit</b> - Can view and edit all towers(excluding secret towers) of other corporations setup in the POS tracker.</li>
-				<li><b>Secret</b> - Can view and edit all towers including secret towers of other corporations setup in the POS tracker.</li>
+				<li><b>No Access</b> - Can not view any towers of other corporations setup in the POS Tracker. Can still view/edit if they are a fuel tech of the tower.</li>
+				<li><b>View</b> - Can view all towers(excluding secret towers) of other corporations setup in the POS Tracker.</li>
+				<li><b>Edit</b> - Can view and edit all towers(excluding secret towers) of other corporations setup in the POS Tracker.</li>
+				<li><b>Secret</b> - Can view and edit all towers including secret towers of other corporations setup in the POS Tracker.</li>
 			</ul>
 		</li>
 		<li><b><u>Jobs</u></b>
@@ -42,7 +42,7 @@
 				<li><b>No Access</b> - Can not view any industrial jobs.</li>
 				<li><b>Current</b> - Can view all current industrial jobs of the corporation that user is part of.</li>
 				<li><b>Past</b> - Can view all past industrial jobs of the corporation that user is part of.</li>
-				<li><b>All Corps</b> - Can view all current industrial jobs imported into the POS tracker.</li>
+				<li><b>All Corps</b> - Can view all current industrial jobs imported into the POS Tracker.</li>
 			</ul>
 		</li>
 		<li><b><u>Production</u></b> - (Note: Production will only show if they have access to the tower. More details below.)
@@ -50,7 +50,7 @@
 				<li><b>No Access</b> - Can not view any production.</li>
 				<li><b>Own</b> - Can view/edit any production that is setup on towers where they are a fuel tech.</li>
 				<li><b>Same Corp</b> - Can view/edit any production that is setup on towers for the corporation that user is part of.</li>
-				<li><b>All Corps</b> - Can view/edit any production that is setup in POS tracker.</li>
+				<li><b>All Corps</b> - Can view/edit any production that is setup in POS Tracker.</li>
 			</ul>
 		</li>
 		<li><b><u>ReStocker</u></b>
@@ -58,14 +58,19 @@
 				<li><b>N/A</b> - Currently not implemented.</li>
 			</ul>
 		</li>
-		<li><b><u>Notes</u></b>
-			<ul>
-				<li><b>N/A</b> - Currently not implemented.</li>
-			</ul>
-		</li>
 		<li><b><u>Trusted</u></b>
 			<ul>
-				<li><b>When Checked</b> - user is able to add towers manually and can delete towers where they are a fuel tech.</li>
+				<li><b>When Checked</b> - User is able to add towers manually and can delete towers where they are a fuel tech. They can also update global prices within the POS Tracker.</li>
+			</ul>
+		</li>
+		<li><b><u>SubAdmin</u></b>
+			<ul>
+				<li><b>When Checked</b> - Has the same abilities as the admin account except it can't modify other SubAdmin accounts and remove API keys. All other permission selections will become disabled.</li>
+			</ul>
+		</li>
+		<li><b><u>Enabled</u></b>
+			<ul>
+				<li><b>When Checked</b> - User account is able to login to the POS Tracker </li>
 			</ul>
 		</li>
 		<li><font color="red"><b><u>Remove</u></b></font>
