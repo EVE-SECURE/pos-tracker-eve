@@ -14,7 +14,7 @@
   <h3 class="txtcenter mcolor">- POS MANAGER -</h3>
   <p class="mcenter">
     <span>
-    <!--[if (in_array('1', $access)) || (in_array('5', $access))]-->
+    <!--[if (in_array('1', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="track.php" title="POS Tracking">POS Track</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
@@ -25,16 +25,16 @@
 	  <a href="outpost.php" title="Outpost Tracking">Outpost Track</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
 	
-	<!--[if (in_array('42', $access)) || (in_array('43', $access)) || (in_array('44', $access)) || (in_array('5', $access))]-->
+	<!--[if (in_array('42', $access)) || (in_array('43', $access)) || (in_array('44', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
       <a href="production.php" title="Production">Production</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
     <!--[/if]-->  
       
-    <!--[if (in_array('40', $access)) || (in_array('5', $access))]-->
+    <!--[if (in_array('40', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
 	  <a href="jobs.php" title="Jobs">Jobs</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
     <!--[/if]-->
-	<!--[if (in_array('5', $access))]-->
+	<!--[if (in_array('5', $access) || in_array('6', $access))]-->
 	<a href="admin.php" title="Admin Panel">Admin Panel</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
 	<!--[/if]-->

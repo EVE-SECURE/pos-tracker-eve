@@ -65,7 +65,7 @@
 		</li>
 		<li><b><u>SubAdmin</u></b>
 			<ul>
-				<li><b>When Checked</b> - Has the same abilities as the admin account except it can't modify other SubAdmin accounts and remove API keys. All other permission selections will become disabled.</li>
+				<li><b>When Checked</b> - Has the same abilities as the admin account except it can't modify other SubAdmin accounts, remove API keys, or remove other user accounts. They will be able to disable other accounts just not remove. All other permission selections will become disabled for this account.</li>
 			</ul>
 		</li>
 		<li><b><u>Enabled</u></b>
@@ -95,6 +95,7 @@
 	<ul>
 			<li>Fatal error: Call to undefined function ADONewConnection() in /pos/includes/dbfunctions.php on line 71<ul><li>You get this error when trying to run the POS Tracker or page in PHP4. If this happens during a Cron Job run, make sure that the job points to your PHP5 install on the server.</li></ul> </li>
 			<li>Past Jobs take a very long time to load. This will be addressed in later versions of the POS tracker.</li>
+			<li>Fuel Calculator doesn't have optimal for Liquid Ozone and Heavy Water. This will be addressed in later versions of the POS tracker.</li>
 </div>
 	
 	

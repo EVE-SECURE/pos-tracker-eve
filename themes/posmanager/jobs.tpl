@@ -1,7 +1,7 @@
 <!--[include file='header.tpl']-->
   <form style="margin: 0pt; padding: 0pt;" method="post" action="jobs.php">
   
-  <!--[if (in_array('41', $access)) || (in_array('45', $access)) || (in_array('5', $access))]-->
+  <!--[if (in_array('41', $access)) || (in_array('45', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
 	
 	<!--[if $completed != 1]-->
 	<h3 class="pageTitle">Corporation Jobs Overview (Current Jobs)</h3>

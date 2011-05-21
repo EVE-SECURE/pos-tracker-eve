@@ -65,7 +65,7 @@
       <td class="txtleft mbground hcolor">Backup Fuel Tech:</td>
       <td class="txtleft"><!--[$tower.secondary_owner_name]--></td>
     </tr>
-	<!--[if (in_array('5', $access))]-->
+	<!--[if (in_array('5', $access) || in_array('6', $access))]-->
 	<tr>
       <td class="txtleft mbground hcolor">Secretive:</td>
 	  <td class="txtleft"><!--[if $tower.secret_pos]-->Yes<!--[else]-->No<!--[/if]--></td>
