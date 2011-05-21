@@ -803,6 +803,36 @@ class POSMGMT
         return true;
     }
 
+	/**
+     * POSMGMT::UpdatePrices()
+     *
+     * @param mixed $args
+     * @return
+     */
+    function UpdatePrices($args)
+    {
+
+        if (!isset($args['name'])) {
+            Eve::SessionSetVar('errormsg', 'No ID!');
+            return false;
+        }
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "UPDATE ".TBL_PREFIX."prices
+                SET    Value         = '".Eve::VarPrepForStore($args['value'])."'
+                WHERE  Name             = '".Eve::VarPrepForStore($args['name'])."'";
+
+        $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        return true;
+    }
+	
     /**
      * POSMGMT::DeletePOS()
      *
@@ -1017,7 +1047,7 @@ class POSMGMT
 			
 			
 		}
-		elseif (in_array('5', $access)) { //(5) Admin user
+		elseif (in_array('5', $access) || in_array('6', $access)) { //(5) Admin user
 
 			$where = "WHERE 1=1";
 		}
@@ -3909,6 +3939,41 @@ class POSMGMT
 
     }
 
+
+/**
+     * POSMGMT::GetPrices()
+     *
+     * @return
+     */
+    function GetPrices()
+    {
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "SELECT * FROM ".TBL_PREFIX."prices ORDER BY Name ASC";
+        $result = $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . '<br />' . $sql);
+            return false;
+        }
+
+        if ($result->EOF) {
+            return false;
+        }
+		
+		
+       for(; !$result->EOF; $result->MoveNext()) {
+            $prices = $result->GetAssoc();
+        }
+		
+        $result->Close();
+        return $prices;
+
+    }
+	
+
+	
     /**
      * POSMGMT::GetStaticReactionInfo()
      *
