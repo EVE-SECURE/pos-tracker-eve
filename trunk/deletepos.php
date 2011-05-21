@@ -22,7 +22,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('5', $access) && !in_array('83', $access)) {
+if (!in_array('5', $access) && !in_array('6', $access) && !in_array('83', $access)) {
 		$eve->RedirectUrl('track.php');
 }
 
@@ -63,7 +63,7 @@ if (!$pos) {
 $action = $eve->VarCleanFromInput('action');
 
 if ($action == 'deletepos') {
-		if (in_array('5', $access) || (in_array('83', $access) && ($pos['owner_id'] == $userinfo['eve_id'] || $pos['secondary_owner_id'] == $userinfo['eve_id']))) {
+		if (in_array('5', $access) || in_array('6', $access) || (in_array('83', $access) && ($pos['owner_id'] == $userinfo['eve_id'] || $pos['secondary_owner_id'] == $userinfo['eve_id']))) {
 			if ($posmgmt->DeletePOS($pos_id)) {
 	        	$eve->SessionSetVar('statusmsg', 'POS deleted!');
 		        $eve->RedirectUrl('track.php');

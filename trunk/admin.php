@@ -53,11 +53,10 @@ $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 
-if (!$userinfo || $userinfo['access'] != 5) {
+if (!$userinfo || ($userinfo['access'] != 5 && $userinfo['access'] != 6)) {
 		$eve->SessionSetVar('errormsg', 'Admin Access Level Required - Please login!');
 		$eve->RedirectUrl('login.php');
-	}
-	else {
+	} else {
 	$access = explode('.',$userinfo['access']);
 	$eveRender->Assign('access', $access);
 }
@@ -218,6 +217,16 @@ if ($action == 'updatealliance') {
 
     $eveRender->Display('admin.tpl');
     exit;
+	
+} elseif ($action == 'updateprices') {
+	$PricesUpdate = $eve->VarCleanFromInput('PricesUpdate');
+
+	foreach ($PricesUpdate as $id => $value) {
+	$pinfo = array('name' => $id, 'value' => $value);
+        if (!$posmgmt->UpdatePrices($pinfo)) {
+            $eve->RedirectUrl('admin.php');
+        }
+	 }
 } elseif ($action == 'updateusers') {
     $userremove = $eve->VarCleanFromInput('userremove');
 	$UserList = $eve->VarCleanFromInput('UserList');
@@ -227,6 +236,7 @@ if ($action == 'updatealliance') {
 	$JobAccess = $eve->VarCleanFromInput('JobAccess');
 	$ProdAccess = $eve->VarCleanFromInput('ProdAccess');
 	$TrustAccess = $eve->VarCleanFromInput('TrustAccess');
+	$SubAdminAccess = $eve->VarCleanFromInput('SubAdminAccess');
 
     foreach ($userremove as $id => $remove) {
         if (!$posmgmt->DeleteUser($id)) {
@@ -237,10 +247,14 @@ if ($action == 'updatealliance') {
     }
 
     foreach ($UserList as $id => $uaccess) {
-
-		$AccessArray = array($UserEnabled[$id], $CorpAccess[$id], $OtherCorpAccess[$id], $JobAccess[$id], $ProdAccess[$id], $TrustAccess[$id]);
+		
+		if ($SubAdminAccess[$id] != 6) {
+		$AccessArray = array($UserEnabled[$id], $CorpAccess[$id], $OtherCorpAccess[$id], $JobAccess[$id], $ProdAccess[$id], $TrustAccess[$id], $SubAdminAccess[$id]);
 		$uaccess = implode(".",array_filter($AccessArray));
-
+		} elseif ($SubAdminAccess[$id] == 6) {
+		$uaccess = 6;
+		}
+			
         $uinfo = array('id' => $id, 'access' => $uaccess);
 
         if (!$posmgmt->UpdateUserAccess($uinfo)) {
@@ -286,8 +300,10 @@ $keys[$index]['shortkey']=$shortkey;
 $eveRender->Assign('keys',     $keys);
 
 $users = $posmgmt->GetAllUsers();
+$prices = $posmgmt->GetPrices();
 
 $eveRender->Assign('users',     $users);
+$eveRender->Assign('prices',     $prices);
 $eveRender->Assign('userinfo',  $userinfo);
 $eveRender->Assign('awaylevel',  array(0 => 'Default', 1 => 'Away', 2 => 'Receive eMails'));
 

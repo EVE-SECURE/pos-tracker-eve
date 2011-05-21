@@ -53,7 +53,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('1', $access) && !in_array('5', $access)) {
+if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) {
     $eve->RedirectUrl('login.php');
 }
 
@@ -248,14 +248,14 @@ if ($tower) {
 	$secret_pos         = $tower['secret_pos'];
 }
 
-       if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+       if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) { //quick user check
 		
 			$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
 			$eve->RedirectUrl('index.php');
 			die();
 			
 		}
-		elseif (in_array('5', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
+		elseif (in_array('5', $access) || in_array('6', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
 		
 		//Admin or tower owner logged in so kill the checkers so show the tower
 		
@@ -701,7 +701,7 @@ foreach($materials as $mat) {
 $optdirections = array('Input' => 'Input', 'Output' => 'Output');
 //$seldirection  = (($silo['status']>0) ? 'Output' : 'Input');
 //echo '<pre>';print_r($miners);echo '</pre>';exit;
-if (in_array('5', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access))
+if (in_array('5', $access) || in_array('6', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access))
 {
 $tower['silos']  = $silo;
 $tower['mods']   = $mods;

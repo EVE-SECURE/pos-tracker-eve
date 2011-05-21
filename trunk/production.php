@@ -29,7 +29,7 @@ $eveRender->Assign('access', $access);
 
 
 $user_id = $_SESSION['delsid'];
-if (in_array('1', $access) || in_array('5', $access)) {
+if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) {
 
     $action = $eve->VarCleanFromInput('action');
 
@@ -179,12 +179,12 @@ function GetallProd($args)
         $sec_owner_info=$posmgmt->GetUserInfofromID($tower['secondary_owner_id']);
         $tower['secondary_owner_name']=$sec_owner_info['name'];
 		
-        if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+        if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) { //quick user check
 		
 			continue ; //Hide the tower
 			
 		}
-		elseif (in_array('5', $access))  {
+		elseif (in_array('5', $access) || in_array('6', $access))  {
 		
 		//Admin  
 		

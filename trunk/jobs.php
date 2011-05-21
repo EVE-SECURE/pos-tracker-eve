@@ -30,10 +30,10 @@ $submit = $eve->VarCleanFromInput('submit');
 $completed = $eve->VarCleanFromInput('completed');
 
 
-if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access) || in_array('45', $access)) || in_array('5', $access)) {
+if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access) || in_array('45', $access)) || in_array('5', $access) || in_array('6', $access)) {
 
 	if (!empty($submit)) {
-		if ($completed == 1 && (in_array('41', $access) || in_array('45', $access) || in_array('5', $access))) {
+		if ($completed == 1 && (in_array('41', $access) || in_array('45', $access) || in_array('5', $access) || in_array('6', $access))) {
 		$jobs = $posmgmt->GetAllIndustrialJobs(1);
 		} else {
 		$jobs = $posmgmt->GetAllIndustrialJobs(0);
@@ -67,8 +67,6 @@ if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access
 						if ($k2 == 'eve_id') {
 							if ($v == $v2) {
 								$jobs[$key][$k] = $userList[$key2]['name'];
-							} else {
-							    $jobs[$key][$k] = "----";
 							}
 						}
 					}
