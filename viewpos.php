@@ -56,7 +56,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (in_array('1', $access) || in_array('5', $access)) {
+if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) {
     $pos_id = $eve->VarCleanFromInput('i');
     if (!empty($pos_id)) {
 
@@ -107,14 +107,14 @@ if (in_array('1', $access) || in_array('5', $access)) {
         }
 
 				
-       if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+       if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) { //quick user check
 		
 			$eve->SessionSetVar('errormsg', 'You do not have access, ask your CEO for access.');
 			$eve->RedirectUrl('index.php');
 			die();
 			
 		}
-		elseif (in_array('5', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
+		elseif (in_array('5', $access) || in_array('6', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
 		
 		//Admin or tower owner logged in so kill the checkers so show the tower
 		
@@ -545,7 +545,7 @@ if (in_array('1', $access) || in_array('5', $access)) {
             }//if ($x == 89) { echo '<pre>';print_r($silo[$x]);echo '</pre>';exit; }
         }
         //End Silo Tracking Code
-		if (in_array('5', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access))
+		if (in_array('5', $access) || in_array('6', $access) || in_array('42', $access) || in_array('43', $access) || in_array('44', $access))
 		{
         $tower['silos'] = $silo;
         $tower['mods']  = $mods;

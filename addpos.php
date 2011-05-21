@@ -28,7 +28,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('5', $access) && !in_array('83', $access)) {
+if (!in_array('5', $access) && !in_array('6', $access) && !in_array('83', $access)) {
 		$eve->RedirectUrl('track.php');
 }
 

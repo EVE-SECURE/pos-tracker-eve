@@ -58,7 +58,7 @@ switch($action) {
 
 
 
-if (in_array('1', $access) || in_array('5', $access)) {
+if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) {
 
             //sets current time
             $time = time();

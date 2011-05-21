@@ -24,7 +24,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (in_array('1', $access) || in_array('5', $access)) {
+if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) {
 
     $fuel_uranium           = 0;
     $fuel_oxygen            = 0;
@@ -148,16 +148,16 @@ if (in_array('1', $access) || in_array('5', $access)) {
     $args['use_current_levels'] = $use_current_levels;
 	$args['display_optimal'] = $display_optimal;
     $towers = $posmgmt->GetFuelBill($args);
-
+	
     foreach ($towers as $key => $tower) {
 
         //New Access System Complete for fuelbill.php
-        if (!in_array('1', $access) && !in_array('5', $access)) { //quick user check
+        if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) { //quick user check
 		
 			continue ; //Hide the tower
 			
 		}
-		elseif (in_array('5', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
+		elseif (in_array('5', $access) || in_array('6', $access) || $tower['owner_id'] == $userinfo['eve_id'] || $tower['secondary_owner_id'] == $userinfo['eve_id']){
 		
 		//Admin or tower owner logged in so kill the checkers so show the tower
 		
@@ -282,8 +282,37 @@ if (in_array('1', $access) || in_array('5', $access)) {
     (integer) $fuel_ozone_size            = round($fuel_ozone             * $pos_Ozo);
     (integer) $fuel_heavy_water_size      = round($fuel_heavy_water       * $pos_Hea);
     //(integer) $fuel_strontium_size        = round($current_strontium * 3) ;
+	
+	$prices = $posmgmt->GetPrices();
+	
+	$uranium_cost = $prices['Enriched Uranium'] * $fuel_uranium;
+	$oxygen_cost = $prices['Oxygen'] * $fuel_oxygen;
+	$mechanical_parts_cost = $prices['Mechanical Parts'] * $fuel_mechanical_parts;
+	$coolant_cost = $prices['Coolant'] * $fuel_coolant;
+	$robotics_cost = $prices['Robotics'] * $fuel_robotics;
+	$helium_iso_cost = $prices['Helium Isotopes'] * $fuel_H_isotopes;
+	$hydrogen_iso_cost = $prices['Hydrogen Isotopes'] * $fuel_Hy_isotopes;
+	$nitrogen_iso_cost = $prices['Nitrogen Isotopes'] * $fuel_N_isotopes;
+	$oxygen_iso_cost = $prices['Oxygen Isotopes'] * $fuel_O_isotopes;
+	$liquid_ozone_cost = $prices['Liquid Ozone'] * $fuel_ozone;
+	$heavy_water_cost = $prices['Heavy Water'] * $fuel_heavy_water;
+	
+	$total_cost = $uranium_cost + $oxygen_cost + $mechanical_parts_cost + $coolant_cost + $robotics_cost + $helium_iso_cost + $hydrogen_iso_cost + $nitrogen_iso_cost + $oxygen_iso_cost + $liquid_ozone_cost + $heavy_water_cost;
+	
     $total_size = $fuel_uranium_size + $fuel_oxygen_size + $fuel_mechanical_parts_size + $fuel_coolant_size + $fuel_robotics_size + $fuel_H_isotopes_size + $fuel_N_isotopes_size + $fuel_O_isotopes_size + $fuel_Hy_isotopes_size + $fuel_ozone_size + $fuel_heavy_water_size;
 
+	$eveRender->Assign('uranium_cost', $uranium_cost);
+	$eveRender->Assign('oxygen_cost', $oxygen_cost);
+	$eveRender->Assign('mechanical_parts_cost', $mechanical_parts_cost);
+	$eveRender->Assign('coolant_cost', $coolant_cost);
+	$eveRender->Assign('robotics_cost', $robotics_cost);
+	$eveRender->Assign('helium_iso_cost', $helium_iso_cost);
+	$eveRender->Assign('hydrogen_iso_cost', $hydrogen_iso_cost);
+	$eveRender->Assign('nitrogen_iso_cost', $nitrogen_iso_cost);
+	$eveRender->Assign('oxygen_iso_cost', $oxygen_iso_cost);
+	$eveRender->Assign('liquid_ozone_cost', $liquid_ozone_cost);
+	$eveRender->Assign('heavy_water_cost', $heavy_water_cost);
+	$eveRender->Assign('total_cost', $total_cost);
     $eveRender->Assign('fuel_uranium_size',           $fuel_uranium_size);
     $eveRender->Assign('fuel_oxygen_size',            $fuel_oxygen_size);
     $eveRender->Assign('fuel_mechanical_parts_size',  $fuel_mechanical_parts_size);

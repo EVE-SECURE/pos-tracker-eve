@@ -20,7 +20,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('1', $access) || !in_array('5', $access)) {
+if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
     $eve->RedirectUrl('login.php');
 }
 
@@ -34,7 +34,7 @@ if (empty($pos_id)) {
 $tower['pos_id']=$pos_id;
 $action = $eve->VarCleanFromInput('action');
 
-if (!in_array('1', $access) || !in_array('5', $access)) {
+if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
     $eve->RedirectUrl('track.php');
 }
 
