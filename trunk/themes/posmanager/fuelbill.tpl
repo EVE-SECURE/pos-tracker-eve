@@ -120,27 +120,29 @@
 	  <td class="hcolor">&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="16" class="billcontent" style="text-align:center;"><!--[formatnumber value=$total_size]--> (m3)</td>
+      <td colspan="16" class="billcontent" style="text-align:center;"><!--[formatnumber value=$total_size]--> (m3) | <!--[formatnumber value=$total_cost]--> [isk]</td>
     </tr>
   </table>
   <p style="text-align:center;"><input type="submit" name="filter" value="Filter" /> - <a class="link" href="fuelbill.php" title="Clear Filter">Clear Filter</a></p>
   </form>
   <p>
-    <textarea name="fuel Bill" cols="50" rows="15">
-Enriched Uranium: <!--[formatnumber value=$fuel_uranium]--> (<!--[formatnumber value=$fuel_uranium_size]-->m3)
-Oxygen: <!--[formatnumber value=$fuel_oxygen]--> (<!--[formatnumber value=$fuel_oxygen_size]-->m3)
-Mechanical Parts: <!--[formatnumber value=$fuel_mechanical_parts]--> (<!--[formatnumber value=$fuel_mechanical_parts_size]-->m3)
-Coolant: <!--[formatnumber value=$fuel_coolant]--> (<!--[formatnumber value=$fuel_coolant_size]-->m3)
-Robotics: <!--[formatnumber value=$fuel_robotics]--> (<!--[formatnumber value=$fuel_robotics_size]-->m3)
-Helium Isotopes: <!--[formatnumber value=$fuel_H_isotopes]--> (<!--[formatnumber value=$fuel_H_isotopes_size]-->m3)
-Hydrogen Isotopes: <!--[formatnumber value=$fuel_Hy_isotopes]--> (<!--[formatnumber value=$fuel_Hy_isotopes_size]-->m3)
-Nitrogen Isotopes: <!--[formatnumber value=$fuel_N_isotopes]--> (<!--[formatnumber value=$fuel_N_isotopes_size]-->m3)
-Oxygen Isotopes: <!--[formatnumber value=$fuel_O_isotopes]--> (<!--[formatnumber value=$fuel_O_isotopes_size]-->m3)
-Liquid Ozone: <!--[formatnumber value=$fuel_ozone]--> (<!--[formatnumber value=$fuel_ozone_size]-->m3)
-Heavy Water: <!--[formatnumber value=$fuel_heavy_water]--> (<!--[formatnumber value=$fuel_heavy_water_size]-->m3)
+    <textarea name="fuel Bill" cols="75" rows="15">
+Enriched Uranium: <!--[formatnumber value=$fuel_uranium]--> (<!--[formatnumber value=$fuel_uranium_size]-->m3) [<!--[formatnumber value=$uranium_cost]-->isk]
+Oxygen: <!--[formatnumber value=$fuel_oxygen]--> (<!--[formatnumber value=$fuel_oxygen_size]-->m3) [<!--[formatnumber value=$oxygen_cost]-->isk]
+Mechanical Parts: <!--[formatnumber value=$fuel_mechanical_parts]--> (<!--[formatnumber value=$fuel_mechanical_parts_size]-->m3) [<!--[formatnumber value=$mechanical_parts_cost]-->isk]
+Coolant: <!--[formatnumber value=$fuel_coolant]--> (<!--[formatnumber value=$fuel_coolant_size]-->m3) [<!--[formatnumber value=$coolant_cost]-->isk]
+Robotics: <!--[formatnumber value=$fuel_robotics]--> (<!--[formatnumber value=$fuel_robotics_size]-->m3) [<!--[formatnumber value=$robotics_cost]-->isk]
+Helium Isotopes: <!--[formatnumber value=$fuel_H_isotopes]--> (<!--[formatnumber value=$fuel_H_isotopes_size]-->m3) [<!--[formatnumber value=$helium_iso_cost]-->isk]
+Hydrogen Isotopes: <!--[formatnumber value=$fuel_Hy_isotopes]--> (<!--[formatnumber value=$fuel_Hy_isotopes_size]-->m3) [<!--[formatnumber value=$hydrogen_iso_cost]-->isk]
+Nitrogen Isotopes: <!--[formatnumber value=$fuel_N_isotopes]--> (<!--[formatnumber value=$fuel_N_isotopes_size]-->m3) [<!--[formatnumber value=$nitrogen_iso_cost]-->isk]
+Oxygen Isotopes: <!--[formatnumber value=$fuel_O_isotopes]--> (<!--[formatnumber value=$fuel_O_isotopes_size]-->m3) [<!--[formatnumber value=$oxygen_iso_cost]-->isk]
+Liquid Ozone: <!--[formatnumber value=$fuel_ozone]--> (<!--[formatnumber value=$fuel_ozone_size]-->m3) [<!--[formatnumber value=$liquid_ozone_cost]-->isk]
+Heavy Water: <!--[formatnumber value=$fuel_heavy_water]--> (<!--[formatnumber value=$fuel_heavy_water_size]-->m3) [<!--[formatnumber value=$heavy_water_cost]-->isk]
+
 Total in m3: <!--[formatnumber value=$total_size]-->
+Total in isk: <!--[formatnumber value=$total_cost]-->
 </textarea>
-  </p>
+ </p>
 
 
 <!--[include file='footer.tpl']-->

@@ -15,6 +15,8 @@
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="#users" title="Users Management">Users</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
+	  <a href="#prices" title="Users Management">Price List</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="admin.php?op=modules" title="Addons Management">Addons</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
 	  <a href="upgrade.php" title="DB Upgrades">DB Upgrades</a>
@@ -189,7 +191,7 @@
             <td><!--[$key.corp|default:"&nbsp;"]--></td>
             <td><!--[$key.userID|default:"&nbsp;"]--></td>
             <td><!--[$key.shortkey|default:"&nbsp;"]--></td>
-            <td><!--[if $userinfo.access > 4]--><input type="checkbox" name="keyremove[<!--[$key.id]-->]" /><!--[else]-->&nbsp;<!--[/if]--></td>
+            <td><!--[if $userinfo.access == 5]--><input type="checkbox" name="keyremove[<!--[$key.id]-->]" /><!--[else]-->&nbsp;<!--[/if]--></td>
            </tr>
         <!--[/foreach]-->
           <tr>
@@ -228,9 +230,9 @@
 			
 			<th class="mbground hcolor">ReStocker</th>
 			
-			<th class="mbground hcolor">Notes</th>
-			
 			<th class="mbground hcolor">Trusted</th>
+			
+			<th class="mbground hcolor">SubAdmin</th>
 			
 			<th class="mbground hcolor">Enabled</th>
 			
@@ -240,9 +242,12 @@
           </tr>
         </thead>
 		
+		
 		<!--[foreach item='user' from=$users]-->
 		<!--[assign var=auser value="."|explode:$user.access]-->
 		<!--[if $user.name != "Admin"]-->
+		<!--[if ((!in_array('6', $auser) && in_array('6', $access)) || in_array('5', $access))]-->
+				
 		<input type="hidden" name="UserList[<!--[$user.id]-->]" value="<!--[$user.id]-->">
 		<tbody class="auser">
 		<tr>
@@ -254,7 +259,7 @@
 		
 		<tr>
 		<td>
-		<select name="CorpAccess[<!--[$user.id]-->]">
+		<select name="CorpAccess[<!--[$user.id]-->]" <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->>
 		<option value="">No Access</option>
 		<option value="20" <!--[if (in_array('20', $auser))]-->selected="yes"<!--[/if]-->>View</option>
 		<option value="21" <!--[if (in_array('21', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
@@ -263,7 +268,7 @@
 		</td>
 		
 		<td>
-		<select name="OtherCorpAccess[<!--[$user.id]-->]">
+		<select name="OtherCorpAccess[<!--[$user.id]-->]" <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->>
 		<option value="">No Access</option>
 		<option value="50" <!--[if (in_array('50', $auser))]-->selected="yes"<!--[/if]-->>View</option>
 		<option value="51" <!--[if (in_array('51', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
@@ -272,7 +277,7 @@
 		</td>
 		
 		<td>
-		<select name="JobAccess[<!--[$user.id]-->]">
+		<select name="JobAccess[<!--[$user.id]-->]" <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->>
 		<option value="">No Access</option>
 		<option value="40" <!--[if (in_array('40', $auser))]-->selected="yes"<!--[/if]-->>Current</option>
 		<option value="41" <!--[if (in_array('41', $auser))]-->selected="yes"<!--[/if]-->>Past</option>
@@ -281,7 +286,7 @@
 		</td>
 		
 		<td>
-		<select name="ProdAccess[<!--[$user.id]-->]">
+		<select name="ProdAccess[<!--[$user.id]-->]" <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->>
 		<option value="">No Access</option>
 		<option value="42" <!--[if (in_array('42', $auser))]-->selected="yes"<!--[/if]-->>Own</option>
 		<option value="43" <!--[if (in_array('43', $auser))]-->selected="yes"<!--[/if]-->>Same Corp</option>
@@ -290,23 +295,19 @@
 		</td>
 		
 		<td>
-		<select name="ReStockerAccess[<!--[$user.id]-->]">
+		<select name="ReStockerAccess[<!--[$user.id]-->]" <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->>
 		<option value="">N/A</option>
 		</select>
 		</td>
 		
-		<td>
-		<select name="NotesAccess[<!--[$user.id]-->]">
-		<option value="">N/A</option>
-		</select>
-		</td>
-		
-		<td><input type="checkbox" name="TrustAccess[<!--[$user.id]-->]" value="83" <!--[if (in_array('83', $auser))]-->checked<!--[/if]-->></td>
-		<td><input type="checkbox" name="UserEnabled[<!--[$user.id]-->]" value="1" <!--[if (in_array('1', $auser))]-->checked<!--[/if]-->></td>
-		<td><input type="checkbox" name="userremove[<!--[$user.id]-->]" /></td>
+		<td><input type="checkbox" name="TrustAccess[<!--[$user.id]-->]" value="83" <!--[if (in_array('83', $auser))]-->checked<!--[/if]--> <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->></td>
+		<td><input type="checkbox" name="SubAdminAccess[<!--[$user.id]-->]" value="6" <!--[if (in_array('6', $auser))]-->checked<!--[/if]-->></td>
+		<td><input type="checkbox" name="UserEnabled[<!--[$user.id]-->]" value="1" <!--[if (in_array('1', $auser) || in_array('6', $auser))]-->checked<!--[/if]--> <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->></td>
+		<td><input type="checkbox" name="userremove[<!--[$user.id]-->]" <!--[if (in_array('6', $access))]-->disabled<!--[/if]-->></td>
 		
 		</tr>
 		</tbody>
+		<!--[/if]-->
         <!--[/if]-->
         <!--[/foreach]-->
 		
@@ -316,6 +317,35 @@
         </table>
       </div>
       </form>
+	  <hr />
+    <h4 class="pageTitle"><a name="prices"></a>Global Price List</h4>
+    <div class="mcenter">
+      <form method="post" action="admin.php">
+      <div>
+        <input type="hidden" name="action" value="updateprices" />
+        <table class="mcenter tracktable" style="width:640px;">
+        <thead>
+          <tr>
+			<th class="mbground hcolor">Item</th>
+			
+			<th class="mbground hcolor">Value</th>	
+          </tr>
+        </thead>
+		
+		<!--[foreach from=$prices key=k item=v]-->
+		<tbody class="auser">
+		<tr>
+		<td><!--[$k]--></td>
+		<td><input type="text" name="PricesUpdate[<!--[$k]-->]" value="<!--[$v]-->"></td>
+		</tr>
+		</tbody>
+        <!--[/foreach]-->
+		<tbody>
+          <tr><td colspan="9"><input type="submit" value="Update Prices" /></td></tr>
+        </tbody>
+        </table>
+      </div>
+      </form>	  
 	<hr />
     <h4 class="pageTitle"><a name="users"></a>Version Checker</h4>
     <div class="mcenter">

@@ -24,7 +24,7 @@
         </td>
       </tr>
  <!-- Hard Disabled in the PHP Code    <tr>
-	<!--[if (in_array('1', $access)) || (in_array('5', $access))]-->
+	<!--[if (in_array('1', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
         <td class="mbground hcolor">Use Corporate hangar level</td>
         <td>
           <select name="use_hanger_levels">
