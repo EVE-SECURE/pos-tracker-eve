@@ -11162,7 +11162,8 @@ INSERT INTO `%prefix%structure_static` (`id`, `name`, `pg`, `cpu`) VALUES
 (24660, 'Component Assembly Array', 50000, 150),
 (24659, 'Drone Assembly Array', 50000, 150),
 (13780, 'Efficient Equipment Assembly Array', 90000, 150),
-(24656, 'Large Ship Assembly Array', 300000, 1000),
+(24656, 'X-Large Ship Assembly Array', 300000, 1000),
+(29613, 'Large Ship Assembly Array', 300000, 1000),
 (24654, 'Medium Ship Assembly Array', 200000, 500),
 (16220, 'Rapid Equipment Assembly Array', 110000, 200),
 (24574, 'Small Ship Assembly Array', 100000, 250),
@@ -35664,3 +35665,21 @@ INSERT INTO `%prefix%invTypes` (`typeID`, `groupID`, `typeName`, `graphicID`, `r
 (32469, 325, 'Civilian Remote Armor Repair System', NULL, 0, 20, 5, 0, 1, NULL, 4996, 1, NULL, 0.07, 80),
 (32471, 286, 'Damaged Vessel', 330, 287, 13075000, 115000, 3200, 1, 8, 0, 0, NULL, 0, NULL);
 
+CREATE TABLE IF NOT EXISTS `%prefix%prices` (
+  `Name` varchar(20) NOT NULL,
+  `Value` decimal(20,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`Name`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `%prefix%prices` (`Name`, `Value`) VALUES
+('Enriched Uranium', 100.00),
+('Oxygen', 100.00),
+('Mechanical Parts', 100.00),
+('Coolant', 100.00),
+('Robotics', 100.00),
+('Helium Isotopes', 100.00),
+('Hydrogen Isotopes', 100.00),
+('Nitrogen Isotopes', 100.00),
+('Oxygen Isotopes', 100.00),
+('Liquid Ozone', 100.00),
+('Heavy Water', 100.00);
