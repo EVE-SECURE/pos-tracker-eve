@@ -64,7 +64,8 @@ $upgradeList=array(
 333=>'FG Update for Tyrannis',
 501=>'v5.0.1 - Material Volume Fix',
 502=>'v5.0.2 - Theme Install',
-511=>'v5.1.1 - Incursion DB & Corp Jobs Install'
+511=>'v5.1.1 - Incursion DB & Corp Jobs Install',
+512=>'v5.1.2 - Prices & Ship Assembly Array Fix'
 );
 
 $eveRender->Assign('upgradeList', $upgradeList);
