@@ -4,7 +4,17 @@
   <div class="mcenter txtleft">
     <h3>POS-Tracker Version: (<!--[$version]-->)</h3>
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
-    <br /><br />
+    <br />
+	<br />
+	<strong>Version 5.1.1 Beta 2 to 5.1.2 Changes:</strong>
+    <ul>
+	  <li>Fuel Bill now has Prices! Prices can be changed via the Admin Panel. DB Upgrade Required.</li>
+	  <li>SubAdmin permissions can now be given by the Admin account.</li>
+	  <li>Past Jobs Installer IDs got a small fix so they wouldn't all appear as ----.</li>
+	  <li>X-Large Ship Assembly Array is now selectable under modules. After doing the DB upgrade any Large Ship Assembly Arrays will become X-Large due to ID conflict from original POS Tracker code.</li>
+	  <li>Fixed bug not allowing you to see past page 1 on the POS Track page.</li>
+	</ul>
+    <br />
 	<strong>Version 5.1.1 Beta 1 to 5.1.1 Beta 2 Changes:</strong>
     <ul>
 	  <li>Subdomain Bug Fixed.</li>
