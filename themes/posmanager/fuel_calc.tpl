@@ -121,7 +121,7 @@
 		<!--[/if]-->
       </tr>
       <tr>
-        <td>Isotopes</td>
+        <td>Isotopes (<!--[$race_isotope]-->)</td>
         <!--[math equation="x*y*24" x=$fuel.required_isotope y=$days_to_refuel assign='total_required']-->
         <td class="mcolor"><!--[formatnumber value=$total_required]--></td>
         <td><!--[formatnumber value=$fuel.needed_isotopes]--></td>
@@ -170,7 +170,8 @@
 		<td class="txtcenter" colspan="3"><!--[$fuel.trips2]--> hauling trips</td>
 		<!--[/if]-->
       </tr><!--[/if]-->
-    </table>
+    </table><br>
+	<a class="link" href="viewpos.php?i=<!--[$pos_id]-->">View POS</a>
   </div>
 <!--[/if]-->
 
