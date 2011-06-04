@@ -4143,7 +4143,7 @@ class POSMGMT
                 $required_charters          = $charters_needed?1:0;
                 $pos_capacity               = $row['fuel_hangar'];
                 $strontium_capacity         = $row['strontium_hangar'];
-                $race_isotope               = $result['race_isotope'];
+                $race_isotope               = $row['race_isotope'];
                 $total_pg                   = $row['pg'];
                 $total_cpu                  = $row['cpu'];
 
