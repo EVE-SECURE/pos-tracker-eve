@@ -37,8 +37,6 @@ if (!empty($pos_to_refuel)) {
 	$display_optimal	= $eve->VarCleanFromInput('display_optimal');
     $use_hanger_levels  = 0;//$eve->VarCleanFromInput('use_hanger_levels');
     $cargosize          = $eve->VarCleanFromInput('size');
-
-	
 	
     $args['days_to_refuel']     = $days + ($hours/24);
     $args['pos_ids'][]          = $pos_to_refuel;
@@ -92,6 +90,15 @@ if (!empty($pos_to_refuel)) {
     $tower['required_N_isotope']  = $required_N_isotope;
     $tower['required_O_isotope']  = $required_O_isotope;
 
+	if ($tower['required_H_isotope'] > 1) {
+	$race_isotope = "Helium";
+	} elseif ($tower['required_Hy_isotope'] > 1) { 
+	$race_isotope = "Hydrogen";
+	} elseif ($tower['required_N_isotope'] > 1) { 
+	$race_isotope = "Nitrogen";
+	} elseif ($tower['required_O_isotope'] > 1) { 
+	$race_isotope = "Oxygen"; }
+	
     $fuel_H_isotopes        = $fuel_H_isotopes        + $required_H_isotope;
     $fuel_N_isotopes        = $fuel_N_isotopes        + $required_N_isotope;
     $fuel_O_isotopes        = $fuel_O_isotopes        + $required_O_isotope;
@@ -106,7 +113,7 @@ if (!empty($pos_to_refuel)) {
 
     (integer) $fuel_uranium_size          = round($fuel_uranium           * $pos_Ura);
     (integer) $fuel_oxygen_size           = round($fuel_oxygen            * $pos_Oxy);
-    (float)   $fuel_mechanical_parts_size = round($fuel_mechanical_parts  * $pos_Mec);
+    (integer) $fuel_mechanical_parts_size = round($fuel_mechanical_parts  * $pos_Mec);
     (integer) $fuel_coolant_size          = round($fuel_coolant           * $pos_Coo);
     (integer) $fuel_robotics_size         = round($fuel_robotics          * $pos_Rob);
     (integer) $fuel_H_isotopes_size       = round($fuel_H_isotopes        * $pos_Iso);
@@ -188,7 +195,7 @@ if (!empty($pos_to_refuel)) {
             $tower['required_heavy_water']       = $row['heavy_water'];
             $tower['required_strontium']         = $row['strontium'];
             $tower['required_charters']          = $charters_needed?1:0;
-            $tower['race_isotope']               = $result['race_isotope'];
+            $tower['race_isotope']               = $row['race_isotope'];
             $tower['total_pg']                   = $row['pg'];
             $tower['total_cpu']                  = $row['cpu'];
             $required_isotope                    = $row['isotopes'];
@@ -201,7 +208,6 @@ if (!empty($pos_to_refuel)) {
             $required_heavy_water                = $row['heavy_water'];
             $required_strontium                  = $row['strontium'];
             $required_charters                   = $charters_needed?1:0;
-            $race_isotope                        = $result['race_isotope'];
             $total_pg                            = $row['pg'];
             $total_cpu                           = $row['cpu'];
           //  $tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
@@ -231,8 +237,9 @@ if (!empty($pos_to_refuel)) {
 	
 }
 	
-	
-	
+		
+	$eveRender->Assign('pos_id',           $pos_id);
+	$eveRender->Assign('race_isotope',           $race_isotope);
     $eveRender->Assign('fuel',           $fuel);
     $eveRender->Assign('hours',          $hours);
     $eveRender->Assign('cargosize',      $cargosize);
