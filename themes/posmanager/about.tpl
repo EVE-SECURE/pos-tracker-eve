@@ -6,6 +6,16 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.1.2 to 5.1.3 Changes:</strong>
+    <ul>
+	  <li>Fuel Calc now lists the isotope type.</li>
+	  <li>Fuel Calc now has a direct link to the POS you are refueling.</li>
+	  <li>View/Edit POS now displays when it was last fueled and by who.</li>
+	  <li>POS Track can now sort by corporation.</li>
+	  <li>POS Track's "pointless" dotlan links consolidated into 1 new map icon in the actions area.</li>
+	  <li>POS Track's headers now do the sorting instead of the sort towers button which is now gone.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.1 Beta 2 to 5.1.2 Changes:</strong>
     <ul>
 	  <li>Fuel Bill now has Prices! Prices can be changed via the Admin Panel. DB Upgrade Required.</li>
