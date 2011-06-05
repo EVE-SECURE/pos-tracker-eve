@@ -12,7 +12,7 @@
 	  <li>Fuel Calc now has a direct link to the POS you are refueling.</li>
 	  <li>View/Edit POS now displays when it was last fueled and by who.</li>
 	  <li>POS Track can now sort by corporation.</li>
-	  <li>POS Track's "pointless" dotlan links consolidated into 1 new map icon in the actions area.</li>
+	  <li>POS Track's dotlan links consolidated into 1 new map icon in the actions area.</li>
 	  <li>POS Track's headers now do the sorting instead of the sort towers button which is now gone.</li>
 	</ul>
 	<br />
