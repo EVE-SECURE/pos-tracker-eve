@@ -10,14 +10,17 @@
   <table class="mcenter">
   <tbody>
     <tr>
-      <td rowspan="14"><img src="images/structures/256_256/<!--[$tower.typeID]-->.png" alt="<!--[$tower.towerName]-->" /></td>
+      <td rowspan="15"><img src="images/structures/256_256/<!--[$tower.typeID]-->.png" alt="<!--[$tower.towerName]-->" /></td>
       <td class="txtleft mbground hcolor">Last Updated:</td>
       <td class="txtleft"><!--[$last_update]--></td>
     </tr>
     <tr>
-      <!--<td></td>-->
       <td class="txtleft mbground hcolor">Was updated:</td>
       <td class="txtleft"><!--[$hoursago]--> Hours Ago</td>
+    </tr>
+	<tr>
+      <td class="txtleft mbground hcolor">Last Fueled:</td>
+      <td class="txtleft"><!--[$tower.status]--></td>
     </tr>
     <tr>
       <!--<td></td>-->
