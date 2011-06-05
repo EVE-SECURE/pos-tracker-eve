@@ -84,7 +84,7 @@ switch($action) {
         if(!is_numeric($new_cpu) || $new_cpu<0) {
             $new_cpu=0;
         }
-
+		
         if ($posmgmt->ChangeTowerInfo(array('pos_id' => $pos_id, 'newstatus' => $newstatus, 'new_tower_name' => $new_tower_name, 'new_outpost'=>$new_outpost_id, 'new_pg' => $new_pg, 'new_cpu' => $new_cpu))) {
             $eve->SessionSetVar('statusmsg', 'Modifications Saved!');
             $eve->RedirectUrl('viewpos.php?i='.$pos_id);
@@ -119,6 +119,11 @@ switch($action) {
         $fuel['heavy_water']      = $eve->VarCleanFromInput('heavy_water');
         $fuel['strontium']        = $eve->VarCleanFromInput('strontium');
         $fuel['charters']         = $eve->VarCleanFromInput('charters');
+		
+		date_default_timezone_set('UTC');
+		$fuel['status'] = date("Y-m-d H:i:s")." by ".$userinfo['name'];
+		
+		
         if(!is_numeric($fuel['charters']))
         {
               $fuel['charters']=0;
@@ -225,6 +230,7 @@ if ($tower) {
     $location                 = $tower['moonName'];
     $tower_cpu                = $tower['cpu'];
     $tower_pg                 = $tower['powergrid'];
+	$status                      = $tower['status'];
     $systemName               = $posmgmt->getSystemName($systemID); //New Call to Function to get System Name from database
     $allianceid               = $tower['allianceid'];
     //New Sovereingty Function to retrieve Sovereingty Status
