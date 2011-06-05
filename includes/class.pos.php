@@ -3055,7 +3055,8 @@ class POSMGMT
                        ozone            = '".$fuel['ozone']."',
                        heavy_water      = '".$fuel['heavy_water']."',
                        charters         = '".$fuel['charters']."',
-                       strontium        = '".$fuel['strontium']."'
+                       strontium        = '".$fuel['strontium']."',
+					   status        = '".$fuel['status']."'
                 WHERE  pos_id           = '".$fuel['pos_id']."'";
 
         $dbconn->Execute($sql);
