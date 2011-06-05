@@ -981,6 +981,9 @@ class POSMGMT
                 case 10:
                     $orderby="ORDER BY  pos_race, pos_size";
                 break;
+				case 11:
+                    $orderby="ORDER BY  corp";
+                break;
             }
         } else {
             $orderby="ORDER BY  MoonName";
