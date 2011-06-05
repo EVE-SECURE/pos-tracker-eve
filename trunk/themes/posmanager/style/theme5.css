@@ -27,6 +27,11 @@ a {
   text-decoration: underline;
 }
 
+a.sort { /*sort links on track*/
+  color: #dbdbdb;
+  text-decoration: underline;
+}
+
 .mcolor { /*main color*/
   color: #dbdbdb;
 }
