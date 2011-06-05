@@ -4,7 +4,10 @@
   <hr>
   <div class="mcenter txtleft">
     <h3><u>User Help:</u></h3>
-	<b>Registering:</b> After registering your administrator needs to give you access before you can actually log in. 
+	<ul>
+			<li>Why can't I login after registering my account?<ul><li>After registering your administrator needs to give you access before you can actually log in.</li></ul></li>
+			<li>Where is the Max Days option for fueling towers?<ul><li>Within the POS Tracker (Optimal = Max Amount) of days you can possibly get. Optimal will make sure you fill the tower up to the max amount you can in the fuel bay.</li></ul></li>
+	</ul>
 	<hr>
 	
 	<h3><u>Administrator Help:</u></h3>
@@ -96,6 +99,7 @@
 			<li>Fatal error: Call to undefined function ADONewConnection() in /pos/includes/dbfunctions.php on line 71<ul><li>You get this error when trying to run the POS Tracker or page in PHP4. If this happens during a Cron Job run, make sure that the job points to your PHP5 install on the server.</li></ul> </li>
 			<li>Past Jobs take a very long time to load. This will be addressed in later versions of the POS tracker.</li>
 			<li>Fuel Calculator doesn't have optimal for Liquid Ozone and Heavy Water. This will be addressed in later versions of the POS tracker.</li>
+	</ul>	
 </div>
 	
 	
