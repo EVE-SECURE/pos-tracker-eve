@@ -82,6 +82,7 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
             $location                = $tower['moonName'];
             $tower_cpu               = $tower['cpu'];
             $tower_pg                = $tower['powergrid'];
+			$status                      = $tower['status'];
             $systemName              = $posmgmt->getSystemName($systemID); //New Call to Function to get System Name from database
             //New Sovereingty Function to retrieve Sovereingty Status
             $tower['sovereignty']    = $posmgmt->getSovereignty($systemID);
