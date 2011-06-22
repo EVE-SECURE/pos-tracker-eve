@@ -7,7 +7,7 @@
     <div>
       <input type="hidden" name="id"     value="<!--[$id]-->" />
       <input type="hidden" name="action" value="changeinfo" />
-      <table class="mcenter tracktable txtleft" style="width:500px;">
+      <table class="mcenter tracktable txtleft" style="width:640px;">
       <thead>
         <tr>
           <td class="mbground hcolor txtcenter" colspan=2>User Information</th>
@@ -29,6 +29,19 @@
           <td class="mbground hcolor">Your email</th>
           <td><input size=40 type="text" name="email" value="<!--[$email]-->" /></td>
         </tr>
+        <tr class="txtcenter">
+          <td colspan="2"><input type="submit" value="Update Profile" /></td>
+        </tr>
+      </tbody>
+      </table>
+	  <!--[assign var=utrack value="."|explode:$user_track]-->
+	  <table class="mcenter tracktable txtleft" style="width:640px;">
+      <thead>
+        <tr>
+          <td class="mbground hcolor txtcenter" colspan=2>User Settings</th>
+        <tr>
+      </thead>
+      <tbody>
         <tr>
           <td class="mbground hcolor">Away Status</td>
           <td><!--[html_options options=$awaystatus name='away' selected=$away]--></td>
@@ -37,11 +50,20 @@
           <td class="mbground hcolor">Theme</td>
           <td><!--[html_options options=$themeset name='theme_id' selected=$theme_id]--></td>
         </tr>
+		<tr>
+          <td class="mbground hcolor">POS Track Default Tower Display</td>
+          <td><!--[html_options options=$user_track_display name='user_track_display' selected=$utrack[0]]--></td>
+        </tr>
+		<tr>
+          <td class="mbground hcolor">POS Track Default Sort</td>
+          <td><!--[html_options options=$user_track_sort name='user_track_sort' selected=$utrack[1]]--></td>
+        </tr>
         <tr class="txtcenter">
-          <td colspan="2"><input type="submit" value="Update Profile" /></td>
+          <td colspan="2"><input type="submit" value="Update Settings" /></td>
         </tr>
       </tbody>
       </table>
+	  
     </div>
     </form>
     <div class="mcenter txtcenter">

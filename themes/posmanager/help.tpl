@@ -40,7 +40,7 @@
 				<li><b>Secret</b> - Can view and edit all towers including secret towers of other corporations setup in the POS Tracker.</li>
 			</ul>
 		</li>
-		<li><b><u>Jobs</u></b>
+		<li><b><u>Jobs</u></b> - This security unfortuantely doesn't work like it should. Unless you trust someone to see all Jobs, set their access to No Access.
 			<ul>
 				<li><b>No Access</b> - Can not view any industrial jobs.</li>
 				<li><b>Current</b> - Can view all current industrial jobs of the corporation that user is part of.</li>
@@ -63,7 +63,7 @@
 		</li>
 		<li><b><u>Trusted</u></b>
 			<ul>
-				<li><b>When Checked</b> - User is able to add towers manually and can delete towers where they are a fuel tech. They can also update global prices within the POS Tracker.</li>
+				<li><b>When Checked</b> - User is able to add towers manually and can delete towers where they are a fuel tech.</li>
 			</ul>
 		</li>
 		<li><b><u>SubAdmin</u></b>
@@ -94,11 +94,14 @@
 		<li>Allow user to view all production within the POS Tracker - (Corp: Secret | Other Corp: Secret | Production: All Corps)</li>
 	</ul>
 <BR>
-<b><u>Common Errors/Fixes</u></b>
+<b><u>Common Errors/Fixes/FAQ</u></b>
 	<ul>
 			<li>Fatal error: Call to undefined function ADONewConnection() in /pos/includes/dbfunctions.php on line 71<ul><li>You get this error when trying to run the POS Tracker or page in PHP4. If this happens during a Cron Job run, make sure that the job points to your PHP5 install on the server.</li></ul> </li>
-			<li>Past Jobs take a very long time to load. This will be addressed in later versions of the POS tracker.</li>
+			<li>API Imported tower doesn't have a location.<ul><li>You will need to make sure the Region is installed under the Moon Database with the Admin Panel.</li></ul></li>
 			<li>Fuel Calculator doesn't have optimal for Liquid Ozone and Heavy Water. This will be addressed in later versions of the POS tracker.</li>
+			<li>EVE-Marketdata imported prices won't update on the global price list.<ul><li>EVE-Marketdata currently has a 24 hour cache which is updated at downtime so wait until the the next downtime.</li></ul></li>
+			<li>Can I setup a daily API pull for the global price list like to EVE-Marketdata?<ul><li>At this time no, however it is in the works along with some other possible sites.</li></ul></li>
+			<li>My POS Track page isn't sorting/displaying by what shows under my user panel(10 & Corp A).<ul><li>Most likely this is the first time you've logged in since the new version, click Update Settings under your user panel and everything should work wonderfully.</li></ul></li>
 	</ul>	
 </div>
 	
