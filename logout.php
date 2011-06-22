@@ -40,7 +40,7 @@ session_start();
 session_unset();
 session_destroy();
 
-$eve->SessionSetVar('statusmsg', 'Bebye!');
+$eve->SessionSetVar('statusmsg', 'Bye Bye! :)');
 $eve->RedirectUrl('index.php');
 
 ?>

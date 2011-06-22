@@ -38,6 +38,7 @@ EveDBInit();
 
 include_once 'includes/eveclass.php';
 include_once 'includes/class.pos.php';
+include_once 'includes/api.php';
 include_once 'includes/eveRender.class.php';
 include_once 'version.php';
 
@@ -48,6 +49,7 @@ $eveRender->Assign('version', VERSION);
 
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
+$API = New API();
 
 $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
@@ -126,6 +128,15 @@ if ($action == 'updatealliance') {
     exit;
 } elseif ($action == 'updatejobs') {
     $results = $posmgmt->API_UpdateIndustryJobs();
+
+    $eveRender->Assign('action',   $action);
+    $eveRender->Assign('results', $results);
+
+    $eveRender->Display('admin.tpl');
+    exit;
+
+} elseif ($action == 'updatepricesapi') {
+    $results = $API->API_UpdatePrices();
 
     $eveRender->Assign('action',   $action);
     $eveRender->Assign('results', $results);

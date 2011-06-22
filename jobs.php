@@ -41,41 +41,7 @@ if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access
 	} else {
 	$jobs = $posmgmt->GetAllIndustrialJobs(0);
 	}
-	
-	$itemDB = $posmgmt->GetAllStaticItems();
-	$userList = $posmgmt->GetAllJobUsers();
-	
-	foreach ($jobs as $key => $value) {
-	
-		foreach ($value as $k => $v) {
 
-		if ($k == 'installedItemTypeID' || $k == 'containerTypeID' || $k == 'outputTypeID') {
-				foreach($itemDB as $key2 => $value2) {
-					foreach ($value2 as $k2 => $v2) {
-						if ($k2 == 'typeID') {
-							if ($v == $v2) {
-								$jobs[$key][$k] = $itemDB[$key2]['typeName'];
-							}
-						}
-					}
-				}
-			}
-			
-			if ($k == 'installerID') {
-				foreach($userList as $key2 => $value2) {
-					foreach ($value2 as $k2 => $v2) {
-						if ($k2 == 'eve_id') {
-							if ($v == $v2) {
-								$jobs[$key][$k] = $userList[$key2]['name'];
-							}
-						}
-					}
-				}
-			}
-			
-		}
-	}
-	
 	$activ = array(0  => 'None',
 					   1  => 'Manufacturing',
                        2  => 'Researching Technology',
