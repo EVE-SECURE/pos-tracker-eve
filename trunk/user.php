@@ -9,7 +9,6 @@ include_once 'includes/class.pos.php';
 include_once 'includes/eveRender.class.php';
 
 $eveRender = New eveRender($config, $mod, false);
-/*$colors    = $eveRender->themeconfig;*/
 $eveRender->Assign('config', $config);
 
 $eve     = New Eve();
@@ -34,6 +33,10 @@ $action = $eve->VarCleanFromInput('action');
 
 if ($action == 'changeinfo') {
 	$theme_id = $eve->VarCleanFromInput('theme_id');
+	$user_track_display = $eve->VarCleanFromInput('user_track_display');
+	$user_track_sort = $eve->VarCleanFromInput('user_track_sort');
+	$trackArray = array($user_track_display, $user_track_sort);
+	$user_track = implode(".",array_filter($trackArray));
     $away     = $eve->VarCleanFromInput('away');
     $email    = $eve->VarCleanFromInput('email');
     $newpass  = $eve->VarCleanFromInput('newpass');
@@ -42,6 +45,13 @@ if ($action == 'changeinfo') {
 	if (!empty($theme_id) && $theme_id != $userinfo['theme_id']) {
       if ($posmgmt->UpdateUserTheme(array('id' => $userinfo['id'], 'newtheme' => $theme_id))) {
          $eve->SessionSetVar('statusmsg', 'New theme set!');
+         $eve->RedirectUrl('user.php');
+      }
+    }
+	
+	if (!empty($user_track) && $user_track != $userinfo['user_track']) {
+      if ($posmgmt->UpdateUserTrackOptions(array('id' => $userinfo['id'], 'new_user_track' => $user_track))) {
+         $eve->SessionSetVar('statusmsg', 'Settings saved!');
          $eve->RedirectUrl('user.php');
       }
     }
@@ -81,11 +91,34 @@ if ($action == 'updatecorpinfo') {
     }
 }
 
-$userinfo['access'] = explode('.',$userinfo['access']);
+$user_track_sort = array(
+	11 => 'Corp (A)',
+	23 => 'Corp (D)',
+	6 => 'Fuel Tech 1 (A)', 
+	18 => 'Fuel Tech 1 (D)', 
+	7 => 'Fuel Tech 2 (A)', 
+	19 => 'Fuel Tech 2 (D)', 
+	2 => 'Location (A)',
+	14 => 'Location (D)',
+	10 => 'POS Race (A)',
+	22 => 'POS Race (D)',
+	9 => 'POS Size (A)',
+	21 => 'POS Size (D)',
+	5 => 'POS Type (A)',
+	17 => 'POS Type (D)',
+ 	3 => 'Region (A)',
+	15 => 'Region (D)',
+	1 => 'Status (A)',
+	13 => 'Status (D)',
+	4 => 'Tower Name (A)', 
+	16 => 'Tower Name (D)');
 
+$userinfo['access'] = explode('.',$userinfo['access']);
 $eveRender->Assign($userinfo);
 $eveRender->Assign('awaystatus', array( 2 => 'No', 1 => 'Yes'));
 $eveRender->Assign('themeset', array( 1 => 'FGV - Default', 2 => 'Original POS-Tracker', 3 => 'Majesta Empire', 4 => 'Razor Alliance', 5 => 'Morsus Mihi'));
+$eveRender->Assign('user_track_display', array( 10 => '10', 15 => '15', 30 => '30', 50=> '50', 75 => '75', 100 => '100'));
+$eveRender->Assign('user_track_sort', $user_track_sort);
 $eveRender->Assign('IS_IGB', $IS_IGB);
 
 $eveRender->Display('user.tpl');
