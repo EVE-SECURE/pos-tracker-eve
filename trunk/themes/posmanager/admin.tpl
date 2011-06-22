@@ -93,6 +93,17 @@
         <a href="admin.php" title="Done">Done</a>
       </p>
 	
+	<!--[elseif $action eq 'updatepricesapi']-->
+      <p>
+      <!--[if $results]-->
+        Success! Jita Prices Imported from the awesome <a href="http://eve-marketdata.com" target="_blank">EVE-Marketdata.com</a> website!<br />
+      <!--[else]-->
+        ERROR!! Prices couldn't update.
+      <!--[/if]-->
+        <br /><br />
+        <a href="admin.php" title="Done">Done</a>
+      </p>
+	
     <!--[elseif $action eq 'getcharacters']-->
       <!--[foreach item='character' from=$characters]-->
       <!--[assign var='alliance' value=$character.alliance]-->
@@ -341,11 +352,11 @@
 		</tbody>
         <!--[/foreach]-->
 		<tbody>
-          <tr><td colspan="9"><input type="submit" value="Update Prices" /></td></tr>
+          <tr><td colspan="9"><input type="submit" value="Update Prices" /></form><form method="post" action="admin.php"><input type="hidden" name="action" value="updatepricesapi" /><input type="submit" value="Update Prices via EVE-Marketdata" /></form></td></tr>
         </tbody>
         </table>
       </div>
-      </form>	  
+        
 	<hr />
     <h4 class="pageTitle"><a name="users"></a>Version Checker</h4>
     <div class="mcenter">

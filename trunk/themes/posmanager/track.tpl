@@ -1,46 +1,33 @@
 <!--[include file='header.tpl']-->
-
-  <form method="post" action="track.php">
-  <!--[html_options options=$pagernumlist name='pagernumsel' selected=$pager.limit]-->
-  <input type="submit" name="action" value="Display" />
-  <!-- $st = $_POST['st']; -->
-  <!--[if $st == 1]-->
-  <input type="submit" name="action" value="Hide Stront Timers" />
-  <!--[else]-->
-  <input type="submit" name="action" value="Show Stront Timers" />
-  <!--[/if]-->
-  </form>
-  <table class="mcenter tracktable" style="width:100%;" cellspacing="0">
+  <table class="mcenter tracktable sortable" style="width:100%;" cellspacing="0">
   <tbody>
     <tr class="mbground">
       <!--[*<td>Parent Outpost</td>*]-->
-      <td class="hcolor">Status</td>
-      <td class="hcolor">POS <a class="sort" href="track.php?sb=5" title="Sort by POS Type">Type</a> / <a class="sort" href="track.php?sb=9" title="Sort by POS Size">Size</a> / <a class="sort" href="track.php?sb=10" title="Sort by POS Race">Race</a></td>
-      <td class="hcolor"><a class="sort" href="track.php?sb=4" title="Sort by Tower Name">Tower Name</a></td>
-      <td class="hcolor"><a class="sort" href="track.php?sb=2" title="Sort by Location">Location</a></td>
-      <td class="hcolor"><a class="sort" href="track.php?sb=3" title="Sort by Region">Region</a></td>
-      <td class="hcolor"><a class="sort" href="track.php?sb=11" title="Sort by Corp">Corp</a> / <a class="sort" href="track.php?sb=6" title="Sort by Fuel Tech 1 Name">Fuel Tech 1</a> / <a class="sort" href="track.php?sb=7" title="Sort by Fuel Tech 2 Name">Fuel Tech 2</a></td>
-      <td class="hcolor">Last Update</td>
-	  <!--[if $st == 1]-->
-	  <td class="hcolor">Stront Status</td>
-	  <!--[else]-->
-      <td class="hcolor"><a class="sort" href="track.php?sb=1" title="Sort by Status">Status</a></td>
-      <!--[/if]-->
-	  <td class="hcolor">Action</td>
+	  <td class="hcolor">Status</td>
+      <td class="hcolor">POS <a class="sort" href="track.php?sb=<!--[if $sb != 5]-->5<!--[else]-->17<!--[/if]-->" title="Sort by POS Type">Type</a> / <a class="sort" href="track.php?sb=<!--[if $sb != 9]-->9<!--[else]-->21<!--[/if]-->" title="Sort by POS Size">Size</a> / <a class="sort" href="track.php?sb=<!--[if $sb != 10]-->10<!--[else]-->22<!--[/if]-->" title="Sort by POS Race">Race</a></td>
+	  <td class="hcolor"><a class="sort" href="track.php?sb=<!--[if $sb != 4]-->4<!--[else]-->16<!--[/if]-->" title="Sort by Tower Name">Tower Name</a></td>
+      <td class="hcolor"><a class="sort" href="track.php?sb=<!--[if $sb != 2]-->2<!--[else]-->14<!--[/if]-->" title="Sort by Location">Location</a></td>
+      <td class="hcolor"><a class="sort" href="track.php?sb=<!--[if $sb != 3]-->3<!--[else]-->15<!--[/if]-->" title="Sort by Region">Region</a></td>
+      <td class="hcolor"><a class="sort" href="track.php?sb=<!--[if $sb != 11]-->11<!--[else]-->23<!--[/if]-->" title="Sort by Corp">Corp</a> / <a class="sort" href="track.php?sb=<!--[if $sb != 6]-->6<!--[else]-->18<!--[/if]-->" title="Sort by Fuel Tech 1 Name">Fuel Tech 1</a> / <a class="sort" href="track.php?sb=<!--[if $sb != 7]-->7<!--[else]-->19<!--[/if]-->" title="Sort by Fuel Tech 2 Name">Fuel Tech 2</a></td>
+      <td class="hcolor"><a class="sort" href="track.php?sb=<!--[if $sb != 12]-->12<!--[else]-->24<!--[/if]-->" title="Sort by Last Fueled">Last Fueled</a></td>
+		<!--[if $st == 1]-->
+			<td class="hcolor">Stront Status</td>
+		<!--[else]-->
+			<td class="hcolor"><a class="sort" href="track.php?sb=<!--[if $sb != 1]-->1<!--[else]-->13<!--[/if]-->" title="Sort by Status">Status</a></td>
+		<!--[/if]-->
+		<td class="hcolor">Action</td>
     </tr>
-
   <!--[foreach item='pos' from=$poses]-->
     <!--[assign var='pos_size' value=$pos.pos_size]-->
-    <!--[assign var='pos_race' value=$pos.pos_race]-->
     <tr style="background-color:<!--[$pos.bgcolor]-->;">
        <!--[*<td>None</td>*]-->
       <td><!--[if $pos.pos_status_img]--><img src="themes/<!--[$config.theme]-->/images/<!--[$pos.pos_status_img]-->" alt="<!--[$pos.pos_status_img]-->" /><!--[else]-->&nbsp;<!--[/if]--></td>
-      <td><!--[$arrposize.$pos_size]--> <!--[$arrporace.$pos_race]--></td>
+      <td><!--[$arrposize.$pos_size]--> <!--[$pos.pos_race]--></td>
       <td><!--[$pos.towerName]--></td>
       <td><!--[$pos.MoonName]--></td>
       <td><!--[$pos.region]--></td>
       <td><a class="link" href="#"><!--[$pos.corp]--></a><br><!--[$pos.name|default:"-"]--> / <!--[$pos.backup|default:"-"]--></td>
-      <td><!--[$pos.last_update]--></td>
+      <td><!--[$pos.status]--></td>
 	  <!--[if $st == 1]-->
 	  <td style="color:<!--[$pos.textcolor]-->;"><!--[$pos.strontium]--> (<!--[daycalc hours=$pos.uptimecalc.strontium]-->)</td>
 	  <!--[else]-->
@@ -60,11 +47,11 @@
 	  <a href="http://evemaps.dotlan.net/system/<!--[$pos.MoonName|regex_replace:"/ [XIV]+ - Moon.*/":""]-->/moons" target="_blank"><img src="images/icons/loc.png" border="0" alt="Moon Location" title="Location" /></a>
       </td>
     </tr>
-
   <!--[/foreach]-->
-
   </tbody>
   </table>
-  <!--[pager numitems=$pager.numitems limit=$pager.limit]-->
+  Stront Timers: <a href="track.php?st=1" title="Show Stront Timers">Show</a> / <a href="track.php?st=2" title="Hide Stront Timers">Hide</a> <BR>
+  Display: <a href="track.php?sd=10" title="10">10</a> | <a href="track.php?sd=15" title="15">15</a> | <a href="track.php?sd=30" title="30">30</a> | <a href="track.php?sd=50" title="50">50</a> | <a href="track.php?sd=75" title="75">75</a> |  <a href="track.php?sd=100" title="100">100</a><br>
+  <BR>Pages: <!--[pager numitems=$pager.numitems limit=$pager.limit]-->
   <!--[if (in_array('83', $access)) || (in_array('5', $access)) || (in_array('6', $access))]--><div class="mcenter"><a class="link" href="addpos.php" title="Add a new Tower">Add a New Tower</a></div><!--[/if]-->
 <!--[include file='footer.tpl']-->
