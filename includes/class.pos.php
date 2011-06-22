@@ -438,6 +438,7 @@ class POSMGMT
             Eve::SessionSetVar('delsid',         $userinfo['delsid']);
             Eve::SessionSetVar('allianceID',     $userinfo['alliance_id']);
 			Eve::SessionSetVar('theme_id',       $userinfo['theme_id']);
+			Eve::SessionSetVar('user_track',       $userinfo['user_track']);
             Eve::SessionSetVar('userlogged',     true);
 
             return $userinfo;
@@ -532,6 +533,7 @@ class POSMGMT
                               'highly_trusted' => Eve::SessionGetVar('highly_trusted'),
                               'delsid'         => Eve::SessionGetVar('delsid'),
 							  'theme_id'       => Eve::SessionGetVar('theme_id'),
+							  'user_track'       => Eve::SessionGetVar('user_track'),
                               'allianceID'     => Eve::SessionGetVar('allianceID'));
 
         }
@@ -563,6 +565,7 @@ class POSMGMT
             Eve::SessionDelVar('allianceID');
 			Eve::SessionDelVar('theme_id');
             Eve::SessionDelVar('userlogged');
+			Eve::SessionDelVar('user_track');
         }
         return true;
 
@@ -638,6 +641,42 @@ class POSMGMT
         return true;
     }
 
+	/**
+     * POSMGMT::UpdateUserTrackOptions()
+     *
+     * @param mixed $args
+     * @return
+     */
+    function UpdateUserTrackOptions($args)
+    {
+        if (!isset($args['id'])) {
+            Eve::SessionSetVar('errormsg', 'No ID!');
+            return false;
+        }
+        if (!isset($args['new_user_track'])) {
+            Eve::SessionSetVar('errormsg', 'No User Track Settings Set!');
+            return false;
+        }
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "UPDATE ".TBL_PREFIX."user
+                SET    user_track          = '".Eve::VarPrepForStore($args['new_user_track'])."'
+                WHERE  id            = '".Eve::VarPrepForStore($args['id'])."'";
+
+        $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        Eve::SessionSetVar('user_track', $new_user_track);
+
+        return true;
+    }
+	
+	
     /**
      * POSMGMT::UpdateUserMail()
      *
@@ -937,7 +976,6 @@ class POSMGMT
             return false;
         }
 
-        //$limit = false;
         if (isset($args['limit']) && is_numeric($args['limit'])) {
             $limit    = $args['limit'];
             $startnum = ((isset($args['startnum'])) ? $args['startnum'] : 0);
@@ -945,51 +983,6 @@ class POSMGMT
             $startnum = ($page * $limit) - $limit;
         }
 
-        //Sorting Code
-        $orderby='';
-        if(isset($args['scolumn'])) {
-            switch($args['scolumn']) {
-                case 1:
-                default:
-                    $orderby="ORDER BY  MoonName";
-                    $orderstatus=true;
-                break;
-                case 2:
-                    $orderby="ORDER BY  MoonName";
-                break;
-                case 3:
-                    $orderby="ORDER BY  region";
-                break;
-                case 4:
-                    $orderby="ORDER BY  towerName";
-                break;
-                case 5:
-                    $orderby="ORDER BY  typeID"; //Need to come up with a way to be alphabetically
-                break;
-                case 6:
-                    $orderby="ORDER BY  u1.name";
-                break;
-                case 7:
-                    $orderby="ORDER BY  backup";
-                break;
-                case 8:
-                    $orderby="ORDER BY  outpost_id";
-                break;
-                case 9:
-                    $orderby="ORDER BY  pos_size, typeID";
-                break;
-                case 10:
-                    $orderby="ORDER BY  pos_race, pos_size";
-                break;
-				case 11:
-                    $orderby="ORDER BY  corp";
-                break;
-            }
-        } else {
-            $orderby="ORDER BY  MoonName";
-            $orderstatus=true;
-        }
-		
 		$access = explode('.',$userinfo['access']);
 		
 		if (in_array('1', $access)) { //(1.!20.!21) Normal User, doesn't have access to see all towers 
@@ -1074,10 +1067,7 @@ class POSMGMT
                 LEFT JOIN ".TBL_PREFIX."evemoons ON ".TBL_PREFIX."tower_info.moonID = ".TBL_PREFIX."evemoons.moonID
                 LEFT JOIN ".TBL_PREFIX."mapregions mr ON ".TBL_PREFIX."evemoons.regionID = mr.regionID
                 LEFT JOIN ".TBL_PREFIX."mapsolarsystems ms ON ".TBL_PREFIX."tower_info.systemID = ms.solarSystemID
-                ".$where."
-                ".$orderby;
-
-
+                ".$where;
             //$result = $dbconn->SelectLimit($sql, $limit, $startnum);
 
             $result = $dbconn->Execute($sql);
@@ -1092,10 +1082,83 @@ class POSMGMT
         }
 
         $result->Close();
+		
+		$posrace = array(1  => 'Amarr CT',
+                       2  => 'Caldari CT',
+                       3  => 'Gallente CT',
+                       4  => 'Minmatar CT',
+                       5  => 'Angel CT',
+                       6  => 'Blood CT',
+                       7  => 'Dark Blood CT',
+                       8  => 'Domination CT',
+                       9  => 'Dread Guristas CT',
+                       10 => 'Guristas CT',
+                       11 => 'Sansha CT',
+                       12 => 'Serpentis CT',
+                       13 => 'Shadow CT',
+                       14 => 'True Sansha CT');
+					   
+		$orderby = "";
+		$orderby2 = "";
+		switch($args['sb']) {
+					case 1:
+					case 13:
+						$orderby="result_online"; //Done
+					break;
+					case 2:
+					case 14:
+						$orderby="MoonName"; //Done
+					break;
+					case 3:
+					case 15:
+						$orderby="region"; //Done
+					break;
+					case 4:
+					case 16:
+						$orderby="towerName"; //Done
+					break;
+					case 5:
+					case 17:
+						$orderby="typeID"; //Done. Though not sure what's the point of this one.
+					break;
+					case 6:
+					case 18:
+						$orderby="name"; //Done
+					break;
+					case 7:
+					case 19:
+						$orderby="backup"; //Done
+					break;
+					case 8:
+					case 20:
+						$orderby="MoonName"; //Won't be used. Used to be outpost_id.
+					break;
+					case 9:
+					case 21:
+						$orderby="pos_size"; //Done
+						$orderby2="typeID";
+					break;
+					case 10:
+					case 22:
+						$orderby="pos_race"; //Done
+						$orderby2="pos_size";
+					break;
+					case 11:
+					case 23:
+						$orderby="corp"; //Done
+					break;
+					case 12:
+					case 24:
+						$orderby="status"; //Will be used later for Last Fueled
+					break;
+					default:
+						$orderby="MoonName"; //Done
+					break;
+				}
+		
         foreach($rows as $key => $row) {
 
             $row2 = $this->GetLastPosUpdate($row['pos_id']);
-
 
             $row['result_uptimecalc'] = $this->uptimecalc($row['pos_id']);
             $row['result_online']     = $this->online($row['result_uptimecalc']);
@@ -1103,15 +1166,22 @@ class POSMGMT
             $row['online']            = $this->daycalc($row['result_online']);
             //$row['region']            = $this->getRegionNameFromMoonID($row['MoonName']);
             //$row['system']            = $this->getSystemName($row['systemID']);
-
-            $sortAarr[]               = $row['result_online'];
-
+			$row['pos_race'] = $posrace[$row['pos_race']];
             $rows[$key] = $row;
+        }
 
-        }
-        if(isset($orderstatus)) {
-            array_multisort($sortAarr, SORT_ASC, $rows);
-        }
+		foreach ($rows as $key => $row) { 
+			$sortland[$key] = $row[$orderby];
+			$sortland2[$key] = $row[$orderby2];
+		}
+		$array_lowercase = array_map('strtolower', $sortland);
+			
+		if ($args['sb'] >=13 && $args['sb'] <=24) {
+		array_multisort($array_lowercase, SORT_DESC, $sortland2, SORT_DESC, $rows); 
+		} else {
+		array_multisort($array_lowercase, SORT_ASC, $sortland2, SORT_ASC, $rows); 
+		}
+		
         if($limit) {
             $rows=array_slice($rows, $startnum, $limit);
         }
@@ -2204,8 +2274,7 @@ class POSMGMT
 
         $dbconn =& DBGetConn(true);
 
-        $sql = "SELECT id, eve_id, name FROM ".TBL_PREFIX."user
-                ORDER BY id";
+        $sql = "SELECT eve_id, name FROM ".TBL_PREFIX."user ORDER BY eve_id";
 
         $result = $dbconn->Execute($sql);
 
@@ -2214,10 +2283,7 @@ class POSMGMT
             return false;
         }
 
-        for(; !$result->EOF; $result->MoveNext()) {
-            $userList[] = $result->GetRowAssoc(2);
-        }
-
+		$userList = $result->GetAssoc();
         $result->Close();
 
         return $userList;
@@ -2242,15 +2308,11 @@ class POSMGMT
             Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             return false;
         }
-
-        for(; !$result->EOF; $result->MoveNext()) {
-            $itemDB[] = $result->GetRowAssoc(2);
-        }
-
+        $itemDB = $result->GetAssoc();
         $result->Close();
 
         return $itemDB;
-
+		
     }
 	
     /**
@@ -3954,7 +4016,7 @@ class POSMGMT
 
         $dbconn =& DBGetConn(true);
 
-        $sql = "SELECT * FROM ".TBL_PREFIX."prices ORDER BY Name ASC";
+        $sql = "SELECT Name, value FROM ".TBL_PREFIX."prices ORDER BY Name ASC";
         $result = $dbconn->Execute($sql);
 
         if ($dbconn->ErrorNo() != 0) {
@@ -4963,7 +5025,7 @@ class POSMGMT
                     return false; //$fail = 1;
                 }
                 foreach ($xml->xpath('//cachedUntil') as $cachedUntil) {
-                  $updateTime=(strtotime($cachedUntil)-21600);
+                  $updateTime=(strtotime($cachedUntil)-3600);
                 }
                 $dbconn =& DBGetConn(true);
 
@@ -4974,9 +5036,7 @@ class POSMGMT
                     $cacheName='StarbaseList'.$unique;
                     $this->API_cacheXML($xml->asXML(), $cacheName);
                 }
-
                 foreach ($xml->xpath('//row') as $pos) {
-                    //echo '<pre>';print_r($pos);echo '</pre>';exit;
                     (integer) $evetowerID       = strval($pos['itemID']);
                     (integer) $typeID           = strval($pos['typeID']);
                     (integer) $systemID         = strval($pos['locationID']);
@@ -4998,7 +5058,7 @@ class POSMGMT
                     (integer) $systemID         = strval($pos['locationID']);
                     (integer) $owner_id         = 0;
                     (integer) $moonID           = strval($pos['moonID']);
-
+					(string)  $current_status = date("Y-m-d H:i:s")." by API";
                     #define varibles for the row count function
                     $add = false;
                     $sql = "SELECT * FROM ".TBL_PREFIX."tower_info WHERE evetowerID = '".Eve::VarPrepForStore($evetowerID)."'";
@@ -5022,6 +5082,7 @@ class POSMGMT
                                        strontium        = '" . Eve::VarPrepForStore($strontium)        . "',
                                        charters         = '" . Eve::VarPrepForStore($charters)         ."',
                                        onlineSince      = '" . Eve::VarPrepForStore($onlineSince)      ."',
+									   status      = '" . Eve::VarPrepForStore($current_status)      ."',
                                        pos_status       = '" . Eve::VarPrepForStore($pos_status)       ."'
                                 WHERE  evetowerID       = '" . Eve::VarPrepForStore($evetowerID)       . "'";
                         $dbconn->Execute($sql);
@@ -5060,6 +5121,7 @@ class POSMGMT
                                            strontium        = '" . Eve::VarPrepForStore($strontium)        . "',
                                            charters         = '" . Eve::VarPrepForStore($charters)         ."',
                                            onlineSince      = '" . Eve::VarPrepForStore($onlineSince)      ."',
+										   status      = '" . Eve::VarPrepForStore($current_status)      ."',
                                            pos_status       = '" . Eve::VarPrepForStore($pos_status)       ."'
                                     WHERE  moonID           = '" . Eve::VarPrepForStore($moonID)           . "'";
                             $dbconn->Execute($sql);
@@ -5137,7 +5199,7 @@ class POSMGMT
                                                 '" . Eve::VarPrepForStore($towerName)        . "',
                                                 '" . Eve::VarPrepForStore($systemID)         . "',
                                                 '" . Eve::VarPrepForStore($charters_needed)  . "',
-                                                '0',
+                                                '" . Eve::VarPrepForStore($current_status)  . "',
                                                 '". Eve::VarPrepForStore($owner_id)          . "' ,
                                                 NULL,
                                                 '".Eve::VarPrepForStore($pos_status)         . "',
@@ -5173,6 +5235,7 @@ class POSMGMT
 
                 }
 
+				
                 $sql = "UPDATE ".TBL_PREFIX."eveapi SET apitimer = '".Eve::VarPrepForStore($time)."' WHERE characterID = '" . Eve::VarPrepForStore($characterID) . "'";
                 $dbconn->Execute($sql);
                 if ($dbconn->ErrorNo() != 0) {
@@ -5213,7 +5276,7 @@ class POSMGMT
         $url = "/corp/IndustryJobs.xml.aspx";
 		$time=time();
         foreach ($keys as $key) {
-            if ($JobCheck < ($time-21600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
+            if ($JobCheck < ($time-1)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
                 $userid         = $key['userID'];
                 $apikey         = $key['apikey'];
                 $characterID    = $key['characterID'];
@@ -5267,6 +5330,9 @@ class POSMGMT
                     $this->API_cacheXML($xml->asXML(), $cacheName);
                 }
 		
+					$itemDB = $this->GetAllStaticItems();
+					$userList = $this->GetAllJobUsers();
+					
         foreach ($xml->xpath('//row') as $row) {
 					
 					(integer) $jobID			       						= strval($row['jobID']);
@@ -5274,20 +5340,20 @@ class POSMGMT
                     (integer) $containerID       						    = strval($row['containerID']);
                     (integer) $installedItemID        						= strval($row['installedItemID']);
 					(integer) $installedItemLocationID       				= strval($row['installedItemLocationID']);
-                    (integer) $installedItemProductivityLevel         		= strval($row['installedItemProductivityLevel']);
-					(integer) $installedItemMaterialLevel           		= strval($row['installedItemMaterialLevel']);
-                    (integer) $installedItemLicensedProductionRunsRemaining = strval($row['installedItemLicensedProductionRunsRemaining']);
+                    (integer) $installedItemProductivityLevel						  = $row['installedItemProductivityLevel'];
+					(integer) $installedItemMaterialLevel								  = $row['installedItemMaterialLevel'];
+                    (integer) $installedItemLicensedProductionRunsRemaining = $row['installedItemLicensedProductionRunsRemaining'];
 					(integer) $outputLocationID           					= strval($row['outputLocationID']);
-                    (integer) $installerID         							= strval($row['installerID']);
+                    $installerID         											  				 = $userList[strval($row['installerID'])];
 					(integer) $runs           								= strval($row['runs']);
                     (integer) $licensedProductionRuns         				= strval($row['licensedProductionRuns']);
 					(integer) $installedInSolarSystemID           			= strval($row['installedInSolarSystemID']);
                     (integer) $containerLocationID         					= strval($row['containerLocationID']);
 					(integer) $materialMultiplier           				= strval($row['materialMultiplier']);
                     (integer) $charMaterialMultiplier         				= strval($row['charMaterialMultiplier']);
-					(integer) $installedItemTypeID           				= strval($row['installedItemTypeID']);
-                    (integer) $outputTypeID         						= strval($row['outputTypeID']);
-					(integer) $containerTypeID           					= strval($row['containerTypeID']);
+					$installedItemTypeID           				              				= $itemDB[strval($row['installedItemTypeID'])];
+                    $outputTypeID         										  				= $itemDB[strval($row['outputTypeID'])];
+					$containerTypeID           					              				= $itemDB[strval($row['containerTypeID'])];
                     (integer) $installedItemCopy         					= strval($row['installedItemCopy']);
 					(integer) $completed           							= strval($row['completed']);
                     (integer) $completedSuccessfully         				= strval($row['completedSuccessfully']);
@@ -5299,7 +5365,7 @@ class POSMGMT
 					(integer) $beginProductionTime         					= strval($row['beginProductionTime']);
 					(integer) $endProductionTime         					= strval($row['endProductionTime']);
 					(integer) $pauseProductionTime         					= strval($row['pauseProductionTime']);
-			
+
 						$sql = "SELECT * FROM ".TBL_PREFIX."jobs WHERE jobID = '".Eve::VarPrepForStore($jobID)."'";
                         $result = $dbconn->Execute($sql);
                         if ($dbconn->ErrorNo() != 0) {
