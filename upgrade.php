@@ -65,7 +65,8 @@ $upgradeList=array(
 501=>'v5.0.1 - Material Volume Fix',
 502=>'v5.0.2 - Theme Install',
 511=>'v5.1.1 - Incursion DB & Corp Jobs Install',
-512=>'v5.1.2 - Prices & Ship Assembly Array Fix'
+512=>'v5.1.2 - Prices & Ship Assembly Array Fix',
+514=>'v5.1.4 - User & Global Settings Update'
 );
 
 $eveRender->Assign('upgradeList', $upgradeList);
