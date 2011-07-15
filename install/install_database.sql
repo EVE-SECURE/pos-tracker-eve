@@ -16775,6 +16775,7 @@ CREATE TABLE `%prefix%user` (
   `away` tinyint(1) NOT NULL default 0,
   `highly_trusted` tinyint(1) NOT NULL default 0,
   `theme_id` tinyint(2) NOT NULL default 1,
+  `user_track` varchar(10) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `eve_id` (`eve_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -35663,23 +35664,27 @@ INSERT INTO `%prefix%invTypes` (`typeID`, `groupID`, `typeName`, `graphicID`, `r
 (32465, 100, 'Civilian Hobgoblin', 1099, 15, 3000, 5, 1200, 1, 8, 2500, 1, NULL, 0.07, NULL),
 (32467, 41, 'Civilian Remote Shield Transporter', NULL, 0, 0, 5, 0, 1, NULL, 4996, 1, NULL, 0.07, 86),
 (32469, 325, 'Civilian Remote Armor Repair System', NULL, 0, 20, 5, 0, 1, NULL, 4996, 1, NULL, 0.07, 80),
-(32471, 286, 'Damaged Vessel', 330, 287, 13075000, 115000, 3200, 1, 8, 0, 0, NULL, 0, NULL);
+(32471, 286, 'Damaged Vessel', 330, 287, 13075000, 115000, 3200, 1, 8, 0, 0, NULL, 0, NULL),
+(3514, 659, 'Revenant', 10038, 2840, 1546875000, 62000000, 1405, 1, 32, 12349014100, 1, 1392, 0.07, NULL),
+(3515, 1013, 'Revenant Blueprint', 309, 0, 0, 0.01, 0, 1, NULL, 18500000000, 1, NULL, 0, NULL);
+
 
 CREATE TABLE IF NOT EXISTS `%prefix%prices` (
+  `typeID` int(11) NOT NULL,
   `Name` varchar(20) NOT NULL,
   `Value` decimal(20,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`Name`)
+  PRIMARY KEY (`typeID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-INSERT INTO `%prefix%prices` (`Name`, `Value`) VALUES
-('Enriched Uranium', 100.00),
-('Oxygen', 100.00),
-('Mechanical Parts', 100.00),
-('Coolant', 100.00),
-('Robotics', 100.00),
-('Helium Isotopes', 100.00),
-('Hydrogen Isotopes', 100.00),
-('Nitrogen Isotopes', 100.00),
-('Oxygen Isotopes', 100.00),
-('Liquid Ozone', 100.00),
-('Heavy Water', 100.00);
+INSERT INTO `%prefix%prices` (`typeID`, `Name`, `Value`) VALUES
+(44, 'Enriched Uranium', 5996.68),
+(3683, 'Oxygen', 121.30),
+(3689, 'Mechanical Parts', 5743.42),
+(9832, 'Coolant', 4944.39),
+(9848, 'Robotics', 41513.87),
+(16274, 'Helium Isotopes', 569.46),
+(17889, 'Hydrogen Isotopes', 651.37),
+(17887, 'Oxygen Isotopes', 580.97),
+(17888, 'Nitrogen Isotopes', 548.46),
+(16273, 'Liquid Ozone', 334.61),
+(16272, 'Heavy Water', 24.71);
