@@ -32,3 +32,8 @@ CREATE TABLE IF NOT EXISTS `%prefix%settings` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `%prefix%settings` (`id`, `name`, `gsetting`) VALUES
+(1, 'Hidden Jobs', NULL),
+(2, 'Main Market Hub', NULL),
+(3, 'Version Checker', NULL);
