@@ -47,7 +47,7 @@ $colors    = $eveRender->themeconfig;
 $eveRender->Assign('config', $config);
 $eveRender->Assign('version', VERSION);
 
-$eve     = New Eve();
+$eve = New Eve();
 $posmgmt = New POSMGMT();
 $API = New API();
 
@@ -109,6 +109,12 @@ if ($op == 'modules') {
 
 
 $action = $eve->VarCleanFromInput('action');
+$settings = $posmgmt->GetSettings();
+
+if ($settings[2]['gsetting'] == 1) {
+	$vcheck = isUpToDate();
+	$eveRender->Assign('vcheck', $vcheck);
+}
 
 if ($action == 'updatealliance') {
     $results = $posmgmt->API_UpdateAlliances();
@@ -136,7 +142,9 @@ if ($action == 'updatealliance') {
     exit;
 
 } elseif ($action == 'updatepricesapi') {
-    $results = $API->API_UpdatePrices();
+
+	$args = $settings[1]['gsetting'];
+    $results = $API->API_UpdatePrices($args);
 
     $eveRender->Assign('action',   $action);
     $eveRender->Assign('results', $results);
@@ -221,7 +229,6 @@ if ($action == 'updatealliance') {
         //$eve->SessionSetVar('errormsg', 'ERROR or No Character!');
         $eve->RedirectUrl('admin.php');
     }
-//echo '<pre>';print_r($results);echo '</pre>';exit;
     $eveRender->Assign('action',    $action);
     $eveRender->Assign('posupdate', $results['posupdate']);
     $eveRender->Assign('results',   $results);
@@ -238,6 +245,18 @@ if ($action == 'updatealliance') {
             $eve->RedirectUrl('admin.php');
         }
 	 }
+	 $eve->SessionSetVar('statusmsg', 'Prices updated manually!');
+} elseif ($action == 'updatesettings') {
+	$SettingsUpdate = $eve->VarCleanFromInput('SettingsUpdate');
+
+	foreach ($SettingsUpdate as $id => $value) {
+	$sinfo = array('name' => $id, 'value' => $value);
+        if (!$posmgmt->UpdateSettings($sinfo)) {
+            $eve->RedirectUrl('admin.php');
+        }
+	 }
+	 $settings = $posmgmt->GetSettings();
+	 $eve->SessionSetVar('statusmsg', 'Global Settings Updated!');
 } elseif ($action == 'updateusers') {
     $userremove = $eve->VarCleanFromInput('userremove');
 	$UserList = $eve->VarCleanFromInput('UserList');
@@ -315,6 +334,7 @@ $prices = $posmgmt->GetPrices();
 
 $eveRender->Assign('users',     $users);
 $eveRender->Assign('prices',     $prices);
+$eveRender->Assign('settings',     $settings);
 $eveRender->Assign('userinfo',  $userinfo);
 $eveRender->Assign('awaylevel',  array(0 => 'Default', 1 => 'Away', 2 => 'Receive eMails'));
 
@@ -648,7 +668,7 @@ function isUpToDate()
 {
     $latestVersion=trim(file_get_contents(REMOTE_VERSION));
 	if (version_compare(VERSION, $latestVersion, 'eq') == 1) {
-	return "$latestVersion - Your installation is up to date!";
+	return "Your installation is up to date!";
 	}
 	else {
 	return "$latestVersion - <font color='red'>Your installation is not up to date!</font><BR>Get the latest version here: <a href='http://www.iceneko.com/eve/index.html' target='_blank'>Click Me!</a>";

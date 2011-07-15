@@ -28,18 +28,27 @@ $eveRender->Assign('userinfo', $userinfo);
 
 $submit = $eve->VarCleanFromInput('submit');
 $completed = $eve->VarCleanFromInput('completed');
+$settings = $posmgmt->GetSettings();
 
+if (in_array('5', $access) || in_array('6', $access)) {
+$ignore = 0;
+} elseif ($settings[0]['gsetting'] == '') {
+$ignore = 0;
+} elseif ($settings[0]['gsetting'] >= 0  || $settings[0]['gsetting'] <= 3) {
+$ignore = $settings[0]['gsetting'];
+}
 
 if (in_array('1', $access) && (in_array('40', $access) || in_array('41', $access) || in_array('45', $access)) || in_array('5', $access) || in_array('6', $access)) {
 
 	if (!empty($submit)) {
 		if ($completed == 1 && (in_array('41', $access) || in_array('45', $access) || in_array('5', $access) || in_array('6', $access))) {
-		$jobs = $posmgmt->GetAllIndustrialJobs(1);
+		$jobs = $posmgmt->GetAllIndustrialJobs(1,$ignore);
+		
 		} else {
-		$jobs = $posmgmt->GetAllIndustrialJobs(0);
+		$jobs = $posmgmt->GetAllIndustrialJobs(0,$ignore);				
 		}
 	} else {
-	$jobs = $posmgmt->GetAllIndustrialJobs(0);
+	$jobs = $posmgmt->GetAllIndustrialJobs(0,$ignore);
 	}
 
 	$activ = array(0  => 'None',
