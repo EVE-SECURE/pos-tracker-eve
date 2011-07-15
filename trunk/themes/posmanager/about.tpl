@@ -6,6 +6,24 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.1.3 to 5.1.4 Changes:</strong>
+    <ul>
+	  <li>POS Track's sorting has now be updated to work correctly and can now be sorted ascend or descend.</li>
+	  <li>POS Track's ugly buttons have been removed and replaced by only lovable links on the bottom of the page.</li>
+	  <li>POS Track's stront timers now work 100% of the time.</li>
+	  <li>Users can now set POS Track default settings via their own User Panel.</li>
+	  <li>Only Admin/SubAdmins will now see Alliance/Sovereignty API messages on POS Track page to reduce clutter.</li>
+	  <li>POS Track now shows Last Fueled by and is sortable.</li>
+	  <li>Last Fueled will now reset back to API when API updates API towers. Manually added towers are left untouched.</li>
+	  <li>Industrial Jobs Current and Past load significantly faster.</li>
+	  <li>New global settings options shown under the admin panel.<ul>
+	  <li>Hidden Jobs - Can hide certain industrial jobs from everyone besides admins - Selections: Titans and SuperCarriers | All Capitals | All Ships. Anything that deals with these whether it be Manu, ME, or PE Research will be hidden.</li>
+	  <li>Version Checker - Can set so that it auto-checks for new versions and notifies you when you go to the admin panel.</li>
+	  <li>Main Market Hub - Sets what region EVE-Marketdata should pull in prices from. See related below.</li></ul></li>
+	  <li>The global price list can now be updated via EVE-Marketdata's API under the admin panel. The imported data will come from Jita (The Forge) by default. EVE-Marketdata's prices are only updated every 24 hours after downtime.</li>
+	  <li>Navigation fixed to show Jobs link for all Jobs access levels.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.2 to 5.1.3 Changes:</strong>
     <ul>
 	  <li>Fuel Calc now lists the isotope type.</li>
