@@ -35688,3 +35688,11 @@ INSERT INTO `%prefix%prices` (`typeID`, `Name`, `Value`) VALUES
 (17888, 'Nitrogen Isotopes', 548.46),
 (16273, 'Liquid Ozone', 334.61),
 (16272, 'Heavy Water', 24.71);
+
+CREATE TABLE IF NOT EXISTS `%prefix%settings` (
+  `id` int(3) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `gsetting` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
