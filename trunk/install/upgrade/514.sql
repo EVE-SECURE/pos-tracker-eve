@@ -24,3 +24,11 @@ INSERT INTO `%prefix%invTypes` (`typeID`, `groupID`, `typeName`, `graphicID`, `r
 (3515, 1013, 'Revenant Blueprint', 309, 0, 0, 0.01, 0, 1, NULL, 18500000000, 1, NULL, 0, NULL);
 
 ALTER TABLE `%prefix%user` ADD `user_track` VARCHAR( 10 ) NOT NULL DEFAULT '0';
+
+CREATE TABLE IF NOT EXISTS `%prefix%settings` (
+  `id` int(3) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `gsetting` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
