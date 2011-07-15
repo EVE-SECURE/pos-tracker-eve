@@ -5,26 +5,29 @@
   <!--[if $installchecker]-->
       <span style="color:red;font-weight:bold;">WARNING: install.php is still accessible. Please rename/remove install.php from the POS Tracker install directory.</span><br /><br />
   <!--[/if]-->
-    <span>
+	  &nbsp; &nbsp; | &nbsp; &nbsp;
+    <a href="admin.php?op=modules" title="Addons Management">Addons</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+	<a href="upgrade.php" title="DB Upgrades">DB Upgrades</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+	  <a href="admin.php?action=moons" title="Moons Management">Moon Database</a>
+      &nbsp; &nbsp; |
+      <br /><br />
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="#apiupdate" title="API Data Updates">API Data</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="#apikeys" title="API Key Management">API Keys</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="admin.php?action=moons" title="Moons Management">Moons</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="#users" title="Users Management">Users</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
-	  <a href="#prices" title="Users Management">Price List</a>
+	  <a href="#prices" title="Global Price List">Price List</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="admin.php?op=modules" title="Addons Management">Addons</a>
+	  <a href="#settings" title="POS Tracker Settings">Settings</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
-	  <a href="upgrade.php" title="DB Upgrades">DB Upgrades</a>
+	  <a href="#version" title="Version Checker">Version Check</a>
       &nbsp; &nbsp; |
       <br /><br />
-    </span>
   </p>
-
   <hr />
   <!--[if $action]-->
     <!--[if $action eq 'updatealliance']-->
@@ -96,7 +99,7 @@
 	<!--[elseif $action eq 'updatepricesapi']-->
       <p>
       <!--[if $results]-->
-        Success! Jita Prices Imported from the awesome <a href="http://eve-marketdata.com" target="_blank">EVE-Marketdata.com</a> website!<br />
+        Success! Prices imported from the awesome <a href="http://eve-marketdata.com" target="_blank">EVE-Marketdata.com</a> website!<br />
       <!--[else]-->
         ERROR!! Prices couldn't update.
       <!--[/if]-->
@@ -127,13 +130,9 @@
 
     <!--[/if]-->
   <!--[else]-->
-    <h4 class="pageTitle"><a name="moons"></a>Manage Moons</h4>
-    <div class="mcenter">
-      <a class="link" href="admin.php?action=moons" title="Moon Database">Managed Moon Database</a>
-      <br />
-    </div>
-    <hr />
-
+  	<!--[if $vcheck !="Your installation is up to date!" && $vcheck !=""]-->
+	  <span style="font-weight:bold;"><!--[$vcheck]--></span><hr />
+	<!--[/if]-->
     <h4 class="pageTitle"><a name="apiupdates"></a>API Data</h4>
     <div>
       <!--[if $allyupdate]-->
@@ -145,7 +144,6 @@
       <!--[if $apiupdate]-->
       <span style="color:red;font-weight:bold;">Warning, Your API POS data is out of date. <!--[$apitime]--></span><br />
       <!--[/if]-->
-
       
       <div>
         <table class="mcenter tracktable" style="width:640px;">
@@ -356,9 +354,59 @@
         </tbody>
         </table>
       </div>
-        
+    
 	<hr />
-    <h4 class="pageTitle"><a name="users"></a>Version Checker</h4>
+    <h4 class="pageTitle"><a name="settings"></a>POS Tracker Settings</h4>
+    <div class="mcenter">
+	<form method="post" action="admin.php">
+      <div>
+        <input type="hidden" name="action" value="updatesettings" />
+		<table class="mcenter tracktable" style="width:640px;">
+        <thead>
+          <tr>
+		  <th class="mbground hcolor">Name</th>
+          <th class="mbground hcolor">Current Setting</th>
+		  </tr>
+		</thead>
+		<!--[foreach item='setting' from=$settings]-->
+		<tbody class="auser">
+		  <tr>
+		  <td width="30%"><!--[$setting.name]--></td>
+		  <td width="70%">
+		  <!--[if ($setting.name == "Hidden Jobs")]-->
+		  <select name="SettingsUpdate[Hidden Jobs]">
+		  <option value="0" <!--[if ($setting.gsetting==0)]-->selected="yes"<!--[/if]-->>No Jobs Hidden</option>
+		  <option value="1" <!--[if ($setting.gsetting==1)]-->selected="yes"<!--[/if]-->>Titans and SuperCarriers</option>
+		  <option value="2" <!--[if ($setting.gsetting==2)]-->selected="yes"<!--[/if]-->>All Capitals</option>
+		  <option value="3" <!--[if ($setting.gsetting==3)]-->selected="yes"<!--[/if]-->>All Ships</option>
+		  </select>
+		  <!--[elseif ($setting.name == "Main Market Hub")]-->
+		  <select name="SettingsUpdate[Main Market Hub]">
+		  <option value="10000002" <!--[if ($setting.gsetting==10000002 || $setting.gsetting=="")]-->selected="yes"<!--[/if]-->>Jita - The Forge</option>
+		  <option value="10000043" <!--[if ($setting.gsetting==10000043)]-->selected="yes"<!--[/if]-->>Amarr - Domain</option>
+		  <option value="10000030" <!--[if ($setting.gsetting==10000030)]-->selected="yes"<!--[/if]-->>Rens - Heimatar</option>
+		  <option value="10000032" <!--[if ($setting.gsetting==10000032)]-->selected="yes"<!--[/if]-->>Dodixie - Sinq Laison</option>
+		  <!--[elseif ($setting.name == "Version Checker")]-->
+		  <select name="SettingsUpdate[Version Checker]">
+		  <option value="0" <!--[if ($setting.gsetting==0 || $setting.gsetting=="")]-->selected="yes"<!--[/if]-->>Manual</option>
+		  <option value="1" <!--[if ($setting.gsetting==1)]-->selected="yes"<!--[/if]-->>Automatic</option>
+		  </select>
+		  <!--[/if]--> 
+		  </td>
+		  </tr>
+		 </tbody>
+		 <!--[/foreach]-->
+		 <tbody>
+		 <tr>
+		  <td colspan="4"><input type="submit" value="Update Settings" /></td>
+		  </tr>
+		  </tbody>
+        </table>
+	  </div>
+    </form>
+
+	<hr />
+    <h4 class="pageTitle"><a name="version"></a>Version Checker</h4>
     <div class="mcenter">
 	<form method="post" action="admin.php">
       <div>
