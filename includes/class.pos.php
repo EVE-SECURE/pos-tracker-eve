@@ -872,6 +872,36 @@ class POSMGMT
         return true;
     }
 	
+	/**
+     * POSMGMT::UpdateSettings()
+     *
+     * @param mixed $args
+     * @return
+     */
+    function UpdateSettings($args)
+    {
+
+        if (!isset($args['name'])) {
+            Eve::SessionSetVar('errormsg', 'No ID!');
+            return false;
+        }
+
+        $dbconn =& DBGetConn(true);
+
+        $sql = "UPDATE ".TBL_PREFIX."settings
+                SET    gsetting         = '".Eve::VarPrepForStore($args['value'])."'
+                WHERE  name             = '".Eve::VarPrepForStore($args['name'])."'";
+
+        $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        return true;
+    }
+	
     /**
      * POSMGMT::DeletePOS()
      *
@@ -1149,7 +1179,7 @@ class POSMGMT
 					break;
 					case 12:
 					case 24:
-						$orderby="status"; //Will be used later for Last Fueled
+						$orderby="status"; //Done
 					break;
 					default:
 						$orderby="MoonName"; //Done
@@ -2238,13 +2268,28 @@ class POSMGMT
      *
      * @return
      */
-    function GetAllIndustrialJobs($completed)
+    function GetAllIndustrialJobs($completed,$ignore)
     {
-
+		if ($ignore == 1) {
+		$notlike = '110,1013'; //Titans & SuperCarriers
+		} elseif ($ignore == 2) {
+		$notlike = '110,1013,643,537,945,944,525'; //All Capitals
+		} elseif ($ignore == 3) {
+		$notlike = '110,1013,643,537,945,944,525,489,107,106,487,105,503,108,996,477,111,954,955,956,957,958,973'; //All Ships
+		} else {
+		$notlike = '0';
+		} 
         $dbconn =& DBGetConn(true);
 
-        $sql = "SELECT * FROM ".TBL_PREFIX."jobs
-                WHERE completed='" . Eve::VarPrepForStore($completed) . "'
+        $sql = "SELECT t1.jobID,t1.runs,t1.completed,t1.activityID,t1.installedItemMaterialLevel,t1.installedItemProductivityLevel,t1.installedItemCopy,t1.installTime,t1.endProductionTime,t1.licensedProductionRuns,
+		t2i.typeName as installedItemTypeID,t2o.typeName AS outputTypeID,t2c.typeName AS containerTypeID,t3n.name AS installerID, t2g.groupID FROM ".TBL_PREFIX."jobs t1
+		LEFT JOIN ".TBL_PREFIX."invTypes t2i ON t1.installedItemTypeID = t2i.typeID
+		LEFT JOIN ".TBL_PREFIX."invTypes t2o ON t1.outputTypeID =  t2o.typeID  
+		LEFT JOIN ".TBL_PREFIX."invTypes t2c ON t1.containerTypeID =  t2c.typeID
+		LEFT JOIN ".TBL_PREFIX."user t3n ON t1.installerID =  t3n.eve_id
+		INNER JOIN ".TBL_PREFIX."invTypes t2g ON t2g.typeID = t1.installedItemTypeID
+                WHERE t2g.groupID NOT IN (" . Eve::VarPrepForStore($notlike) . ")
+				AND completed='" . Eve::VarPrepForStore($completed) . "'
                 ORDER BY jobID";
 
         $result = $dbconn->Execute($sql);
@@ -4038,7 +4083,37 @@ class POSMGMT
 
     }
 	
+/**
+     * POSMGMT::GetSettings()
+     *
+     * @return
+     */
+    function GetSettings()
+    {
 
+        $dbconn =& DBGetConn(true);
+
+        $sql = "SELECT * FROM ".TBL_PREFIX."settings ORDER BY id";
+        $result = $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . '<br />' . $sql);
+            return false;
+        }
+
+        if ($result->EOF) {
+            return false;
+        }
+		
+		
+       for(; !$result->EOF; $result->MoveNext()) {
+            $settings[] = $result->GetRowAssoc(2);
+        }
+		
+        $result->Close();
+        return $settings;
+
+    }
 	
     /**
      * POSMGMT::GetStaticReactionInfo()
@@ -5276,7 +5351,7 @@ class POSMGMT
         $url = "/corp/IndustryJobs.xml.aspx";
 		$time=time();
         foreach ($keys as $key) {
-            if ($JobCheck < ($time-1)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
+            if ($JobCheck < ($time-21600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
                 $userid         = $key['userID'];
                 $apikey         = $key['apikey'];
                 $characterID    = $key['characterID'];
@@ -5329,9 +5404,6 @@ class POSMGMT
                     $cacheName='IndustrialJobs'.$unique;
                     $this->API_cacheXML($xml->asXML(), $cacheName);
                 }
-		
-					$itemDB = $this->GetAllStaticItems();
-					$userList = $this->GetAllJobUsers();
 					
         foreach ($xml->xpath('//row') as $row) {
 					
@@ -5344,16 +5416,16 @@ class POSMGMT
 					(integer) $installedItemMaterialLevel								  = $row['installedItemMaterialLevel'];
                     (integer) $installedItemLicensedProductionRunsRemaining = $row['installedItemLicensedProductionRunsRemaining'];
 					(integer) $outputLocationID           					= strval($row['outputLocationID']);
-                    $installerID         											  				 = $userList[strval($row['installerID'])];
+					(integer) $installerID         											  				 = strval($row['installerID']);
 					(integer) $runs           								= strval($row['runs']);
                     (integer) $licensedProductionRuns         				= strval($row['licensedProductionRuns']);
 					(integer) $installedInSolarSystemID           			= strval($row['installedInSolarSystemID']);
                     (integer) $containerLocationID         					= strval($row['containerLocationID']);
 					(integer) $materialMultiplier           				= strval($row['materialMultiplier']);
                     (integer) $charMaterialMultiplier         				= strval($row['charMaterialMultiplier']);
-					$installedItemTypeID           				              				= $itemDB[strval($row['installedItemTypeID'])];
-                    $outputTypeID         										  				= $itemDB[strval($row['outputTypeID'])];
-					$containerTypeID           					              				= $itemDB[strval($row['containerTypeID'])];
+					(integer) $installedItemTypeID           				              				= strval($row['installedItemTypeID']);
+                    (integer) $outputTypeID         										  				= strval($row['outputTypeID']);
+					(integer) $containerTypeID           					              				= strval($row['containerTypeID']);
                     (integer) $installedItemCopy         					= strval($row['installedItemCopy']);
 					(integer) $completed           							= strval($row['completed']);
                     (integer) $completedSuccessfully         				= strval($row['completedSuccessfully']);
@@ -6883,5 +6955,4 @@ function fixmeplease($text)
         return $fix[count($fix)-1];
     }
 }
-
 ?>
