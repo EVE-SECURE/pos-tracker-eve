@@ -45,9 +45,9 @@
       <td><!--[$silo.silo_id]--></td>
       <td><!--[$silo.material_name]--></td>
       <td class="txtcenter">&nbsp;<!--[$silo.material_volume]-->&nbsp;</td>
-      <td class="txtcenter"><div><input name="referer" value="production.php" type="hidden" /><input name="filter_systemID" value="<!--[$filter_regionID]-->" type="hidden" /><input name="filter_pos_id" value="<!--[$filter_pos_id]-->" type="hidden" /><input name="filter_systemID" value="<!--[$filter_systemID]-->" type="hidden" /><input name="structure_id_<!--[$silo.silo_id]-->" value="<!--[$silo.silo_id]-->" type="hidden" /><input size="7" name="new_amount_<!--[$silo.silo_id]-->" value="<!--[$silo.material_amount]-->" type="text" /></div></td>
-      <td class="txtright" ><!--[formatnumber value=$silo.material_amount]-->&nbsp;&nbsp;</td>
-      <!--[math equation="x*y" x=$silo.material_amount y=$silo.material_volume|default:0 assign='matvolume']-->
+      <td class="txtcenter"><div><input name="referer" value="production.php" type="hidden" /><input name="filter_systemID" value="<!--[$filter_regionID]-->" type="hidden" /><input name="filter_pos_id" value="<!--[$filter_pos_id]-->" type="hidden" /><input name="filter_systemID" value="<!--[$filter_systemID]-->" type="hidden" /><input name="structure_id_<!--[$silo.silo_id]-->" value="<!--[$silo.silo_id]-->" type="hidden" /><input size="7" name="new_amount_<!--[$silo.silo_id]-->" value="<!--[$silo.correct_amount]-->" type="text" /></div></td>
+      <td class="txtright" ><!--[formatnumber value=$silo.correct_amount]-->&nbsp;&nbsp;</td>
+      <!--[math equation="x*y" x=$silo.correct_amount y=$silo.material_volume|default:0 assign='matvolume']-->
       <td class="txtright"><!--[formatnumber value=$matvolume]-->&nbsp;&nbsp;</td>
       <td class="txtcenter">&nbsp;<!--[$silo.direction]-->&nbsp;</td>
       <td class="txtcenter" style="border:1px <!--[if $silo.full or $silo.empty]-->red<!--[else]-->#aaaaaa<!--[/if]--> solid;"><!--[if $silo.full]-->FULL<!--[elseif $silo.empty]-->EMPTY<!--[else]--><!--[daycalc hours=$silo.hourstofill]--><!--[/if]--><!--[if $silo.silo_link]--> (Link: <!--[$silo.silo_link]-->)<!--[/if]--></td>

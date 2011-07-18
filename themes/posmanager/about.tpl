@@ -6,6 +6,15 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.1.4 to 5.1.5 Changes:</strong>
+    <ul>
+	  <li>Silo/Production system rewritten. Silo Link bug should be squashed.</li>
+	  <li>Security on Add Structures loosened up just a bit.</li>
+	  <li>Import Structures button works again.</li>
+	  <li>Modifying structures on a tower is now actually logged in the DB.</li>
+	  <li>Adding/Updating/Removing Structures on a tower now actually updates the DB so the tower's CPU/PG are updated. This also fixes the Fuel Calculator not being able to show optimal LO/HW if you had structures attached instead of manual CPU/PG entry. Any tower before this patch will need an "Update Module Info" before it writes to the DB.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.3 to 5.1.4 Changes:</strong>
     <ul>
 	  <li>POS Track's sorting has now be updated to work correctly and can now be sorted ascend or descend.</li>
