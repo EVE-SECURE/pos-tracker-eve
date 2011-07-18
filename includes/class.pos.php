@@ -3076,6 +3076,38 @@ class POSMGMT
     }
 	
 	/**
+     * POSMGMT::ChangeTowerCPUPG()
+     *
+     * @param mixed $args
+     * @return
+     */
+    function ChangeTowerCPUPG($args)
+    {
+
+        if (!$args['pos_id'] || !is_numeric($args['pos_id'])) {
+            return false;
+        }
+        $pos_id     = Eve::VarPrepForStore($args['pos_id']);
+        $new_pg     = Eve::varPrepForStore($args['new_pg']);
+        $new_cpu    = Eve::varPrepForStore($args['new_cpu']);
+        $dbconn =& DBGetConn(true);
+
+        $sql = "UPDATE ".TBL_PREFIX."tower_info
+                SET  cpu='".$new_cpu."',
+                       powergrid='".$new_pg."'
+                WHERE  pos_id       = '".$pos_id."'";
+        $dbconn->Execute($sql);
+
+        if ($dbconn->ErrorNo() != 0) {
+            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
+            return false;
+        }
+
+        return true;
+
+    }
+	
+	/**
      * POSMGMT::ChangeTowerSecret()
      *
      * @param mixed $args
@@ -3289,7 +3321,7 @@ class POSMGMT
         $dbconn =& DBGetConn(true);
 
         $module = $this->GetModInfoFromPos($args);
-//echo '<pre>';print_r($module);echo '</pre>';exit;
+		
         if (!$module) {
             Eve::SessionSetVar('errormsg', 'Unknown Module');
             return false;
@@ -3338,15 +3370,13 @@ class POSMGMT
      */
     function UpdateAllPosModsState($args)
     {
-
+		$userinfo = $this->GetUserInfo();
+		
         if (!$args['pos_id'] || !is_numeric($args['pos_id'])) {
             return false;
         }
 
-        //$fuel = array();
-
         foreach($args['mods'] as $mod_id => $state) {
-            //$mods[$key] = Eve::VarPrepForStore($value);
             if ($state == 100) {
                 if (!$this->DeleteModule(array('pos_id' => $args['pos_id'], 'mod_id' => $mod_id))) {
                     return false;
@@ -3357,24 +3387,26 @@ class POSMGMT
                 }
             }
         }
-
+		
+		$time = time();
         $dbconn =& DBGetConn(true);
-
-        $time = time();
-        $sql = "INSERT INTO ".TBL_PREFIX."update_log (id,
-                                        eve_id,
-                                        type_id,
-                                        type,
-                                        action,
-                                        datetime)
-                VALUES                 (NULL,
-                                        NULL,
-                                        '" . $args['pos_id'] . "',
-                                        '1',
-                                        'Select Structures',
-                                        '" . Eve::VarPrepForStore($time) . "')";
+		$sql = "INSERT INTO ".TBL_PREFIX."update_log VALUES (NULL, '" . $userinfo['eve_id'] . "','" . $args['pos_id'] . "', '1', 'Modify Structures', '" . Eve::VarPrepForStore($time) . "')";
+		
         $dbconn->Execute($sql);
 
+			$mods = $this->GetAllPosMods($args['pos_id']);
+			$mods_pg  = 0;
+			$mods_cpu = 0;
+			if ($mods) {
+				foreach($mods as $row) {
+					if ($row['online']) {
+						$mods_pg  = $mods_pg  + $row['pg'];
+						$mods_cpu = $mods_cpu + $row['cpu'];
+					}
+				}
+			}
+			$this->ChangeTowerCPUPG(array('pos_id' => $args['pos_id'], 'new_pg' => $mods_pg, 'new_cpu' => $mods_cpu));
+		
         return true;
 
     }
