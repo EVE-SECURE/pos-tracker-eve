@@ -137,9 +137,6 @@ switch($action) {
         break;
     case 'updatemods':
         $modstates = $eve->VarCleanFromInput('mod');
-        //echo '<pre>';print_r($modstates);echo '</pre>';
-        //echo 'Update Fuel';exit;
-
         if ($posmgmt->UpdateAllPosModsState(array('pos_id' => $pos_id, 'mods' => $modstates))) {
             $eve->SessionSetVar('statusmsg', 'Modifications Saved!');
             $eve->RedirectUrl('viewpos.php?i='.$pos_id);
@@ -616,55 +613,42 @@ foreach ($res0 as $row0) {
         $silo[$x]['rate_vol']            = $rate_vol;
         $silo[$x]['material_volume']     = $matinfo['material_volume'];
         $silo[$x]['material_amount_max'] = $silo[$x]['silo_capacity'] / $silo[$x]['material_volume'];
+		$silo[$x]['db_amount'] = $silo[$x]['material_amount'];
 
-        //$silo[$x]['hoursago'] = floor($posmgmt->hoursago($silo[$x], 2));
-
-        if (!$silo[$x]['silo_link']) {
-
-            $silo[$x]['material_amount']  = ($silo[$x]['rate']*$silo[$x]['hoursago'])+$silo[$x]['material_amount'];
-            $silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
-            $silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
-            if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
-
-            $silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
-
-            $silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);///$matinfo['material_volume']+$silo[$x]['material_amount'];
-            $silo[$x]['hourstofill_txt']       = $posmgmt->daycalc($silo[$x]['hourstofill']);
-            $silo[$x]['hourstofill_total_txt'] = $posmgmt->daycalc($silo[$x]['hourstofill_total']);
-
-            $silo[$x]['full'] = (($silo[$x]['current_material_vol'] >= $silo[$x]['silo_capacity']) ? 1 : 0);
-
-            if ($silo[$x]['full']) {
-                $silo[$x]['available_silo_vol'] = 0;
-                $silo[$x]['material_amount']    = $silo[$x]['silo_capacity'] / $matinfo['material_volume'];
-                $silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
-            }
-        } else {
-            $linked = $silo[$silo[$x]['silo_link']];
-            if (!$linked['full']) {
-                $silo[$x]['material_amount']    = 0;
-                $silo[$x]['available_silo_vol'] = $silo[$x]['silo_capacity'];
-                $silo[$x]['hourstofill']        = @floor(($silo[$x]['available_silo_vol']+$linked['available_silo_vol']) / $rate / $matinfo['material_volume']);
-                $silo[$x]['hourstofill_total']  = @floor(($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']) + $linked['hourstofill']);
-            } else {
-                $silo[$x]['material_amount']    = ($rate_vol*$silo[$x]['hoursago'])/$matinfo['material_volume']+$silo[$x]['material_amount'];
-                $silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
-                $silo[$x]['available_silo_vol'] = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
-                $silo[$x]['hourstofill']        = @floor($silo[$x]['available_silo_vol'] / $rate / $silo[$x]['material_volume']);
-
-                $silo[$x]['hourstofill_total']  = @floor($silo[$x]['silo_capacity'] / $rate_vol * $matinfo['material_volume']);
-            }
-            $silo[$x]['full']                  = (($silo[$x]['current_material_vol'] >= $silo[$x]['silo_capacity']) ? 1 : 0);
-            $silo[$x]['hourstofill_txt']       = $posmgmt->daycalc($silo[$x]['hourstofill']);
-            $silo[$x]['hourstofill_total_txt'] = $posmgmt->daycalc($silo[$x]['hourstofill_total']);
-
-        }
-
-        //if ($tower['pos_id'] == 51 && $x == 476)
-        //if ($tower['pos_id'] == 18){// && $x == 476)
-        //    echo $tower['pos_race'].'<pre>';print_r($silo);echo '</pre>';exit;
-        //}
-
+        $linked = $silo[$silo[$x]['silo_link']];
+				
+					if (!$silo[$x]['silo_link']) {
+						$silo[$x]['material_amount'] = ($silo[$x]['rate']*$silo[$x]['hoursago'])+$silo[$x]['db_amount']; 			
+						$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
+						 
+							if (($silo[$x]['correct_amount'] * $silo[$x]['material_volume']) > $silo[$x]['silo_capacity']) {
+									$silo[$x]['full'] = 1;
+									$silo[$x]['correct_amount'] = ($silo[$x]['silo_capacity'] / $silo[$x]['material_volume']);
+									$silo[$x]['new_amount'] = $silo[$x]['material_amount'] - $silo[$x]['correct_amount'] ;
+							} else {
+								$silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
+								$silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
+								if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
+								$silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
+								$silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);
+							}
+					} else {
+						$linked = $silo[$silo[$x]['silo_link']];
+						
+						$silo[$x]['material_amount'] = $linked['new_amount']+$silo[$x]['db_amount'];
+						$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
+							if (($silo[$x]['correct_amount'] * $silo[$x]['material_volume']) > $silo[$x]['silo_capacity']) {
+									$silo[$x]['full'] = 1;
+									$silo[$x]['correct_amount'] = ($silo[$x]['silo_capacity'] / $silo[$x]['material_volume']);
+									$silo[$x]['new_amount'] = $silo[$x]['material_amount'] - $silo[$x]['correct_amount'] ;
+							} else {
+								$silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
+								$silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
+								if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
+								$silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
+								$silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);
+							}
+					}
 
     } else {
         //Silo is emptying, input silo
@@ -683,7 +667,8 @@ foreach ($res0 as $row0) {
         }
         $silo[$x]['hourstogo_txt']       = $posmgmt->daycalc($silo[$x]['hourstogo']);
         $hours = $silo[$x]['hourstogo'];
-    }//if ($x == 89) { echo '<pre>';print_r($silo[$x]);echo '</pre>';exit; }
+		$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
+    }
 }
 //End Silo Tracking Code
 

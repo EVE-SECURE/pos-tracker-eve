@@ -25,7 +25,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('5', $access) && !in_array('6', $access) && !in_array('83', $access)) {
+if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) {
 		$eve->RedirectUrl('track.php');
 }
 
@@ -101,6 +101,19 @@ if ($action == 'Done') {
         }
     }
 
+	$mods = $posmgmt->GetAllPosMods($pos_id);
+	if ($mods) {
+    $current_pg  = 0;
+    $current_cpu = 0;
+    foreach($mods as $row) {
+        if ($row['online']) {
+            $current_pg  = $current_pg  + $row['pg'];
+            $current_cpu = $current_cpu + $row['cpu'];
+        }
+    }
+		$posmgmt->ChangeTowerCPUPG(array('pos_id' => $pos_id, 'new_pg' => $current_pg, 'new_cpu' => $current_cpu));
+	}
+
     $eve->RedirectUrl('viewpos.php?i='.$pos_id);
 
 }
@@ -113,23 +126,4 @@ $eveRender->Assign('structs', $structs);
 
 $eveRender->Display('addstructures.tpl');
 exit;
-
-/*
-echo "<form method=\"post\" action=\"pos-transaction.php\">\n";
-echo "<input name=\"pos_id\" value=\"".$pos_id."\" type=\"hidden\">\n";
-echo "<input name=\"amount\" value=\"".$struct_amount."\" type=\"hidden\">\n";
-echo "<table>\n";
-foreach($structs as $structure) {
-    echo "  <tr>\n";
-    echo "    <td>".$structure['name']."</td>\n";
-    echo "    <td><input type=\"text\" size=\"5\" name=\"s_id".$structure['id']."\" value=\"0\" /></td>\n";
-    echo "  </tr>\n";
-}
-echo "  <tr><td><hr /></td></tr>\n";
-echo "  <tr>\n";
-echo "    <td><input type=\"submit\" name=\"action\" value=\"Done\"></td>\n";
-echo "  </tr>\n";
-echo "</table>\n";
-
-require_once 'footer.php';*/
 ?>
