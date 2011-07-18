@@ -20,8 +20,8 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
-    $eve->RedirectUrl('login.php');
+if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) {
+    $eve->RedirectUrl('track.php');
 }
 
 if (empty($pos_id)) {
@@ -33,10 +33,6 @@ if (empty($pos_id)) {
 }
 $tower['pos_id']=$pos_id;
 $action = $eve->VarCleanFromInput('action');
-
-if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
-    $eve->RedirectUrl('track.php');
-}
 
 switch($action) {
     case 'Import Structures':
@@ -68,7 +64,7 @@ switch($action) {
 						$structures[$key]=array('typeID'=>$structure['typeID'], 'typeName'=>$structure['typeName']);
 					}
 				}
-			echo"<pre>";print_r($structures);echo"</pre>";				
+			//echo"<pre>";print_r($structures);echo"</pre>";
 			$eveRender->Assign('structures',     $structures);
 			$eveRender->Assign('pos_id', $pos_id);
 			$eveRender->Display('importfit_add.tpl');
