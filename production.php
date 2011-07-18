@@ -365,7 +365,7 @@ function GetallProd($args)
 
             //Moon harvester Rate
             if ($structure_type==16221 && $structure_material_id == $silo_material_id) {
-				$rate = 100
+				$rate = 100;
             }
 
             //Reactor Rates
