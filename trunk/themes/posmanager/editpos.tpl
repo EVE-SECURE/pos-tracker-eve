@@ -360,7 +360,7 @@
       <!--[*<td><!--[if $silo.direction eq 'Output']-->Receiver<!--[else]-->Provider<!--[/if]--></td>*]-->
       <td><select name="direction[<!--[$silo.silo_id]-->]"><!--[html_options options=$optdirections selected=$silo.direction]--></select></td>
       <td><!--[$silo.rate]--> <span style="color:#aaaaaa;">(<!--[$silo.material_volume]-->m3)</span></td>
-      <td><input type="text" name="new_amount[<!--[$silo.silo_id]-->]" value="<!--[$silo.material_amount]-->" /></td>
+      <td><input type="text" name="new_amount[<!--[$silo.silo_id]-->]" value="<!--[$silo.correct_amount]-->" /></td>
       <td><!--[daycalc hours=$silo.hourstofill]--></td>
       <td><!--[if $silo.full]-->YES<!--[else]-->No<!--[/if]--></td>
       <td><select name="connection[<!--[$silo.silo_id]-->]"><!--[html_options options=$optminers selected=$silo.connection_id]--></select></td>
