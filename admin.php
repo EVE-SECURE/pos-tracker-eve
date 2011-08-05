@@ -671,7 +671,7 @@ function isUpToDate()
 	return "Your installation is up to date!";
 	}
 	else {
-	return "$latestVersion - <font color='red'>Your installation is not up to date!</font><BR>Get the latest version here: <a href='http://www.iceneko.com/eve/index.html' target='_blank'>Click Me!</a>";
+	return "$latestVersion - <font color='red'>Your installation is not up to date!</font><BR>Get the latest version here: <a href='http://www.iceneko.com/eve/' target='_blank'>Click Me!</a>";
 	}
 	
 }
