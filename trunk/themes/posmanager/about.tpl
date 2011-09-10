@@ -6,6 +6,21 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.1.5 to 5.1.6 Changes:</strong>
+    <ul>
+	  <li>Support for the new API system.</li>
+	  <li>PHP Mailer Updated to work with PHP 5.3 installs.</li>
+	  <li>Mailer will now email subadmins on critical fuel alerts.</li>
+	  <li>Mailer will now recognize if admin or subadmins put their email status to away.</li>
+	  <li>Mailer's emails current, status, required, optimal, and difference all work correctly now.</li>
+	  <li>Industrial Jobs can now pull in all APIs currently listed within the tracker instead of just the first one only.</li>
+	  <li>Fuel Calc now shows charters on towers that need charters.</li>
+	  <li>Fuel Calc/View POS m3 Total Size/Total Difference no longer adds charters if the tower doesn't require charters.</li>
+	  <li>Fuel Calc can now do Partial Fuelup based on what's listed in ship cargo capacity. Informs you of how much additional time you can get but doesn't not check if the tower can actually hold that much m3.</li>
+	  <li>Fuel Calc now has a simplified version of Optimal and Partial Totals. - Special Thx towards Kismeteer</li>
+	  <li>Edit POS no longer shows charters on towers that don't need charters.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.4 to 5.1.5 Changes:</strong>
     <ul>
 	  <li>Silo/Production system rewritten. Silo Link bug should be squashed.</li>

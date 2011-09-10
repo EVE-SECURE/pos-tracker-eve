@@ -43,7 +43,6 @@ include_once 'includes/eveRender.class.php';
 include_once 'includes/class.posmailer.php';
 $eveRender = New eveRender($config, $mod, false);
 $colors    = $eveRender->themeconfig;
-//echo '<pre>';print_r($config); echo '</pre>';exit;
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
@@ -57,12 +56,19 @@ $eve->SessionSetVar('access', $access);
 
 $eveRender->Assign('access', $access);
 
-
-    $rows = $posmgmt->GetAllPos2();
+	$args['pr'] = 2;
+    $rows = $posmgmt->GetAllPos2($args);
 
     foreach($rows as $key => $row) {
 
         $row2 = $posmgmt->GetLastPosUpdate($row['pos_id']);
+		
+		$tower = $posmgmt->GetTowerInfo($row['pos_id']);
+		
+		if ($tower) {
+		$tower['current_cpu']            = $tower['cpu'];
+        $tower['current_pg']              = $tower['powergrid'];
+		}
 		
 		$pos_size                 = $row['pos_size'];
 	    $pos_race                 = $row['pos_race'];
@@ -70,25 +76,42 @@ $eveRender->Assign('access', $access);
 		$sov                      = $posmgmt->getSovereignty($systemID);
 		$sovereignty              = $sov['sovereigntyLevel'];
 		
-		//Begin New Sovereignty Code
 		$db = $posmgmt->selectstaticdb($sovereignty, $systemID);
-		//End New Sovereignty Code
 
 		$row3 = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
+		
+		if ($row3) {
+            $tower['required_isotope']           = $row3['isotopes'];
+            $tower['required_oxygen']            = $row3['oxygen'];
+            $tower['required_mechanical_parts']  = $row3['mechanical_parts'];
+            $tower['required_coolant']           = $row3['coolant'];
+            $tower['required_robotics']          = $row3['robotics'];
+            $tower['required_uranium']           = $row3['uranium'];
+            $tower['required_ozone']             = $row3['ozone'];
+            $tower['required_heavy_water']       = $row3['heavy_water'];
+            $tower['required_strontium']         = $row3['strontium'];
+            $tower['race_isotope']               = $row3['race_isotope'];
+            $tower['total_pg']                   = $row3['pg'];
+            $tower['total_cpu']                  = $row3['cpu'];
+            $tower['uptimecalc']                 = $posmgmt->uptimecalc($row['pos_id']);
+            $tower['pos_capacity']=$tower['fuel_hangar']=$row3['fuel_hangar'];
+        }
 
-
+		$row3['ozone']        = ceil(($tower['current_pg'] / $row3['pg']) * $row3['ozone']);
+		$row3['heavy_water']  = ceil(($tower['current_cpu'] / $row3['cpu']) * $row3['heavy_water']);
+		
 		$row['result_uptimecalc']= $posmgmt->uptimecalc($row['pos_id']);
 		$row['result_online']    = $posmgmt->online($row['result_uptimecalc']);
 		$row['last_update']      = gmdate("Y-m-d H:i:s", $row2['datetime']);
 		$row['online']           = $posmgmt->daycalc($row['result_online']);
 		$row['region']           = $posmgmt->getRegionNameFromMoonID($row['MoonName']);
 		$row['system']           = $posmgmt->getSystemName($row['systemID']);
-		$row['result_optimal']   = $posmgmt->posoptimaluptime($row3);
-				
+		$row['result_optimal']   = $posmgmt->posoptimaluptime($tower);
+		
         $rows[$key] = $row;
 		$characterInfo=$posmgmt->GetUserInfofromID($row['owner_id']);
 		$secondary_characterInfo=$posmgmt->GetUserInfofromID($row['secondary_owner_id']);
-		//echo '<pre>';print_r($characterInfo); echo '</pre>';exit;
+
 		$diff=array('uranium' => $row['result_optimal']['optimum_uranium']-$row['uranium'],
 		'oxygen'=> $row['result_optimal']['optimum_oxygen']-$row['oxygen'],
 		'mechanical_parts'=> $row['result_optimal']['optimum_mechanical_parts']-$row['mechanical_parts'],
@@ -97,41 +120,47 @@ $eveRender->Assign('access', $access);
 		'isotope'=>$row['result_optimal']['optimum_isotope']-$row['isotope'],
 		'ozone'=>$row['result_optimal']['optimum_ozone']-$row['ozone'],
 		'heavy_water'=>$row['result_optimal']['optimum_heavy_water']-$row['heavy_water']);
+
+		if($row['pos_status'] >=2) {
 		
-		if($row['pos_status'] >=2)
-		{
-		
-		if($characterInfo['away']!=1 && isset($characterInfo['email']))
-		{
-			if($row['result_online']<$config['minimal_fuel'])
-			{
-				$mail->posalert($characterInfo['email'], $characterInfo['name'], $row, $row3, $diff);
-
-			}
-		}
-		if($secondary_characterInfo['away']!=1 && isset($secondary_characterInfo['email']))
-		{
-			if($row['result_online']<$config['minimal_fuel'])
-			{
-				$mail->posalert($secondary_characterInfo['email'], $secondary_characterInfo['name'], $row, $row3, $diff);
-
-			}
-		}
-		if($row['result_online']<$config['critical_fuel'])
-		{
-			$directorlist = $posmgmt->GetAllUsersWithAccess(4);
-
-			foreach($directorlist as $director) {
-				if($row['owner_id']==0)
-				{
-					$characterInfo['name']='None';
+			if($characterInfo['away']!=1 && isset($characterInfo['email'])) {
+				if($row['result_online']<$config['minimal_fuel']) {
+					$mail->posalert($characterInfo['email'], $characterInfo['name'], $row, $row3, $diff);
 				}
-				$mail->criticalpossalert($director['email'], $director['name'], $characterInfo['name'], $row, $row3, $diff);
+			}
+			
+			if($secondary_characterInfo['away']!=1 && isset($secondary_characterInfo['email'])) {
+				if($row['result_online']<$config['minimal_fuel']) {
+					$mail->posalert($secondary_characterInfo['email'], $secondary_characterInfo['name'], $row, $row3, $diff);
+				}
+			}
+			
+			if($row['result_online']<$config['critical_fuel']) {
+				$directorlist = $posmgmt->GetAllUsersWithAccess(6);
+
+				foreach($directorlist as $director) {
+					if($row['owner_id']==0) {
+						$characterInfo['name']='no one';
+					}
+					
+					if ($director['away']!=1 && isset($director['email'])) {
+					$mail->criticalpossalert($director['email'], $director['name'], $characterInfo['name'], $row, $row3, $diff);
+					}
+				}
+
+				$directorlist = $posmgmt->GetAllUsersWithAccess(5);
+				
+				foreach($directorlist as $director) {
+					if($row['owner_id']==0) {
+						$characterInfo['name']='no one';
+					}
+					
+					if ($director['away']!=1 && isset($director['email'])) {
+					$mail->criticalpossalert($director['email'], $director['name'], $characterInfo['name'], $row, $row3, $diff);
+					}
+				}	
 			}
 		}
-		}
-		
-		
     }
 
 ?>

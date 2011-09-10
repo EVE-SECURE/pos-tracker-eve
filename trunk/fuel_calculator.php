@@ -27,14 +27,18 @@ $pos_to_refuel = $eve->VarCleanFromInput('pos_to_refuel');
 
 $optlevels = array(1 => 'Current Level - Yes', 0 => 'Current Level - No');
 $disopt = array(1 => 'Display Optimals - Yes', 0 => 'Display Optimals - No');
+$partialopt = array(0 => 'Partial Fuelup - No', 1 => 'Partial Fuelup - Yes');
+
 $eveRender->Assign('optlevels', $optlevels);
 $eveRender->Assign('disopt', $disopt);
+$eveRender->Assign('partialopt', $partialopt);
 
 if (!empty($pos_to_refuel)) {
     $days               = $eve->VarCleanFromInput('days');
     $hours              = $eve->VarCleanFromInput('hours');
     $use_current_levels = $eve->VarCleanFromInput('use_current_levels');
 	$display_optimal	= $eve->VarCleanFromInput('display_optimal');
+	$partial_fuelup	= $eve->VarCleanFromInput('partial_fuelup');
     $use_hanger_levels  = 0;//$eve->VarCleanFromInput('use_hanger_levels');
     $cargosize          = $eve->VarCleanFromInput('size');
 	
@@ -43,7 +47,6 @@ if (!empty($pos_to_refuel)) {
     $args['use_current_levels'] = $use_current_levels;
 	$args['display_optimal'] = $display_optimal;
 	$args['calc_fuel'] = 1;
-	
     $bill = $posmgmt->GetFuelBill($args);
 	
     $tower = $bill[$pos_to_refuel];
@@ -54,19 +57,10 @@ if (!empty($pos_to_refuel)) {
     $required_Hy_isotope = 0;
 
     $system                   = $tower['system'];
-    $needed_uranium           = $tower['needed_uranium'];
-    $needed_oxygen            = $tower['needed_oxygen'];
-    $needed_mechanical_parts  = $tower['needed_mechanical_parts'];
-    $needed_coolant           = $tower['needed_coolant'];
-    $needed_robotics          = $tower['needed_robotics'];
-    $needed_isotopes          = $tower['needed_isotopes'];
-    $needed_ozone             = $tower['needed_ozone'];
-    $needed_heavy_water       = $tower['needed_heavy_water'];
-    $needed_charters          = $tower['needed_charters'];
-    $needed_stront            = $tower['needed_stront'];
     $pos_id                   = $tower['pos_id'];
     $pos_race                 = $tower['pos_race'];
     $locationName             = $tower['locationName'];
+	
     $tower['regionName']      = $posmgmt->getRegionNameFromMoonID($locationName);
 
     switch($pos_race) {
@@ -98,79 +92,19 @@ if (!empty($pos_to_refuel)) {
 	$race_isotope = "Nitrogen";
 	} elseif ($tower['required_O_isotope'] > 1) { 
 	$race_isotope = "Oxygen"; }
-	
-    $fuel_H_isotopes        = $fuel_H_isotopes        + $required_H_isotope;
-    $fuel_N_isotopes        = $fuel_N_isotopes        + $required_N_isotope;
-    $fuel_O_isotopes        = $fuel_O_isotopes        + $required_O_isotope;
-    $fuel_Hy_isotopes       = $fuel_Hy_isotopes       + $required_Hy_isotope;
-    $fuel_uranium           = $fuel_uranium           + $needed_uranium;
-    $fuel_oxygen            = $fuel_oxygen            + $needed_oxygen;
-    $fuel_mechanical_parts  = $fuel_mechanical_parts  + $needed_mechanical_parts;
-    $fuel_coolant           = $fuel_coolant           + $needed_coolant;
-    $fuel_robotics          = $fuel_robotics          + $needed_robotics;
-    $fuel_ozone             = $fuel_ozone             + $needed_ozone;
-    $fuel_heavy_water       = $fuel_heavy_water       + $needed_heavy_water;
 
-    (integer) $fuel_uranium_size          = round($fuel_uranium           * $pos_Ura);
-    (integer) $fuel_oxygen_size           = round($fuel_oxygen            * $pos_Oxy);
-    (integer) $fuel_mechanical_parts_size = round($fuel_mechanical_parts  * $pos_Mec);
-    (integer) $fuel_coolant_size          = round($fuel_coolant           * $pos_Coo);
-    (integer) $fuel_robotics_size         = round($fuel_robotics          * $pos_Rob);
-    (integer) $fuel_H_isotopes_size       = round($fuel_H_isotopes        * $pos_Iso);
-    (integer) $fuel_N_isotopes_size       = round($fuel_N_isotopes        * $pos_Iso);
-    (integer) $fuel_O_isotopes_size       = round($fuel_O_isotopes        * $pos_Iso);
-    (integer) $fuel_Hy_isotopes_size      = round($fuel_Hy_isotopes       * $pos_Iso);
-    (integer) $fuel_ozone_size            = round($fuel_ozone             * $pos_Ozo);
-    (integer) $fuel_heavy_water_size      = round($fuel_heavy_water       * $pos_Hea);
-    //(integer) $fuel_strontium_size        = round($current_strontium * 3) ;
-    $total_size = $fuel_uranium_size + $fuel_oxygen_size + $fuel_mechanical_parts_size + $fuel_coolant_size + $fuel_robotics_size + $fuel_H_isotopes_size + $fuel_N_isotopes_size + $fuel_O_isotopes_size + $fuel_Hy_isotopes_size + $fuel_ozone_size + $fuel_heavy_water_size;
-
-    $fuel = array('fuel_H_isotopes'             => $fuel_H_isotopes,
-                  'fuel_N_isotopes'             => $fuel_N_isotopes,
-                  'fuel_O_isotopes'             => $fuel_O_isotopes,
-                  'fuel_Hy_isotopes'            => $fuel_Hy_isotopes,
-                  'fuel_uranium'                => $fuel_uranium,
-                  'fuel_oxygen'                 => $fuel_oxygen,
-                  'fuel_mechanical_parts'       => $fuel_mechanical_parts,
-                  'fuel_coolant'                => $fuel_coolant,
-                  'fuel_robotics'               => $fuel_robotics,
-                  'fuel_ozone'                  => $fuel_ozone,
-                  'fuel_heavy_water'            => $fuel_heavy_water,
-                  'fuel_uranium_size'           => $fuel_uranium_size,
-                  'fuel_oxygen_size'            => $fuel_oxygen_size,
-                  'fuel_mechanical_parts_size'  => $fuel_mechanical_parts_size,
-                  'fuel_coolant_size'           => $fuel_coolant_size,
-                  'fuel_robotics_size'          => $fuel_robotics_size,
-                  'fuel_H_isotopes_size'        => $fuel_H_isotopes_size,
-                  'fuel_N_isotopes_size'        => $fuel_N_isotopes_size,
-                  'fuel_O_isotopes_size'        => $fuel_O_isotopes_size,
-                  'fuel_Hy_isotopes_size'       => $fuel_Hy_isotopes_size,
-                  'fuel_ozone_size'             => $fuel_ozone_size,
-                  'fuel_heavy_water_size'       => $fuel_heavy_water_size,
-                  'total_size'                  => $total_size);
-
-    $fuel = array_merge($fuel, $tower);
+	$fuel = $tower;
 
     if($cargosize > 0) {
-        $fuel['trips'] = ceil($total_size / $cargosize);
+        $fuel['trips'] = ceil($fuel['total_volume'] / $cargosize);
     }
 
 	if ($display_optimal == 1) {
 		$tower = $posmgmt->GetTowerInfo($pos_to_refuel);
-	
-			
-			
+
 		if ($tower) {
 			$pos_size                = $tower['pos_size'];
             $pos_race                = $tower['pos_race'];
-            $current_isotope         = $tower['isotope'];
-            $current_oxygen          = $tower['oxygen'];
-            $current_mechanical_parts= $tower['mechanical_parts'];
-            $current_coolant         = $tower['coolant'];
-            $current_robotics        = $tower['robotics'];
-            $current_uranium         = $tower['uranium'];
-            $current_ozone           = $tower['ozone'];
-            $current_heavy_water     = $tower['heavy_water'];
 			$tower_pg                = $tower['powergrid'];
             $tower_cpu               = $tower['cpu'];
 			$systemID                = $tower['systemID'];
@@ -198,21 +132,9 @@ if (!empty($pos_to_refuel)) {
             $tower['race_isotope']               = $row['race_isotope'];
             $tower['total_pg']                   = $row['pg'];
             $tower['total_cpu']                  = $row['cpu'];
-            $required_isotope                    = $row['isotopes'];
-            $required_oxygen                     = $row['oxygen'];
-            $required_mechanical_parts           = $row['mechanical_parts'];
-            $required_coolant                    = $row['coolant'];
-            $required_robotics                   = $row['robotics'];
-            $required_uranium                    = $row['uranium'];
-            $required_ozone                      = $row['ozone'];
-            $required_heavy_water                = $row['heavy_water'];
-            $required_strontium                  = $row['strontium'];
-            $required_charters                   = $charters_needed?1:0;
             $total_pg                            = $row['pg'];
             $total_cpu                           = $row['cpu'];
-          //  $tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
-            $tower['pos_capacity']=$tower['fuel_hangar']=$row['fuel_hangar'];
-
+			$tower['pos_capacity']=$tower['fuel_hangar']=$row['fuel_hangar'];
         }
 	
 		if($current_cpu<=0 && $tower['cpu']>0) {
@@ -224,20 +146,30 @@ if (!empty($pos_to_refuel)) {
 		
 		$tower['current_pg']  = $current_pg;
 		$tower['current_cpu'] = $current_cpu;
-	
+		
+		
 		$optimal=$posmgmt->posoptimaluptime($tower);
 		$optimalDiff=$posmgmt->getOptimalDifference($optimal, $tower);
 	
+		if ($partial_fuelup == 1) {
+			$tower['fuel_hangar']=$cargosize;
+			$partial_optimal=$posmgmt->posoptimaluptime($tower);
+			$partial_optimal['total']=(($partial_optimal['optimum_uranium']*$pos_Ura)+($partial_optimal['optimum_oxygen']*$pos_Oxy)+($partial_optimal['optimum_mechanical_parts']*$pos_Mec)+
+			($partial_optimal['optimum_coolant']*$pos_Coo)+($partial_optimal['optimum_robotics']*$pos_Rob)+($partial_optimal['optimum_isotope']*$pos_Iso)+
+			($partial_optimal['optimum_ozone']*$pos_Ozo)+($partial_optimal['optimum_heavy_water']*$pos_Hea));
+			if ($tower['charters_needed'] == 1) {
+			$partial_optimal['total']=($partial_optimal['total']+($partial_optimal['optimum_charters']*$pos_Cha));
+			}
+		}
 	if($cargosize > 0) {
        $fuel['trips2'] = ceil($optimalDiff['totalDiff'] / $cargosize);
     }
 	
 	$eveRender->Assign('optimal',   $optimal);
     $eveRender->Assign('optimalDiff',   $optimalDiff);
-	
+	$eveRender->Assign('partial_optimal',   $partial_optimal);
 }
-	
-		
+
 	$eveRender->Assign('pos_id',           $pos_id);
 	$eveRender->Assign('race_isotope',           $race_isotope);
     $eveRender->Assign('fuel',           $fuel);
@@ -247,7 +179,7 @@ if (!empty($pos_to_refuel)) {
     $eveRender->Assign('days_to_refuel', $args['days_to_refuel']);	
 	$eveRender->Assign('display_optimal',   $display_optimal);
 	$eveRender->Assign('use_current_levels',   $use_current_levels);
-	
+	$eveRender->Assign('partial_fuelup',   $partial_fuelup);
 }
 
 $towers = $posmgmt->GetAllPos2();
