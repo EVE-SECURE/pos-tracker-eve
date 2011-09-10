@@ -341,7 +341,7 @@ $eveRender->Assign('awaylevel',  array(0 => 'Default', 1 => 'Away', 2 => 'Receiv
 $time = time();
 $pulltime     = $posmgmt->GetLastSystemUpdate();
 $pulltimeally = $posmgmt->GetLastAllianceUpdate();
-$pulljobtime = $posmgmt->GetLastJobUpdate();
+$pulljobtime = $posmgmt->GetLastJobUpdate(5);
 $pullapitimer = $posmgmt->GetLastAPITimer();
 $sovtime      = $posmgmt->get_formatted_timediff($pulltime, $now = false);
 $allytime     = $posmgmt->get_formatted_timediff($pulltimeally, $now = false);

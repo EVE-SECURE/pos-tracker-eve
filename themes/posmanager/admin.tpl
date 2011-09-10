@@ -88,7 +88,7 @@
       <p>
       <!--[if $results]-->
         Success<br />
-        Jobs Checked and Updated: <!--[$results]--><br />
+        Jobs Checked and Updated!<br />
       <!--[else]-->
         ERROR!!
       <!--[/if]-->
@@ -189,8 +189,8 @@
         <thead>
           <tr>
             <th class="mbground hcolor">Corp</th>
-            <th class="mbground hcolor">UserID</th>
-            <th class="mbground hcolor">API Key (first 5 characters)</th>
+            <th class="mbground hcolor">KeyID</th>
+            <th class="mbground hcolor">vCode (first 5 characters)</th>
             <th class="mbground hcolor">Remove</th>
           </tr>
         </thead>
@@ -210,12 +210,13 @@
         </table>
       </div>
       </form>
-     <h4 class="pageTitle">Add an <a href="http://www.eveonline.com/api/default.asp" target="_blank">API Key</a></h4>
+     <h4 class="pageTitle">Add an <a href="https://support.eveonline.com/api" target="_blank">API Key</a></h4>
       <form method="post" action="admin.php?action=getcharacters">
       <div>
-        USERID: <input type="text" name="userid" size="10" /> APIKEY: <input type="text" name="apikey" size="35" /> <input type="submit" value="Select Character" />
+        KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="35" /> <input type="submit" value="Select Character" />
       </div>
       </form>
+	   (Requires: StarbaseList/StarbaseDetail/CorporationSheet)
      <br />
     </div>
 	

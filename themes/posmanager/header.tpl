@@ -18,7 +18,7 @@
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="track.php" title="POS Tracking">POS Track</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="fuel_calculator.php" title="Fuel calculator">Fuel calculator</a>
+      <a href="fuel_calculator.php" title="Fuel calculator">Fuel Calculator</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="fuelbill.php" title="Fuel Bill">Fuel Bill</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;

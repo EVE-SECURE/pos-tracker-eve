@@ -135,12 +135,15 @@ class POSMGMT
 
     }
 
-	function GetLastJobUpdate()
+	function GetLastJobUpdate($characterID)
     {
 
         $dbconn =& DBGetConn(true);
-
-        $sql = "SELECT * FROM  ".TBL_PREFIX."update_log WHERE action = 'EVEAPI XML JOBS API UPDATE' ORDER BY id DESC LIMIT 0,1";
+		if ($characterID == 5) {
+		$sql = "SELECT * FROM  ".TBL_PREFIX."update_log WHERE action = 'EVEAPI XML JOBS API UPDATE' ORDER BY id DESC LIMIT 1";
+		} else {
+		$sql = "SELECT * FROM  ".TBL_PREFIX."update_log WHERE action = 'EVEAPI XML JOBS API UPDATE' and type_id = '".Eve::VarPrepForStore($characterID)."' ORDER BY id DESC LIMIT 1";
+		}
 
         $result = $dbconn->Execute($sql);
 
@@ -1127,7 +1130,9 @@ class POSMGMT
                        12 => 'Serpentis CT',
                        13 => 'Shadow CT',
                        14 => 'True Sansha CT');
-					   
+
+		
+		
 		$orderby = "";
 		$orderby2 = "";
 		switch($args['sb']) {
@@ -1196,7 +1201,9 @@ class POSMGMT
             $row['online']            = $this->daycalc($row['result_online']);
             //$row['region']            = $this->getRegionNameFromMoonID($row['MoonName']);
             //$row['system']            = $this->getSystemName($row['systemID']);
-			$row['pos_race'] = $posrace[$row['pos_race']];
+			if ($args['pr'] != 2) {
+					$row['pos_race'] = $posrace[$row['pos_race']];
+			}
             $rows[$key] = $row;
         }
 
@@ -1304,7 +1311,11 @@ class POSMGMT
         $diff['mechanical_parts']=$optimal['optimum_mechanical_parts']-$tower['mechanical_parts'];
         $diff['coolant']=$optimal['optimum_coolant']-$tower['coolant'];
         $diff['robotics']=$optimal['optimum_robotics']-$tower['robotics'];
+		if ($tower['charters_needed'] == 1) {
         $diff['charters']=$optimal['optimum_charters']-$tower['charters'];
+		} else {
+		$diff['charters']=0;
+		}
         $diff['ozone']=$optimal['optimum_ozone']-$tower['ozone'];
         $diff['heavy_water']=$optimal['optimum_heavy_water']-$tower['heavy_water'];
         $diff['strontium']=$optimal['optimum_strontium']-$tower['strontium'];
@@ -1320,7 +1331,6 @@ class POSMGMT
         $diff['ozone_m3']=$diff['ozone']*$GLOBALS["pos_Ozo"];
         $diff['heavy_water_m3']=$diff['heavy_water']*$GLOBALS["pos_Hea"];
         $diff['strontium_m3']=$diff['strontium']*$GLOBALS["pos_Str"];
-
 		if ($diff['uranium_m3']>= 1)
 		{
 			$diff['totalDiff']=$diff['totalDiff']+$diff['uranium_m3'];
@@ -1357,7 +1367,6 @@ class POSMGMT
 		{
 			$diff['totalDiff']=$diff['totalDiff']+$diff['heavy_water_m3'];
 		}
-		
         return $diff;
      }
 
@@ -4218,7 +4227,7 @@ class POSMGMT
         } else {
             $calc_fuel = 0;
         }
-		
+
         //$days_to_refuel = $eve->VarCleanFromInput('days'); if (empty($days_to_refuel)) { $days_to_refuel = 20; }
         $days_to_refuel = 30; //$eve->VarCleanFromInput('days'); if (empty($days_to_refuel)) { $days_to_refuel = 20; }
         if (isset($args['days_to_refuel'])) {
@@ -4322,7 +4331,6 @@ class POSMGMT
 
 
             }
-
             $sql = "SELECT * FROM ".TBL_PREFIX."pos_structures ps JOIN ".TBL_PREFIX."structure_static ss ON ps.type_id = ss.id WHERE ps.pos_id = '" . Eve::VarPrepForStore($pos_id) . "' AND ps.online=1";
 
         $result = $dbconn->Execute($sql);
@@ -4521,44 +4529,42 @@ class POSMGMT
           /* --- Needed fuel calculation --- */
 
 		if ($display_optimal) {
-		$volume_per_cycle  = 0;
-        $volume_per_cycle += ($required_uranium * $GLOBALS["pos_Ura"]);
-        $volume_per_cycle += ($required_oxygen * $GLOBALS["pos_Oxy"]);
-        $volume_per_cycle += ($required_mechanical_parts * $GLOBALS["pos_Mec"]);
-        $volume_per_cycle += ($required_coolant * $GLOBALS["pos_Coo"]);
-        $volume_per_cycle += ($required_robotics * $GLOBALS["pos_Rob"]);
-        $volume_per_cycle += ($required_isotope * $GLOBALS["pos_Iso"]);
-        $volume_per_cycle += ceil(($current_pg / $total_pg) * $required_ozone) * $GLOBALS["pos_Ozo"];
-        $volume_per_cycle += ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $GLOBALS["pos_Hea"];
-        $volume_per_cycle += ($required_charters * $GLOBALS["pos_Cha"]);
-        $optimum_cycles    = floor(($pos_capacity)/$volume_per_cycle);
-
-		$optimal['optimum_cycles']=$optimum_cycles;
-        $needed_uranium         = $required_uranium * $optimum_cycles;
-        $needed_oxygen           = $required_oxygen * $optimum_cycles;
-        $needed_mechanical_parts = $required_mechanical_parts * $optimum_cycles;
-        $needed_coolant          = $required_coolant * $optimum_cycles;
-        $needed_robotics         = $required_robotics * $optimum_cycles;
-        $needed_isotopes          = $required_isotope * $optimum_cycles;
-        $needed_ozone            = ceil(($current_pg / $total_pg) * $required_ozone) * $optimum_cycles;
-        $needed_heavy_water      = ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $optimum_cycles;
-        $needed_charters        = $required_charters * $optimum_cycles;
-		
-		if ($calc_fuel) { //override numbers, user is using the Fuel Calc
-			$needed_hours               = (integer) (abs($days_to_refuel*24) + abs($hours_to_refuel)) ;
-			$needed_uranium          = $required_uranium * $needed_hours ;
-            $needed_oxygen           = $required_oxygen * $needed_hours ;
-            $needed_mechanical_parts = $required_mechanical_parts * $needed_hours ;
-            $needed_coolant          = $required_coolant * $needed_hours ;
-            $needed_robotics         = $required_robotics * $needed_hours ;
-            $needed_isotopes         = $required_isotope * $needed_hours ;
-            $needed_ozone            = $required_ozone * $needed_hours ;
-            $needed_heavy_water      = $required_heavy_water * $needed_hours ;
-            $needed_charters         = $required_charters * $needed_hours;
-			}
-		
-		}
-		else {
+			$volume_per_cycle  = 0;
+			$volume_per_cycle += ($required_uranium * $GLOBALS["pos_Ura"]);
+			$volume_per_cycle += ($required_oxygen * $GLOBALS["pos_Oxy"]);
+			$volume_per_cycle += ($required_mechanical_parts * $GLOBALS["pos_Mec"]);
+			$volume_per_cycle += ($required_coolant * $GLOBALS["pos_Coo"]);
+			$volume_per_cycle += ($required_robotics * $GLOBALS["pos_Rob"]);
+			$volume_per_cycle += ($required_isotope * $GLOBALS["pos_Iso"]);
+			$volume_per_cycle += ceil(($current_pg / $total_pg) * $required_ozone) * $GLOBALS["pos_Ozo"];
+			$volume_per_cycle += ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $GLOBALS["pos_Hea"];
+			$volume_per_cycle += ($required_charters * $GLOBALS["pos_Cha"]);
+			$optimum_cycles    = floor(($pos_capacity)/$volume_per_cycle);
+			
+			$optimal['optimum_cycles']=$optimum_cycles;
+			$needed_uranium         = $required_uranium * $optimum_cycles;
+			$needed_oxygen           = $required_oxygen * $optimum_cycles;
+			$needed_mechanical_parts = $required_mechanical_parts * $optimum_cycles;
+			$needed_coolant          = $required_coolant * $optimum_cycles;
+			$needed_robotics         = $required_robotics * $optimum_cycles;
+			$needed_isotopes          = $required_isotope * $optimum_cycles;
+			$needed_ozone            = ceil(($current_pg / $total_pg) * $required_ozone) * $optimum_cycles;
+			$needed_heavy_water      = ceil(($current_cpu / $total_cpu) * $required_heavy_water) * $optimum_cycles;
+			$needed_charters        = $required_charters * $optimum_cycles;
+			
+			if ($calc_fuel) { //override numbers, user is using the Fuel Calc
+				$needed_hours               = (integer) (abs($days_to_refuel*24) + abs($hours_to_refuel)) ;
+				$needed_uranium          = $required_uranium * $needed_hours ;
+				$needed_oxygen           = $required_oxygen * $needed_hours ;
+				$needed_mechanical_parts = $required_mechanical_parts * $needed_hours ;
+				$needed_coolant          = $required_coolant * $needed_hours ;
+				$needed_robotics         = $required_robotics * $needed_hours ;
+				$needed_isotopes         = $required_isotope * $needed_hours ;
+				$needed_ozone            = $required_ozone * $needed_hours ;
+				$needed_heavy_water      = $required_heavy_water * $needed_hours ;
+				$needed_charters         = $required_charters * $needed_hours;	
+				}
+		} else {
 		
 		$needed_hours               = (integer) (abs($days_to_refuel*24) + abs($hours_to_refuel)) ;
             $real_required_ozone        = ceil(($current_pg / $total_pg) * $required_ozone) ;
@@ -4689,9 +4695,8 @@ class POSMGMT
                 $bill[$pos_to_refuel]['needed_stront_size']       = $needed_stront * $GLOBALS["pos_Str"];
             }
 
-            $bill[$pos_to_refuel]['total_volume'] = $needed_uranium_size + $needed_oxygen_size + $needed_mechanical_parts_size + $needed_coolant_size + $needed_robotics_size  +  $needed_isotopes_size + $needed_ozone_size + $needed_heavy_water_size + $needed_charter_size;
+            $bill[$pos_to_refuel]['total_volume'] = $bill[$pos_to_refuel]['needed_uranium_size'] + $bill[$pos_to_refuel]['needed_oxygen_size']  + $bill[$pos_to_refuel]['needed_mechanical_parts_size'] + $bill[$pos_to_refuel]['needed_coolant_size'] + $bill[$pos_to_refuel]['needed_robotics_size']  +  $bill[$pos_to_refuel]['needed_isotopes_size'] + $bill[$pos_to_refuel]['needed_ozone_size'] + $bill[$pos_to_refuel]['needed_heavy_water_size'] + $bill[$pos_to_refuel]['needed_charter_size'];
             $bill[$pos_to_refuel]['total_volume_stront'] = $total_volume + $needed_stront_size;
-
         }
         return $bill;
     //echo '<pre>';print_r($alltowers); echo '</pre>';exit;
@@ -4699,7 +4704,7 @@ class POSMGMT
 
     /************ API STUFF ************/
     // Connection to API, returns the xml object.
-    /**
+	/**
      * POSMGMT::API_Connect()
      *
      * @param mixed $url
@@ -4718,8 +4723,8 @@ class POSMGMT
 
         $data = array();
         if (!empty($userid) && !empty($apikey)) {
-            $data = array('userID'  => $userid,
-                          'apiKey'  => $apikey,
+            $data = array('keyID'  => $userid,
+                          'vCode'  => $apikey,
                           'version' => 2);
         }
 
@@ -5098,8 +5103,8 @@ class POSMGMT
                 $count_added    = 0;
                 $count_updated  = 0;
                 $count_towers   = 0;
-                $data = array('userID'      => $userid,
-                              'apiKey'      => $apikey,
+                $data = array('keyID'      => $userid,
+                              'vCode'      => $apikey,
                               'version'     => $version,
                               'characterID' => $characterID);
 
@@ -5375,7 +5380,6 @@ class POSMGMT
 		date_default_timezone_set(GMT);
 		
 		$keys = $this->API_GetKeyInfo();
-		$JobCheck = $this->GetLastJobUpdate();
         if (!$keys) {
             Eve::SessionSetVar('errormsg', 'Could not get any key from the DB!');
             return false;
@@ -5383,6 +5387,7 @@ class POSMGMT
         $url = "/corp/IndustryJobs.xml.aspx";
 		$time=time();
         foreach ($keys as $key) {
+			$JobCheck = $this->GetLastJobUpdate($key['characterID']);
             if ($JobCheck < ($time-21600)) { //21600 = 6 HOURS, The real time the API Caches the POS details information
                 $userid         = $key['userID'];
                 $apikey         = $key['apikey'];
@@ -5390,9 +5395,8 @@ class POSMGMT
                 $corp           = $key['corp'];
                 $allianceID     = $key['allianceID'];
                 $fail           = 0;
-				$jobs_updated = 0;
-                $data = array('userID'      => $userid,
-                              'apiKey'      => $apikey,
+                $data = array('keyID'      => $userid,
+                              'vCode'      => $apikey,
                               'version'     => $version,
                               'characterID' => $characterID);
 
@@ -5517,7 +5521,6 @@ class POSMGMT
                                 Eve::SessionSetVar('errormsg', 'ERROR Failed to update Job info ; ' . $dbconn->ErrorMsg());
                                 return false;
                             }
-							$jobs_updated++;
                             $result->Close();
 							
 						} else {
@@ -5593,12 +5596,11 @@ class POSMGMT
                                 Eve::SessionSetVar('errormsg', 'ERROR Failed to Add Job info ; ' . $dbconn->ErrorMsg());
                                 return false;
                             }
-							$jobs_updated++;
                             $result->Close();
 						}
 				}
 				$time = time();
-                    $sql = "INSERT INTO ".TBL_PREFIX."update_log VALUES (NULL, '0', '55555', '1', 'EVEAPI XML JOBS API UPDATE', '" . Eve::VarPrepForStore($time) . "')"; //$updateTime
+                    $sql = "INSERT INTO ".TBL_PREFIX."update_log VALUES (NULL, '0', '" . Eve::VarPrepForStore($characterID) . "', '55555', 'EVEAPI XML JOBS API UPDATE', '" . Eve::VarPrepForStore($time) . "')"; //$updateTime
                     $dbconn->Execute($sql);
                     if ($dbconn->ErrorNo() != 0) {
                         Eve::SessionSetVar('errormsg', 'ERROR Failed to update log info ; ' . $dbconn->ErrorMsg());
@@ -5609,7 +5611,7 @@ class POSMGMT
                 return false;
 				} 
 		}
-		return $jobs_updated;
+		return 1;
 	}
     /**
      * POSMGMT::posdetail()
@@ -5627,8 +5629,8 @@ class POSMGMT
         $url = '/corp/StarbaseDetail.xml.aspx';
 
         $version='2';
-        $data = array('userID'      => $userid,
-                      'apiKey'      => $apikey,
+        $data = array('keyID'      => $userid,
+                      'vCode'      => $apikey,
                       'version'     => $version,
                       'itemID'      => $itemID,
                       'characterID' => $characterID);

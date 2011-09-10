@@ -183,6 +183,7 @@
       <td class="txtright"><!--[$optimalDiff.robotics]--></td>
       <td class="txtright">(<!--[$optimalDiff.robotics_m3]--> m3)</td>
     </tr>
+<!--[if $tower.charters_needed]-->
   <tr>
       <td>Charters</td>
       <td><!--[$tower.avail_charters]--></td>
@@ -191,6 +192,7 @@
       <td class="txtright"><!--[$optimalDiff.charters]--></td>
       <td class="txtright">(<!--[$optimalDiff.charters_m3]--> m3)</td>
     </tr>
+<!--[/if]-->
     <tr>
       <td>Isotopes (<!--[$tower.race_isotope]-->)</td>
       <td><!--[$tower.avail_isotope]--></td>
