@@ -119,7 +119,7 @@
 	<!--[elseif $step eq 5]-->
     <h4>Add an <a href="https://support.eveonline.com/api" target="_blank">API Key</a></h4>
     <div class="mcenter txtcenter">
-	(Requires: StarbaseList/StarbaseDetail/CorporationSheet)
+	(Requires: StarbaseList/StarbaseDetail/CorporationSheet/IndustryJobs)
       <p>
         <a class="link" href="install.php?step=6" title="Finish Installation">Finish Installation</a>
       </p>
