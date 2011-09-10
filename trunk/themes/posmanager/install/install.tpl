@@ -117,19 +117,16 @@
       <!--[/foreach]-->
       </table>
 	<!--[elseif $step eq 5]-->
+	<div class="mcenter txtcenter">
     <h4>Add an <a href="https://support.eveonline.com/api" target="_blank">API Key</a></h4>
-    <div class="mcenter txtcenter">
-	(Requires: StarbaseList/StarbaseDetail/CorporationSheet/IndustryJobs)
-      <p>
+	(Requires: StarbaseList/StarbaseDetail/CorporationSheet/IndustryJobs)<br><br>
+      <form method="post" action="install.php?action=getcharacters">
+        KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="64" /> 
+		<br><input type="submit" value="Select Character" />
+      </form>
+	  <p>
         <a class="link" href="install.php?step=6" title="Finish Installation">Finish Installation</a>
       </p>
-    </div>
-    <div class="mcenter">
-      <form method="post" action="install.php?action=getcharacters">
-      <div>
-        KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="35" /> <input type="submit" value="Select Character" />
-      </div>
-      </form>
       </div>
       <br /><br /><hr />
           <div class="mcenter">
