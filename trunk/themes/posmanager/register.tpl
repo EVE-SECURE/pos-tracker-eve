@@ -63,18 +63,18 @@
 <!--[else]-->
   <form method="post" action="register.php">
     <tr>
-      <td class="mbground hcolor">UserID</td>
-      <td><input size=40 type="text" name="api_userid" value="<!--[$api_userid]-->" /></td>
+      <td class="mbground hcolor">KeyID</td>
+      <td><input size=20 type="text" name="api_userid" value="<!--[$api_userid]-->" /></td>
     </tr>
     <tr>
-      <td class="mbground hcolor">Limited Key</td>
-      <td><input size=40 type="text" name="api_key" value="<!--[$api_key]-->" /></td>
+      <td class="mbground hcolor">vCode</td>
+      <td><input size=64 type="text" name="api_key" value="<!--[$api_key]-->" maxlength="64"/></td>
     </tr>
     <tr>
       <td colspan="2" class="mcenter txtcenter"><input type="hidden" name="action" value="getchars" /><input type="submit" value="Get Characters" /></td>
     </tr>
 	<tr>
-      <td colspan="2" class="mcenter txtcenter"><a href="http://www.eveonline.com/api/default.asp" target="_blank">EVE API Link</a></td>
+      <td colspan="2" class="mcenter txtcenter"><a href="https://support.eveonline.com/api/Key/CreatePredefined/8388608" target="_blank">EVE API Link</a></td>
     </tr>
   </form>
 <!--[/if]-->

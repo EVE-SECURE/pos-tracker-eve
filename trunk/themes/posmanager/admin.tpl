@@ -216,7 +216,7 @@
         KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="35" /> <input type="submit" value="Select Character" />
       </div>
       </form>
-	   (Requires: StarbaseList/StarbaseDetail/CorporationSheet)
+	   (Requires: StarbaseList/StarbaseDetail/CorporationSheet/IndustryJobs)
      <br />
     </div>
 	
