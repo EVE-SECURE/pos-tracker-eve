@@ -22,7 +22,11 @@
       &nbsp; &nbsp; | &nbsp; &nbsp;
       <a href="fuelbill.php" title="Fuel Bill">Fuel Bill</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
-	
+	<!--[if (in_array('60', $access)) || (in_array('61', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
+	  <a href="outpost.php" title="Outpost Tracking">Outposts</a>
+      &nbsp; &nbsp; | &nbsp; &nbsp;
+    <!--[/if]-->  
+
 	<!--[if (in_array('42', $access)) || (in_array('43', $access)) || (in_array('44', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
       <a href="production.php" title="Production">Production</a>
       &nbsp; &nbsp; | &nbsp; &nbsp;
