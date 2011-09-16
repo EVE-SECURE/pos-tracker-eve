@@ -263,6 +263,7 @@ if ($action == 'updatealliance') {
 	$UserEnabled = $eve->VarCleanFromInput('UserEnabled');
 	$CorpAccess = $eve->VarCleanFromInput('CorpAccess');
 	$OtherCorpAccess = $eve->VarCleanFromInput('OtherCorpAccess');
+	$OutpostAccess = $eve->VarCleanFromInput('OutpostAccess');
 	$JobAccess = $eve->VarCleanFromInput('JobAccess');
 	$ProdAccess = $eve->VarCleanFromInput('ProdAccess');
 	$TrustAccess = $eve->VarCleanFromInput('TrustAccess');
@@ -279,7 +280,7 @@ if ($action == 'updatealliance') {
     foreach ($UserList as $id => $uaccess) {
 		
 		if ($SubAdminAccess[$id] != 6) {
-		$AccessArray = array($UserEnabled[$id], $CorpAccess[$id], $OtherCorpAccess[$id], $JobAccess[$id], $ProdAccess[$id], $TrustAccess[$id], $SubAdminAccess[$id]);
+		$AccessArray = array($UserEnabled[$id], $CorpAccess[$id], $OtherCorpAccess[$id], $OutpostAccess[$id], $JobAccess[$id], $ProdAccess[$id], $TrustAccess[$id], $SubAdminAccess[$id]);
 		$uaccess = implode(".",array_filter($AccessArray));
 		} elseif ($SubAdminAccess[$id] == 6) {
 		$uaccess = 6;

@@ -21,7 +21,7 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
+if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) {
         $eve->SessionSetVar('errormsg', 'Access Denied - Redirecting you back!');
         $eve->RedirectUrl('outpost.php');
 }
@@ -45,7 +45,7 @@ switch($action) {
 		$fuel['heavy_water']     = $eve->VarCleanFromInput('heavy_water');
 		$fuel['strontium']       = $eve->VarCleanFromInput('strontium');
 		$fuel['charters']        = $eve->VarCleanFromInput('charters');
-        if ($posmgmt->AddNewOutpost($fuel)) {
+        if ($outpost_id = $posmgmt->AddNewOutpost($fuel)) {
             $eve->SessionSetVar('statusmsg', 'Modifications Saved!');
             $eve->RedirectUrl('viewoutpost.php?i='.$outpost_id);
         }
