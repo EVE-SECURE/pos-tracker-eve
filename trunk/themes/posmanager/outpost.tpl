@@ -18,7 +18,15 @@
       <!--[*<td><!--[$outpost.systemID]--></td>*]-->
       <td><!--[$outpost.lastupdate]--></td>
       <td><!--[$outpost.outpostdaycalc]--></td>
-      <td><button type="button" onclick="window.location.href='viewoutpost.php?i=<!--[$outpost.outpost_id]-->'">View</button><button type="button" onclick="window.location.href='editoutpost.php?i=<!--[$outpost.outpost_id]-->'">Edit</button><button type="button" onclick="window.location.href='outpost.php?i=<!--[$outpost.outpost_id]-->'">Delete</button></td>
+      <td>
+		<a href="viewoutpost.php?i=<!--[$outpost.outpost_id]-->"><img src="images/icons/zoom.png" border="0" alt="View" title="View" /></a>
+		<!--[if ( in_array('61', $access) || (in_array('5', $access)) || in_array('6', $access) )]-->
+	    <a href="editoutpost.php?i=<!--[$outpost.outpost_id]-->"><img src="images/icons/pencil.png" border="0" alt="Edit" title="Edit" /></a>
+		<!--[/if]-->
+		<!--[if ( (in_array('83', $access) && in_array('61', $access) ) || (in_array('5', $access)) || in_array('6', $access) )]-->
+	    <a href="outpost.php?i=<!--[$outpost.outpost_id]-->"><img src="images/icons/delete.png" border="0" alt="Delete" title="Delete" /></a>
+		<!--[/if]-->
+	  </td>
     </tr>
 
   <!--[/foreach]-->

@@ -233,6 +233,8 @@
 			<th class="mbground hcolor">Corp</th>
 			
 			<th class="mbground hcolor">Other Corps</th>
+
+			<th class="mbground hcolor">Outposts</th>
 			
             <th class="mbground hcolor">Jobs</th>
 			
@@ -261,7 +263,7 @@
 		<input type="hidden" name="UserList[<!--[$user.id]-->]" value="<!--[$user.id]-->">
 		<tbody class="auser">
 		<tr>
-		<td colspan="2"><b><!--[$user.name]--></b></td>
+		<td colspan="3"><b><!--[$user.name]--></b></td>
 		<td colspan="2">Corp: <!--[$user.corp|default:"&nbsp;"]--></td>
 		<td colspan="3">Email: <!--[$user.email|default:"&nbsp;"]--></td>
 		<td colspan="2">Email Status: <!--[$awaylevel[$user.away]]--></td>
@@ -283,6 +285,14 @@
 		<option value="50" <!--[if (in_array('50', $auser))]-->selected="yes"<!--[/if]-->>View</option>
 		<option value="51" <!--[if (in_array('51', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
 		<option value="52" <!--[if (in_array('52', $auser))]-->selected="yes"<!--[/if]-->>Secret</option>
+		</select>
+		</td>
+		
+		<td>
+		<select name="OutpostAccess[<!--[$user.id]-->]" <!--[if (in_array('6', $auser))]-->disabled<!--[/if]-->>
+		<option value="">No Access</option>
+		<option value="60" <!--[if (in_array('60', $auser))]-->selected="yes"<!--[/if]-->>View</option>
+		<option value="61" <!--[if (in_array('61', $auser))]-->selected="yes"<!--[/if]-->>Edit</option>
 		</select>
 		</td>
 		
@@ -322,7 +332,7 @@
         <!--[/foreach]-->
 		
 		<tbody>
-          <tr><td colspan="9"><input type="submit" value="Update/Remove" /></td></tr>
+          <tr><td colspan="10"><input type="submit" value="Update/Remove" /></td></tr>
         </tbody>
         </table>
       </div>
