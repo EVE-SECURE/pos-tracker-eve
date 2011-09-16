@@ -674,7 +674,7 @@ class POSMGMT
             return false;
         }
 
-        Eve::SessionSetVar('user_track', $new_user_track);
+        Eve::SessionSetVar('user_track', $args['new_user_track']);
 
         return true;
     }
