@@ -3640,7 +3640,7 @@ class POSMGMT
         }
         if ($s_id == 14343) {
             $silo_id =$newId;
-            $sql = "INSERT INTO ".TBL_PREFIX."silo_info VALUES ('{$silo_id}','" . Eve::VarPrepForStore($pos_id) . "','14343','0','0','0','0','0')";
+            $sql = "INSERT INTO ".TBL_PREFIX."silo_info VALUES ('{$silo_id}','" . Eve::VarPrepForStore($pos_id) . "','14343','0','0','0','0','0','0')";
             $dbconn->Execute($sql);
             if ($dbconn->ErrorNo() != 0) {
                 Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
@@ -5840,10 +5840,12 @@ class POSMGMT
 
         $dbconn =& DBGetConn(true);
 
-        if ($userinfo['access'] >= "3") {
+		$access = explode('.',$userinfo['access']);
+
+        if ( in_array('5', $access) || in_array('6', $access) ) {
             $sql = "SELECT ".TBL_PREFIX."outpost_info.*, ".TBL_PREFIX."user.name, ".TBL_PREFIX."user.corp FROM ".TBL_PREFIX."outpost_info LEFT JOIN ".TBL_PREFIX."user ON ".TBL_PREFIX."outpost_info.owner_id=".TBL_PREFIX."user.eve_id ORDER BY ".TBL_PREFIX."outpost_info.systemID";
         } else {
-            $sql = "SELECT ".TBL_PREFIX."outpost_info.*, ".TBL_PREFIX."user.name, ".TBL_PREFIX."user.corp FROM ".TBL_PREFIX."outpost_info LEFT JOIN ".TBL_PREFIX."user ON ".TBL_PREFIX."outpost_info.owner_id=".TBL_PREFIX."user.eve_id WHERE ".TBL_PREFIX."user.corp = '" . $this->my_escape($_SESSION['corp']) . "' ORDER BY ".TBL_PREFIX."outpost_info.systemID";
+            $sql = "SELECT ".TBL_PREFIX."outpost_info.*, ".TBL_PREFIX."user.name, ".TBL_PREFIX."user.corp FROM ".TBL_PREFIX."outpost_info LEFT JOIN ".TBL_PREFIX."user ON ".TBL_PREFIX."outpost_info.owner_id=".TBL_PREFIX."user.eve_id WHERE ".TBL_PREFIX."outpost_info.corp = '" . $this->my_escape($_SESSION['corp']) . "' ORDER BY ".TBL_PREFIX."outpost_info.systemID";
         }
         $result = $dbconn->Execute($sql);
 
@@ -6078,10 +6080,11 @@ class POSMGMT
 
 
         if (($total_current_pg > 0 && $current_ozone > 0)) {
-            $calc_ozone = (floor($current_ozone / (ceil(($total_current_pg / $total_overall_pg) * $total_req_ozone)), 2));
-            $total_needed_ozone=ceil((($total_current_pg/$total_overall_pg)*$total_req_ozone), 2);
+            $calc_ozone = (floor($current_ozone / (ceil(($total_current_pg / $total_overall_pg) * $total_req_ozone))));
+            $total_needed_ozone=ceil((($total_current_pg/$total_overall_pg)*$total_req_ozone));
         } else {
             $calc_ozone = 0;
+			$total_needed_ozone = 0;
         }
 
 
@@ -6090,6 +6093,7 @@ class POSMGMT
             $total_needed_heavy_water=ceil(($total_current_cpu/$total_overall_cpu)*$total_req_heavy_water);
         } else {
             $calc_heavy_water = 0;
+			$total_needed_heavy_water = 0;
         }
 
 
@@ -6282,7 +6286,7 @@ class POSMGMT
                                         action,
                                         datetime)
                 VALUES                 (NULL,
-                                        NULL,
+                                        0,
                                         '" . $fuel['outpost_id'] . "',
                                         '4',
                                         'Update Outpost Fuel',

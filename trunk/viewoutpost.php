@@ -21,7 +21,8 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
+if (!in_array('60', $access) && !in_array(61, $access)
+	&& !in_array('5', $access) && !in_array('6', $access)) {
         $eve->SessionSetVar('errormsg', 'Access Denied - Redirecting you back!');
         $eve->RedirectUrl('outpost.php');
 }
@@ -39,6 +40,9 @@ if (!is_numeric($outpost_id)) {
     $eve->SessionSetVar('errormsg', 'Incorrect Outpost ID!');
     $eve->RedirectUrl('track.php');
 }
+
+// TODO: Make this configurable via the UI
+$daysToStock = 60;
 
 $action = $eve->VarCleanFromInput('action');
 
@@ -65,10 +69,26 @@ foreach($poslist as $tower)
 		
 }
 
+$desiredStock = array(
+		'uranium' => (($outpost_req['uranium'] * ($daysToStock * 24)) - $outpost['uranium']),
+		'oxygen' => (($outpost_req['oxygen'] * ($daysToStock * 24)) - $outpost['oxygen']),
+		'mechanical_parts' => (($outpost_req['mechanical_parts'] * ($daysToStock * 24)) - $outpost['mechanical_parts']),
+		'coolant' => (($outpost_req['coolant'] * ($daysToStock * 24)) - $outpost['coolant']),
+		'robotics' => (($outpost_req['robotics'] * ($daysToStock * 24)) - $outpost['robotics']),
+		'heisotope' => (($outpost_req['heisotope'] * ($daysToStock * 24)) - $outpost['heisotope']),
+		'hyisotope' => (($outpost_req['hyisotope'] * ($daysToStock * 24)) - $outpost['hyisotope']),
+		'oxisotope' => (($outpost_req['oxisotope'] * ($daysToStock * 24)) - $outpost['oxisotope']),
+		'niisotope' => (($outpost_req['niisotope'] * ($daysToStock * 24)) - $outpost['niisotope']),
+		'ozone' => (($uptime['total_needed_ozone'] * ($daysToStock * 24)) - $outpost['ozone']),
+		'heavy_water' => (($uptime['total_needed_heavy_water'] * ($daysToStock * 24)) - $outpost['heavy_water']),
+		);
+
 //Assign Outpost Data to template
 $eveRender->Assign('outpost',   $outpost);
 $eveRender->Assign('outpost_req',   $outpost_req);
 $eveRender->Assign('towers',   $towers);
+$eveRender->assign('daysToStock', $daysToStock);
+$eveRender->Assign('desiredStock', $desiredStock);
 
 
 //Display template

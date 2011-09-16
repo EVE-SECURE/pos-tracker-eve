@@ -21,9 +21,9 @@ $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);
 
-if (!in_array('1', $access) || !in_array('5', $access) || !in_array('6', $access)) {
+if (!in_array(61, $access) && !in_array('5', $access) && !in_array('6', $access)) {
         $eve->SessionSetVar('errormsg', 'Access Denied - Redirecting you back!');
-        $eve->RedirectUrl('login.php');
+        $eve->RedirectUrl('outpost.php');
 }
 
 $outpost_id = $eve->VarCleanFromInput('i');
