@@ -15,9 +15,6 @@ $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
-$eveinfo  = $eve->GetUserVars();
-$userinfo = array_merge($userinfo, $eveinfo);
-
 if (!$userinfo) {
     $eve->RedirectUrl('register.php');
 }
@@ -42,26 +39,10 @@ if ($action == 'changeinfo') {
     $newpass  = $eve->VarCleanFromInput('newpass');
     $newpass2 = $eve->VarCleanFromInput('newpass2');
 
-	if (!empty($theme_id) && $theme_id != $userinfo['theme_id']) {
-      if ($posmgmt->UpdateUserTheme(array('id' => $userinfo['id'], 'newtheme' => $theme_id))) {
-         $eve->SessionSetVar('statusmsg', 'New theme set!');
+	if ($posmgmt->UpdateUserSettings(array('id' => $userinfo['id'], 'newtheme' => $theme_id, 'new_user_track' => $user_track, 'newaway' => $away))) {
+         $eve->SessionSetVar('statusmsg', 'User Settings Updated!');
          $eve->RedirectUrl('user.php');
       }
-    }
-	
-	if (!empty($user_track) && $user_track != $userinfo['user_track']) {
-      if ($posmgmt->UpdateUserTrackOptions(array('id' => $userinfo['id'], 'new_user_track' => $user_track))) {
-         $eve->SessionSetVar('statusmsg', 'Settings saved!');
-         $eve->RedirectUrl('user.php');
-      }
-    }
-	
-    if (!empty($away) && $away != $userinfo['away']) {
-      if ($posmgmt->UpdateUserAway(array('id' => $userinfo['id'], 'newaway' => $away))) {
-         $eve->SessionSetVar('statusmsg', 'New away status saved!');
-         $eve->RedirectUrl('user.php');
-      }
-    }
 
     if (!empty($email) && $email != $userinfo['email']) {
         if ($posmgmt->UpdateUserMail(array('id' => $userinfo['id'], 'newmail' => $email))) {
@@ -71,7 +52,7 @@ if ($action == 'changeinfo') {
     }
 
     if (!empty($newpass) && $newpass != $newpass2) {
-        $eve->SessionSetVar('errormsg', 'Pass and Confirmation pass are different. Get it right, nugget!');
+        $eve->SessionSetVar('errormsg', 'Password and Confirmation pass are different!');
         $eve->RedirectUrl('user.php');
     }
 
@@ -82,9 +63,12 @@ if ($action == 'changeinfo') {
         $eve->SessionSetVar('statusmsg', 'New password saved!');
         $eve->RedirectUrl('user.php');
     }
+	$userinfo = $posmgmt->GetUserInfo();
 }
 
 if ($action == 'updatecorpinfo') {
+	$eveinfo  = $eve->GetUserVars();
+	$userinfo = array_merge($userinfo, $eveinfo);
     if ($posmgmt->UpdateUserInfo($userinfo)) {
         $eve->SessionSetVar('statusmsg', 'Your information has been saved!');
         $eve->RedirectUrl('user.php');

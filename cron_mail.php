@@ -73,10 +73,9 @@ $eveRender->Assign('access', $access);
 		$pos_size                 = $row['pos_size'];
 	    $pos_race                 = $row['pos_race'];
 	    $systemID                 = $row['systemID'];
-		$sov                      = $posmgmt->getSovereignty($systemID);
-		$sovereignty              = $sov['sovereigntyLevel'];
+		$allianceid                = $row['allianceid'];
 		
-		$db = $posmgmt->selectstaticdb($sovereignty, $systemID);
+		$db = $posmgmt->selectstaticdb($systemID, $allianceid);
 
 		$row3 = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
 		
@@ -143,7 +142,7 @@ $eveRender->Assign('access', $access);
 						$characterInfo['name']='no one';
 					}
 					
-					if ($director['away']!=1 && isset($director['email'])) {
+					if ($director['away']!=1 && isset($director['email']) && $director['id'] != $row['owner_id'] && $director['id'] != $row['secondary_owner_id']) {
 					$mail->criticalpossalert($director['email'], $director['name'], $characterInfo['name'], $row, $row3, $diff);
 					}
 				}
@@ -155,7 +154,7 @@ $eveRender->Assign('access', $access);
 						$characterInfo['name']='no one';
 					}
 					
-					if ($director['away']!=1 && isset($director['email'])) {
+					if ($director['away']!=1 && isset($director['email']) && $director['id'] != $row['owner_id'] && $director['id'] != $row['secondary_owner_id']) {
 					$mail->criticalpossalert($director['email'], $director['name'], $characterInfo['name'], $row, $row3, $diff);
 					}
 				}	

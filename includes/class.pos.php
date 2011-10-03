@@ -574,62 +574,30 @@ class POSMGMT
 
     }
 
-    /**
-     * POSMGMT::UpdateUserAway()
-     *
-     * @param mixed $args
-     * @return
-     */
-    function UpdateUserAway($args)
-    {
-        if (!isset($args['id'])) {
-            Eve::SessionSetVar('errormsg', 'No ID!');
-            return false;
-        }
-        if (!isset($args['newaway'])) {
-            Eve::SessionSetVar('errormsg', 'No Away Status!');
-            return false;
-        }
-
-        $dbconn =& DBGetConn(true);
-
-        $sql = "UPDATE ".TBL_PREFIX."user
-                SET    away          = '".Eve::VarPrepForStore($args['newaway'])."'
-                WHERE  id            = '".Eve::VarPrepForStore($args['id'])."'";
-
-        $dbconn->Execute($sql);
-
-        if ($dbconn->ErrorNo() != 0) {
-            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
-            return false;
-        }
-
-        Eve::SessionSetVar('away', $newaway);
-
-        return true;
-    }
-
 	/**
-     * POSMGMT::UpdateUserTheme()
+     * POSMGMT::UpdateUserSettings()
      *
      * @param mixed $args
      * @return
      */
-    function UpdateUserTheme($args)
+    function UpdateUserSettings($args)
     {
         if (!isset($args['id'])) {
             Eve::SessionSetVar('errormsg', 'No ID!');
             return false;
         }
-        if (!isset($args['newtheme'])) {
-            Eve::SessionSetVar('errormsg', 'No Theme Set!');
+		
+        if (!isset($args['newaway']) || !isset($args['newtheme']) || !isset($args['new_user_track'])) {
+            Eve::SessionSetVar('errormsg', 'User Setting Missing!');
             return false;
         }
 
         $dbconn =& DBGetConn(true);
 
         $sql = "UPDATE ".TBL_PREFIX."user
-                SET    theme_id          = '".Eve::VarPrepForStore($args['newtheme'])."'
+				SET  away          = '".Eve::VarPrepForStore($args['newaway'])."',
+				theme_id          = '".Eve::VarPrepForStore($args['newtheme'])."',
+				user_track          = '".Eve::VarPrepForStore($args['new_user_track'])."'
                 WHERE  id            = '".Eve::VarPrepForStore($args['id'])."'";
 
         $dbconn->Execute($sql);
@@ -639,43 +607,10 @@ class POSMGMT
             return false;
         }
 
-        Eve::SessionSetVar('theme_id', $newtheme);
-
-        return true;
-    }
-
-	/**
-     * POSMGMT::UpdateUserTrackOptions()
-     *
-     * @param mixed $args
-     * @return
-     */
-    function UpdateUserTrackOptions($args)
-    {
-        if (!isset($args['id'])) {
-            Eve::SessionSetVar('errormsg', 'No ID!');
-            return false;
-        }
-        if (!isset($args['new_user_track'])) {
-            Eve::SessionSetVar('errormsg', 'No User Track Settings Set!');
-            return false;
-        }
-
-        $dbconn =& DBGetConn(true);
-
-        $sql = "UPDATE ".TBL_PREFIX."user
-                SET    user_track          = '".Eve::VarPrepForStore($args['new_user_track'])."'
-                WHERE  id            = '".Eve::VarPrepForStore($args['id'])."'";
-
-        $dbconn->Execute($sql);
-
-        if ($dbconn->ErrorNo() != 0) {
-            Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
-            return false;
-        }
-
-        Eve::SessionSetVar('user_track', $args['new_user_track']);
-
+        Eve::SessionSetVar('away', $args['newaway']);
+		Eve::SessionSetVar('theme_id', $args['newtheme']);
+		Eve::SessionSetVar('user_track', $args['new_user_track']);
+		
         return true;
     }
 	
@@ -710,7 +645,7 @@ class POSMGMT
             return false;
         }
 
-        Eve::SessionSetVar('email', $newmail);
+        Eve::SessionSetVar('email', $args['newmail']);
 
         return true;
     }
@@ -728,7 +663,7 @@ class POSMGMT
             return false;
         }
         if (!isset($args['newpass'])) {
-            Eve::SessionSetVar('errormsg', 'No Mail!');
+            Eve::SessionSetVar('errormsg', 'No Password Set!');
             return false;
         }
 
@@ -744,8 +679,6 @@ class POSMGMT
             Eve::SessionSetVar('errormsg', $dbconn->ErrorMsg() . $sql);
             return false;
         }
-
-        Eve::SessionSetVar('email', $newmail);
 
         return true;
     }
