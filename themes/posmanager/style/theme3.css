@@ -104,3 +104,45 @@ table {
 .auser:hover {
    background-color: #542a11;
 }
+
+body#header {
+	margin:0px auto;
+	background:transparent url(../images/nav_bg3.png) 0px 0px repeat-x;
+	background-color:#0e0000;
+	border-bottom:1px solid #0e0000;
+	height:31px;
+}
+
+#navi {
+	margin:0px auto;
+	font-size: 0px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	width: auto;
+	border-bottom:1px solid #0e0000;
+	border-top:1px solid #0e0000;
+}
+
+.navib {
+	font-size: 12px;
+	width: auto;
+	height: 31px;
+	display: inline-block;
+}
+
+div#navi div a
+{
+	display:block;
+	width: auto;
+	color:#999999;
+	text-decoration:none;
+	font-weight:bold;
+	padding:8px 8px 0 8px;
+}
+	
+div#navi div a:hover, div a.current {	
+	color:#FFFFFF;
+	height: 22px;
+	background:transparent url(../images/nav_bt3.png) 0px -1px no-repeat;		
+}
