@@ -18,6 +18,9 @@ $posmgmt = New POSMGMT();
 $access = $eve->SessionGetVar('access');
 $theme_id = $eve->SessionGetVar('theme_id');
 
+$pID = 'login';
+$eveRender->Assign('pID', $pID);
+
 $action = $eve->VarCleanFromInput('action');
 
 $eveRender->Assign('access', $access);

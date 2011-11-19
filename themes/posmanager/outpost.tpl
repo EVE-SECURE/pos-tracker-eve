@@ -1,6 +1,4 @@
-<!--[* $Id: outpost.tpl 168 2008-09-20 07:24:02Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
-  <h3 class="pageTitle">Outpost Tracker</h3>
   <table class="mcenter tracktable" style="width:100%;" cellspacing="0">
   <tbody>
     <tr>

@@ -1,6 +1,4 @@
 <!--[include file='header.tpl']-->
-
-  <h3 class="pageTitle">Production Overview</h3>
   <form class="mcenter" method="post" action="production.php">
   <p class="mcenter">
     <!--[html_options name='filter_regionID' options=$optregions selected=$filter_regionID]-->

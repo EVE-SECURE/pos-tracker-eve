@@ -1,10 +1,8 @@
 <!--[include file='header.tpl']-->
-
-  <h3 class="pageTitle">
   <!--[if $days_to_refuel >= 1 && $display_optimal == 0]-->
-  <!--[$days_to_refuel]--> Days Fuel bill</h3>
+  <b><!--[$days_to_refuel]--> Days Fuel Bill</b>
   <!--[else]-->
-  Optimal Fuel Bill</h3>(days filter not in effect)
+  <b>Optimal Fuel Bill</b> (days filter not in effect)
   <!--[/if]-->
   <form class="mcenter" method="post" action="fuelbill.php">
   <p style="text-align:center;">

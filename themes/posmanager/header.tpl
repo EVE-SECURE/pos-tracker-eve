@@ -9,54 +9,46 @@
   <!--[/if]-->
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
   <!--[additional_header]-->
-</head>
-<body>
-  <h3 class="txtcenter mcolor">- POS MANAGER -</h3>
-  <p class="mcenter">
-    <span>
-    <!--[if (in_array('1', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="track.php" title="POS Tracking">POS Track</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="fuel_calculator.php" title="Fuel calculator">Fuel Calculator</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="fuelbill.php" title="Fuel Bill">Fuel Bill</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-	<!--[if (in_array('60', $access)) || (in_array('61', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
-	  <a href="outpost.php" title="Outpost Tracking">Outposts</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-    <!--[/if]-->  
+  <script language="JavaScript" type="text/javascript">
+/*<![CDATA[*/
+var Lst;
 
+function CngCls(obj){
+ if (typeof(obj)=='string') obj=document.getElementById(obj);
+ if (Lst) Lst.className='';
+ obj.className='current';
+ Lst=obj;
+}
+
+/*]]>*/
+</script>
+</head>
+<body id='header' onload="CngCls('<!--[$pID]-->')">
+  <div id='navi'>
+    <!--[if (in_array('1', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
+      <div class="navib"><a href="track.php" title="POS Tracking" id="track" onclick="CngCls(this);">POS Track</a></div>
+      <div class="navib"><a href="fuel_calculator.php" title="Fuel Calculator" id="fuelcalc" onclick="CngCls(this);">Fuel Calculator</a></div>
+      <div class="navib"><a href="fuelbill.php" title="Fuel Bill"  id="fuelbill" onclick="CngCls(this);">Fuel Bill</a></div>
+	<!--[if (in_array('60', $access)) || (in_array('61', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
+	  <div class="navib"><a href="outpost.php" title="Outpost" id="outpost" onclick="CngCls(this);">Outposts</a></div>
+	<!--[/if]-->
 	<!--[if (in_array('42', $access)) || (in_array('43', $access)) || (in_array('44', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
-      <a href="production.php" title="Production">Production</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
+      <div class="navib"><a href="production.php" title="Production" id="production" onclick="CngCls(this);">Production</a></div>
     <!--[/if]-->  
-      
-    <!--[if (in_array('40', $access)) || (in_array('41', $access)) || (in_array('45', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
-	  <a href="jobs.php" title="Jobs">Jobs</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
+    <!--[if (in_array('40', $access)) || (in_array('5', $access)) || (in_array('6', $access))]-->
+	  <div class="navib"><a href="jobs.php" title="Jobs" id="jobs" onclick="CngCls(this);">Jobs</a></div>
     <!--[/if]-->
 	<!--[if (in_array('5', $access) || in_array('6', $access))]-->
-	<a href="admin.php" title="Admin Panel">Admin Panel</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
+	<div class="navib"><a href="admin.php" title="Admin Panel" id="admin" onclick="CngCls(this);">Admin Panel</a></div>
 	<!--[/if]-->
-	  <a href="user.php" title="User Panel">User Panel</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="logout.php" title="Logout">Logout</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="about.php" title="About">About</a>
-      &nbsp; &nbsp; |
-
-    <!--[else]-->| &nbsp; &nbsp;
-      <a href="login.php" title="Login">Login</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="register.php" title="Register">Register</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="about.php" title="About">About</a>
-      &nbsp; &nbsp; |
+	  <div class="navib"><a href="user.php" title="User Panel" id="user" onclick="CngCls(this);">User Panel</a></div>
+      <div class="navib"><a href="logout.php" title="Logout">Logout</a></div>
+      <div class="navib"><a href="about.php" title="About" id="about" onclick="CngCls(this);">About</a></div>
+    <!--[else]-->
+      <div class="navib"><a href="login.php" title="Login" id="login">Login</a></div>
+      <div class="navib"><a href="register.php" title="Register" id="register">Register</a></div>
+      <div class="navib"><a href="about.php" title="About" id="about" onclick="CngCls(this);">About</a></div>
     <!--[/if]-->
-      <br /><br />
-    </span>
-  </p>
+</div>
   <!--[getstatusmsg]-->
-  <hr />
+<br>
