@@ -10,14 +10,15 @@ include_once 'includes/eveRender.class.php';
 
 $eveRender = New eveRender($config, $mod, false);
 $colors    = $eveRender->themeconfig;
-//echo '<pre>';print_r($config); echo '</pre>';exit;
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
 $userinfo = $posmgmt->GetUserInfo();
-$eve->SessionSetVar('userlogged', 1);
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
+
+$pID = 'outpost';
+$eveRender->Assign('pID', $pID);
 
 $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);

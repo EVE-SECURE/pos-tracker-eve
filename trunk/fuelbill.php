@@ -20,6 +20,9 @@ $eveRender->Assign('userinfo', $userinfo);
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 
+$pID = 'fuelbill';
+$eveRender->Assign('pID', $pID);
+
 $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);

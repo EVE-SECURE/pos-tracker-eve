@@ -1,6 +1,4 @@
 <!--[include file='header.tpl']-->
-
-  <h2>Administration</h2>
   <p class="mcenter">
   <!--[if $installchecker]-->
       <span style="color:red;font-weight:bold;">WARNING: install.php is still accessible. Please rename/remove install.php from the POS Tracker install directory.</span><br /><br />

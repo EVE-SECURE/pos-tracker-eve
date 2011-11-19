@@ -11,6 +11,9 @@ include_once 'includes/eveRender.class.php';
 $eveRender = New eveRender($config, $mod, false);
 $eveRender->Assign('config', $config);
 
+$pID = 'user';
+$eveRender->Assign('pID', $pID);
+
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 
@@ -52,7 +55,7 @@ if ($action == 'changeinfo') {
     }
 
     if (!empty($newpass) && $newpass != $newpass2) {
-        $eve->SessionSetVar('errormsg', 'Password and Confirmation pass are different!');
+        $eve->SessionSetVar('errormsg', 'Password and confirmation password are different!');
         $eve->RedirectUrl('user.php');
     }
 

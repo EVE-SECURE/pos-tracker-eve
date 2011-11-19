@@ -6,6 +6,23 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.1.6 to 5.1.7 Changes:</strong>
+	<ul>
+	  <li>Mailer updated to notice sov for required fuel column.</li>
+	  <li>Mailer updated to avoid duplicate mailings for admins and subadmins if they are also a fuel tech of a tower.</li>
+	  <li>User settings changes now happen immediately 100% of the time.</li>
+	  <li>New main navigation.</li>
+	  <li>Hyasyoda Mobile Laboratory added to the DB for use in the tracker.</li>
+	  <li>POS Track now shows the edit button to people with secret access to the towers like it should have.</li>
+	  <li>Some Unknown/Wormhold system DB fixes thanks to Descention.</li>
+	  <li>Outpost Track got quite the upgrade thanks to Mjollnir Arcote see the changes below.</li>
+	  <li>Specific user permissions for Outpost management added.</li>
+	  <li>Outpost Tracker listing UI more consistent with POS Tracker.</li>
+	  <li>Fixes permission checks on Outpost pages and actions.</li>
+	  <li>A new 'Desired Stock' calculation added to view outpost page. This is currently hard coded to 60 days</li>
+	  <li>Fixes POSMGMT->addstructure() so that it correctly adds a silo the same as addstructure.php. This method is used by the fit importer.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.5 to 5.1.6 Changes:</strong>
     <ul>
 	  <li>Support for the new API system.</li>

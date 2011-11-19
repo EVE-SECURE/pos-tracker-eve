@@ -20,6 +20,9 @@ $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 $eve_id = $eve->SessionGetVar('eve_id');
 
+$pID = 'production';
+$eveRender->Assign('pID', $pID);
+
 $userinfo = $posmgmt->GetUserInfo();
 $eveRender->Assign('userinfo', $userinfo);
 

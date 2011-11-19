@@ -1,5 +1,4 @@
 <!--[include file='header.tpl']-->
-  <h3 class="pageTitle">Fuel Calculator</h4>
   <form method="post" action="fuel_calculator.php">
   <div>
     <table class="mcenter tracktable" style="font-size: 12px;border-collapse:collapse;">

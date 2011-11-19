@@ -25,6 +25,9 @@ $eveRender->Assign('access', $access);
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 
+$pID = 'track';
+$eveRender->Assign('pID', $pID);
+
 include_once 'themes/posmanager/style/theme'.$theme_id.'.php';
 
 $user_track = explode('.',$userinfo['user_track']);

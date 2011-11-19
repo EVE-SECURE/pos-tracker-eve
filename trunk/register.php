@@ -47,11 +47,13 @@ include_once 'eveconfig/config.php';
 $eveRender = New eveRender($config, $mod, false);
 $colors    = $eveRender->themeconfig;
 
+$pID = 'register';
+$eveRender->Assign('pID', $pID);
+
 $eveRender->Assign('config', $config);
 
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
-
 
 $userinfo = $eve->GetUserVars();
 
@@ -164,7 +166,7 @@ if ($action == 'getchars') {
 			    datetime = '" . $time . "'
 			WHERE eve_id = ".$characterID;
 		$result = mysql_query($sql) or die('Could not update user;' . mysql_error());
-		$eve->SessionSetVar('errormsg', 'You are already registered you muppet, updating Userinfo for '.$charname.'!');
+		$eve->SessionSetVar('errormsg', 'You are already registered! updating Userinfo for '.$charname.'!');
 		$eve->RedirectUrl('login.php');
 	}
 

@@ -1,7 +1,4 @@
 <!--[include file='header.tpl']-->
-
-
-  <h3 class="pageTitle">User Panel</h3>
   <div class="mcenter">
     <form method="post" action="user.php">
     <div>

@@ -17,6 +17,9 @@ $userinfo = $posmgmt->GetUserInfo();
 $theme_id = $eve->SessionGetVar('theme_id');
 $eveRender->Assign('theme_id', $theme_id);
 
+$pID = 'outpost';
+$eveRender->Assign('pID', $pID);
+
 $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
 $eveRender->Assign('access', $access);

@@ -15,6 +15,10 @@ $colors    = $eveRender->themeconfig;
 $eve     = New Eve();
 $posmgmt = New POSMGMT();
 $userinfo = $posmgmt->GetUserInfo();
+
+$pID = 'about';
+$eveRender->Assign('pID', $pID);
+
 $theme_id = $eve->SessionGetVar('theme_id');
 $access = $eve->SessionGetVar('access');
 $access = explode('.',$access);
