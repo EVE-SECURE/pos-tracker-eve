@@ -367,7 +367,7 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
       <td><!--[if $silo.direction eq 'Output']-->Receiver<!--[else]-->Provider<!--[/if]--></td>
       <td><!--[$silo.rate]--> <span class="mcolor">(<!--[$silo.material_volume]-->m3)</span></td>
 	  <td><!--[$silo.correct_amount]--></td>
-      <td><!--[daycalc hours=$silo.hourstofill]--></td>
+      <td><!--[if $silo.full]-->FULL<!--[elseif $silo.empty]-->EMPTY<!--[else]--><!--[daycalc hours=$silo.hourstofill]--><!--[/if]--></td>
       <td><!--[if $silo.full]-->YES<!--[else]-->No<!--[/if]--></td>
       <td><!--[$silo.structure_name]--> (<!--[$silo.structure_material_name]-->)</td>
       <td><!--[if $silo.silo_link]-->Silo <!--[$silo.silo_link]--><!--[/if]--></td>

@@ -85,7 +85,6 @@ a.sort { /*sort links on track*/
 body {
   color:white;
   background-color:#000000;
-  font: Arial, sans-serif;
   text-align:center;
 }
 
@@ -145,4 +144,17 @@ div#navi div a:hover, div a.current {
 	color:#FFFFFF;
 	height: 22px;
 	background:transparent url(../images/nav_bt2.png) 0px -1px no-repeat;		
+}
+
+/*production CSS*/
+.pU24 {
+	border:1px #FFFF33 solid !important;
+}
+
+.pEmpty {
+	border:1px #FF0000 solid !important;
+}
+
+.pFine {
+    border:1px #FFFFFF solid !important;
 }
