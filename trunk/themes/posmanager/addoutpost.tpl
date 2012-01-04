@@ -63,7 +63,7 @@
           <td><input name="charters" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
-          <td colspan="2" class="txtcenter"><input type="submit" name="action" value="Add Outpost" /></td>
+          <td colspan="2" class="txtcenter"><input class="mButton" type="submit" name="action" value="Add Outpost" /></td>
         </tr>
       </table>
     </div>

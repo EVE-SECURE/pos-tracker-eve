@@ -27,7 +27,7 @@
 	</td>
     </tr>
     <tr>
-	<td class="txtcenter" colspan=2><input type="hidden" name="action" value="getuserinfo" /><input type="submit" value="Use <!--[$character.name]--> Char Details" /></td>
+	<td class="txtcenter" colspan=2><input type="hidden" name="action" value="getuserinfo" /><input class="mButton" type="submit" value="Use <!--[$character.name]--> Char Details" /></td>
     </tr>
   </form>
       <!--[/foreach]-->
@@ -57,7 +57,7 @@
       <td><input type="password" name="pass2" size="20" maxlength="40" /></td>
     </tr>
     <tr>
-      <td colspan=2 class="mcenter txtcenter"><input type="hidden" name="action" value="saveaccount" /><input type="submit" value="Create Account" /></td>
+      <td colspan=2 class="mcenter txtcenter"><input type="hidden" name="action" value="saveaccount" /><input class="mButton" type="submit" value="Create Account" /></td>
     <tr>
   </form>
 <!--[else]-->

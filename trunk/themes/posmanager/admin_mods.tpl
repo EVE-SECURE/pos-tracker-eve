@@ -30,7 +30,7 @@
         </tr>
       <!--[/foreach]-->
         <tr>
-          <td colspan="5"><input type="submit" value="Update" /></td>
+          <td colspan="5"><input class="mButton" type="submit" value="Update" /></td>
         </tr>
       </tbody>
       </table>

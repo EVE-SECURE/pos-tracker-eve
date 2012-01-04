@@ -119,7 +119,7 @@
         <input type="hidden" name="corporationID" value="<!--[$character.corporationID]-->" />
         <input type="hidden" name="allianceName" value="<!--[$alliance.allianceName]-->" />
         <input type="hidden" name="allianceID" value="<!--[$alliance.allianceID]-->" />
-        <input type="submit" value="Save <!--[$character.name]--> API Key" />
+        <input class="mButton" type="submit" value="Save <!--[$character.name]--> API Key" />
       </div>
       </form>
       </div>
@@ -156,22 +156,22 @@
 	  <tr>
 	    <td>Alliance Database</td>
 	    <td><!--[$allytime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatealliance" /><input type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatealliance" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
 	    <td>Sovereignty Database</td>
 	    <td><!--[$sovtime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatesovereignty" /><input type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatesovereignty" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
 	    <td>Industrial Jobs from API</td>
 	    <td><!--[$jobtime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	  <tr>
 	    <td>POS Update from API</td>
 	    <td><!--[$apitime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatedatafromapi" /><input type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatedatafromapi" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
 	  </tr>
 	</table>
       </div>
@@ -187,8 +187,9 @@
         <thead>
           <tr>
             <th class="mbground hcolor">Corp</th>
+			<th class="mbground hcolor">Alliance</th>
             <th class="mbground hcolor">KeyID</th>
-            <th class="mbground hcolor">vCode (first 5 characters)</th>
+            <th class="mbground hcolor">vCode (first 5)</th>
             <th class="mbground hcolor">Remove</th>
           </tr>
         </thead>
@@ -196,13 +197,14 @@
         <!--[foreach item='key' from=$keys]-->
           <tr>
             <td><!--[$key.corp|default:"&nbsp;"]--></td>
+			<td><!--[$key.alliance|default:"&nbsp;"]--></td>
             <td><!--[$key.userID|default:"&nbsp;"]--></td>
             <td><!--[$key.shortkey|default:"&nbsp;"]--></td>
             <td><!--[if $userinfo.access == 5]--><input type="checkbox" name="keyremove[<!--[$key.id]-->]" /><!--[else]-->&nbsp;<!--[/if]--></td>
            </tr>
         <!--[/foreach]-->
           <tr>
-            <td colspan="4"><input type="submit" value="Update/Remove" /></td>
+            <td colspan="5"><input class="mButton" type="submit" value="Update/Remove" /></td>
           </tr>
         </tbody>
         </table>
@@ -211,7 +213,7 @@
      <h4 class="pageTitle">Add an <a href="https://support.eveonline.com/api" target="_blank">API Key</a></h4>
       <form method="post" action="admin.php?action=getcharacters">
       <div>
-        KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="35" /> <input type="submit" value="Select Character" />
+        KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="35" /> <input class="mButton" type="submit" value="Select Character" />
       </div>
       </form>
 	   (Requires: StarbaseList/StarbaseDetail/CorporationSheet/IndustryJobs)
@@ -330,7 +332,7 @@
         <!--[/foreach]-->
 		
 		<tbody>
-          <tr><td colspan="10"><input type="submit" value="Update/Remove" /></td></tr>
+          <tr><td colspan="10"><input class="mButton" type="submit" value="Update/Remove" /></td></tr>
         </tbody>
         </table>
       </div>
@@ -359,7 +361,7 @@
 		</tbody>
         <!--[/foreach]-->
 		<tbody>
-          <tr><td colspan="9"><input type="submit" value="Update Prices" /></form><form method="post" action="admin.php"><input type="hidden" name="action" value="updatepricesapi" /><input type="submit" value="Update Prices via EVE-Marketdata" /></form></td></tr>
+          <tr><td colspan="9"><input class="mButton" type="submit" value="Update Prices" /></form><form method="post" action="admin.php"><input type="hidden" name="action" value="updatepricesapi" /><input class="mButton" type="submit" value="Update Prices via EVE-Marketdata" /></form></td></tr>
         </tbody>
         </table>
       </div>
@@ -400,6 +402,14 @@
 		  <option value="0" <!--[if ($setting.gsetting==0 || $setting.gsetting=="")]-->selected="yes"<!--[/if]-->>Manual</option>
 		  <option value="1" <!--[if ($setting.gsetting==1)]-->selected="yes"<!--[/if]-->>Automatic</option>
 		  </select>
+		  <!--[elseif ($setting.name == "API Proxy")]-->
+		  <select name="SettingsUpdate[API Proxy]">
+		  <option value="0" <!--[if ($setting.gsetting==0 || $setting.gsetting=="")]-->selected="yes"<!--[/if]-->>Tranquility</option>
+				<!--[foreach item='proxy' key=apik from=$apiproxy]--> 
+				<!--[assign var='api' value=","|explode:$proxy]-->
+				<option value="<!--[$apik]-->" <!--[if ($setting.gsetting==$apik)]-->selected="yes"<!--[/if]-->><!--[$api[0]]--></option>
+				<!--[/foreach]-->
+		  </select>
 		  <!--[/if]--> 
 		  </td>
 		  </tr>
@@ -407,7 +417,7 @@
 		 <!--[/foreach]-->
 		 <tbody>
 		 <tr>
-		  <td colspan="4"><input type="submit" value="Update Settings" /></td>
+		  <td colspan="4"><input class="mButton" type="submit" value="Update Settings" /></td>
 		  </tr>
 		  </tbody>
         </table>
@@ -430,7 +440,7 @@
 		  <td width="25%"><!--[$version]--></td><td width="75%"><!--[$vcheck]--></td>
 		  </tr>
 		  <tr>
-		  <td colspan="2"><input type="submit" value="Check Version" /></td>
+		  <td colspan="2"><input class="mButton" type="submit" value="Check Version" /></td>
 		  </tr>
 		  </tbody>
         </table>

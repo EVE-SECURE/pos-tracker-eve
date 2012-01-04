@@ -1,4 +1,3 @@
-<!--[* $Id: editpos.tpl 241 2009-04-13 03:58:45Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
 
 <div>
@@ -110,11 +109,11 @@
 	<!--[if (in_array('5', $access) || in_array('6', $access))]-->
 	<tr>
 	  <input type="hidden" name="new_secret" value="<!--[$tower.secret_pos]-->" />
-      <td colspan="3" class="tracktable txtcenter"><input type="submit" name="action" value="Change POS Secretive Status" /></td>
+      <td colspan="3" class="tracktable txtcenter"><input class="mButton" type="submit" name="action" value="Change POS Secretive Status" /></td>
     </tr>
 	<!--[/if]-->
     <tr>
-      <td colspan="3" class="tracktable txtcenter"><input type="submit" name="action" value="Change Tower Information" /></td>
+      <td colspan="3" class="tracktable txtcenter"><input class="mButton" type="submit" name="action" value="Change Tower Information" /></td>
     </tr>
   </tbody>
   </table>
@@ -125,8 +124,8 @@
 <form method="post" action="editpos.php">
 <input name="i" value="<!--[$tower.pos_id]-->" type="hidden" />
 <!--[html_options options=$users name='newowner' selected=$tower.owner_id]-->
-<input type="submit" name="action" value="Assign As Fuel Tech" />
-<input type="submit" name="action" value="Assign As Backup Fuel Tech" />
+<input class="mButton" type="submit" name="action" value="Assign As Fuel Tech" />
+<input class="mButton" type="submit" name="action" value="Assign As Backup Fuel Tech" />
 </div>
 <hr />
 <div>
@@ -144,48 +143,16 @@
       <th colspan="2">Difference</th>
     </tr>
     <tr>
-      <td>Enriched Uranium</td>
-      <td><!--[$tower.avail_uranium]--></td>
-      <td><input name="uranium" value="<!--[$tower.avail_uranium]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_uranium]--></td>
-      <td class="txtright"><!--[$optimalDiff.uranium]--></td>
-      <td class="txtright">(<!--[$optimalDiff.uranium_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Oxygen</td>
-      <td><!--[$tower.avail_oxygen]--></td>
-      <td><input name="oxygen" value="<!--[$tower.avail_oxygen]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_oxygen]--></td>
-      <td class="txtright"><!--[$optimalDiff.oxygen]--></td>
-      <td class="txtright">(<!--[$optimalDiff.oxygen_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Mechanical Parts</td>
-      <td><!--[$tower.avail_mechanical_parts]--></td>
-      <td><input name="mechanical_parts" value="<!--[$tower.avail_mechanical_parts]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_mechanical_parts]--></td>
-      <td class="txtright"><!--[$optimalDiff.mechanical_parts]--></td>
-      <td class="txtright">(<!--[$optimalDiff.mechanical_parts_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Coolant</td>
-      <td><!--[$tower.avail_coolant]--></td>
-      <td><input name="coolant" value="<!--[$tower.avail_coolant]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_coolant]--></td>
-      <td class="txtright"><!--[$optimalDiff.coolant]--></td>
-      <td class="txtright">(<!--[$optimalDiff.coolant_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Robotics</td>
-      <td><!--[$tower.avail_robotics]--></td>
-      <td><input name="robotics" value="<!--[$tower.avail_robotics]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_robotics]--></td>
-      <td class="txtright"><!--[$optimalDiff.robotics]--></td>
-      <td class="txtright">(<!--[$optimalDiff.robotics_m3]--> m3)</td>
+      <td><img style="vertical-align:middle;" src="images/icons/<!--[$tower.fuelblockID]-->.png" alt="Fuelblocks" /></td>
+      <td><!--[$tower.avail_fuelblock]--></td>
+      <td><input name="fuelblock" value="<!--[$tower.avail_fuelblock]-->" size="10" type="text" /></td>
+      <td class="mcolor"><!--[$optimal.optimum_fuelblock]--></td>
+      <td class="txtright"><!--[$optimalDiff.fuelblock]--></td>
+      <td class="txtright">(<!--[$optimalDiff.fuelblock_m3]--> m3)</td>
     </tr>
 <!--[if $tower.charters_needed]-->
   <tr>
-      <td>Charters</td>
+      <td><img style="vertical-align:middle;" src="images/icons/24594.png" alt="Charters" /></td>
       <td><!--[$tower.avail_charters]--></td>
       <td><input name="charters" value="<!--[$tower.avail_charters]-->" size="10" type="text" /></td>
       <td class="mcolor"><!--[$optimal.optimum_charters]--></td>
@@ -194,31 +161,7 @@
     </tr>
 <!--[/if]-->
     <tr>
-      <td>Isotopes (<!--[$tower.race_isotope]-->)</td>
-      <td><!--[$tower.avail_isotope]--></td>
-      <td><input name="isotope" value="<!--[$tower.avail_isotope]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_isotope]--></td>
-      <td class="txtright"><!--[$optimalDiff.isotopes]--></td>
-      <td class="txtright">(<!--[$optimalDiff.isotopes_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Liquid Ozone</td>
-      <td><!--[$tower.avail_ozone]--></td>
-      <td><input name="ozone" value="<!--[$tower.avail_ozone]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_ozone]--></td>
-      <td class="txtright"><!--[$optimalDiff.ozone]--></td>
-      <td class="txtright">(<!--[$optimalDiff.ozone_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Heavy Water</td>
-      <td><!--[$tower.avail_heavy_water]--></td>
-      <td><input name="heavy_water" value="<!--[$tower.avail_heavy_water]-->" size="10" type="text" /></td>
-      <td class="mcolor"><!--[$optimal.optimum_heavy_water]--></td>
-      <td class="txtright"><!--[$optimalDiff.heavy_water]--></td>
-      <td class="txtright">(<!--[$optimalDiff.heavy_water_m3]--> m3)</td>
-    </tr>
-    <tr>
-      <td>Strontium Calthrates</td>
+      <td><img style="vertical-align:middle;" src="images/icons/16275.png" alt="Strontium Calthrates" /></td>
       <td><!--[$tower.avail_strontium]--></td>
       <td><input name="strontium" value="<!--[$tower.avail_strontium]-->" size="10" type="text" /></td>
       <td class="mcolor"><!--[$optimal.optimum_strontium]--></td>
@@ -226,7 +169,7 @@
       <td class="txtright">(<!--[$optimalDiff.strontium_m3]--> m3)</td>
     </tr>
     <tr>
-      <td colspan="6" class="txtcenter" style="padding:10px;"><input name="action" value="Update Fuel" type="submit" /></td>
+      <td colspan="6" class="txtcenter" style="padding:10px;"><input class="mButton" name="action" value="Update Fuel" type="submit" /></td>
     </tr>
   </tbody>
   </table>
@@ -294,7 +237,7 @@
       <td><input name="ozone" value="" size="10" type="text" /></td>
     </tr>
     <tr>
-      <td colspan="3" class="txtcenter"><input type="submit" value="Update Hangar Stock" /></td>
+      <td colspan="3" class="txtcenter"><input class="mButton" type="submit" value="Update Hangar Stock" /></td>
     </tr>
   </tbody>
   </table>
@@ -326,7 +269,7 @@
     </tr>
   <!--[/foreach]-->
     <tr>
-      <td colspan="2" class="txtcenter"><input type="submit" value="Update Chain Info" /></td>
+      <td colspan="2" class="txtcenter"><input class="mButton" type="submit" value="Update Chain Info" /></td>
     </tr>
   </tbody>
   </table>
@@ -371,7 +314,7 @@
     </tr>
   <!--[/foreach]-->
     <tr>
-      <td colspan="9" class="txtcenter"><input type="submit" value="Update Silo Info" /></td>
+      <td colspan="9" class="txtcenter"><input class="mButton" type="submit" value="Update Silo Info" /></td>
     </tr>
   </tbody>
   </table>
@@ -388,11 +331,12 @@
   <div>
     <input type="hidden" name="pos_id" value="<!--[$tower.pos_id]-->" />
     <input type="hidden" name="struct_amount" value="1" />
-    <input type="submit" name="action" value="Add Structures" />
+    <input class="mButton" type="submit" name="action" value="Add Structures" />
   </form>
+  <br /><br />
     <form method="post" action="importfit.php">
     <input type="hidden" name="pos_id" value="<!--[$tower.pos_id]-->" />
-    <input type="submit" name="action" value="Import Structures" />
+    <input class="mButton" type="submit" name="action" value="Import Structures" />
   </div>
   </form>
 <!--[/if]-->
@@ -429,7 +373,7 @@
     </tr>
     <!--[/foreach]-->
     <tr>
-      <td colspan="5" class="txtcenter"><input type="submit" value="Update Module Info" /></td>
+      <td colspan="5" class="txtcenter"><input class="mButton" type="submit" value="Update Module Info" /></td>
     </tr>
   </tbody>
   </table>

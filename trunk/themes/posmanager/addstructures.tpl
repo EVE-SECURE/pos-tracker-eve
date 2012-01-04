@@ -14,7 +14,7 @@
         <td><hr /></td>
       </tr>
       <tr>
-        <td><input type="submit" name="action" value="Done" /></td>
+        <td><input class="mButton" type="submit" name="action" value="Done" /></td>
       </tr>
     </table>
   </div>

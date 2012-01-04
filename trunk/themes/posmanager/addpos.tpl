@@ -13,7 +13,7 @@
           <td><!--[html_options name='regionID' options=$arrregions]--></td>
         </tr>
         <tr>
-          <td colspan="2" class="txtcenter"><input type="submit" value="NEXT" /></td>
+          <td colspan="2" class="txtcenter"><input class="mButton" type="submit" value="NEXT" /></td>
         </tr>
       </table>
     </div>
@@ -29,7 +29,7 @@
           <td><!--[html_options name='constellationID' options=$arrconstellation]--></td>
         </tr>
         <tr>
-          <td colspan="2" class="txtcenter"><input type="submit" value="NEXT" /></td>
+          <td colspan="2" class="txtcenter"><input class="mButton" type="submit" value="NEXT" /></td>
         </tr>
       </table>
     </div>
@@ -46,7 +46,7 @@
           <td><!--[html_options name='solarSystemID' options=$arrsystems]--></td>
         </tr>
         <tr>
-          <td colspan="2" class="txtcenter"><input type="submit" value="NEXT" /></td>
+          <td colspan="2" class="txtcenter"><input class="mButton" type="submit" value="NEXT" /></td>
         </tr>
       </table>
     </div>
@@ -64,7 +64,7 @@
           <td><!--[html_options name='moonID' options=$arrmoons]--></td>
         </tr>
         <tr>
-          <td colspan="2" class="txtcenter"><input type="submit" value="NEXT" /></td>
+          <td colspan="2" class="txtcenter"><input class="mButton" type="submit" value="NEXT" /></td>
         </tr>
       </table>
     </div>
@@ -146,7 +146,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" class="txtcenter"><input type="submit" value="Add Structures" /></td>
+          <td colspan="2" class="txtcenter"><input class="mButton" type="submit" value="Add Structures" /></td>
         </tr>
       </table>
     </div>
