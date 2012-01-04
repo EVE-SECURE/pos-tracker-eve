@@ -6,11 +6,11 @@
 	<!--[if $completed != 1]-->
 	<h3 class="pageTitle">Corporation Jobs Overview (Current Jobs)</h3>
 	<input type="hidden" name="completed" value="1">
-	<input type="submit" name="submit" value="Past Jobs" />
+	<input class="mButton" type="submit" name="submit" value="Past Jobs" />
 	<!--[else]-->
 	<h3 class="pageTitle">Corporation Jobs Overview (Past Jobs)</h3>
 	<input type="hidden" name="completed" value="0">
-	<input type="submit" name="submit" value="Current Jobs" />
+	<input class="mButton" type="submit" name="submit" value="Current Jobs" />
 	<!--[/if]-->
 	<!--[/if]-->
     <br>

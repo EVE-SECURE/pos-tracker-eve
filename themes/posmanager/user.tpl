@@ -27,7 +27,7 @@
           <td><input size=40 type="text" name="email" value="<!--[$email]-->" /></td>
         </tr>
         <tr class="txtcenter">
-          <td colspan="2"><input type="submit" value="Update Profile" /></td>
+          <td colspan="2"><input class="mButton" type="submit" value="Update Profile" /></td>
         </tr>
       </tbody>
       </table>
@@ -56,7 +56,7 @@
           <td><!--[html_options options=$user_track_sort name='user_track_sort' selected=$utrack[1]]--></td>
         </tr>
         <tr class="txtcenter">
-          <td colspan="2"><input type="submit" value="Update Settings" /></td>
+          <td colspan="2"><input class="mButton" type="submit" value="Update Settings" /></td>
         </tr>
       </tbody>
       </table>
@@ -68,7 +68,7 @@
       <form method="post" action="user.php">
       <div>
         <input type="hidden" name="action" value="updatecorpinfo" />
-        <input type="submit" value="Update Corp/Alliance" />
+        <input class="mButton" type="submit" value="Update Corp/Alliance" />
 		<BR><b>Note:</b> You must have this tracker site page trusted in order for the changes to go through correctly.<br><br> Directions: While on this page click Options -> Trusted Sites. Click Trust Site.
       </div>
       </form>

@@ -79,14 +79,27 @@
   </table>
 
   <hr />
-
+  <!--[if ((($tower.owner_name == $name || $tower.secondary_owner_name == $name) || in_array('5', $access) || in_array('6', $access) || in_array('21', $access) || in_array('22', $access) && $tower.corp == $corp) || (in_array('51', $access) || in_array('52', $access) && $tower.corp != $corp))]-->
+  
+  <div style="width:100%;">
+  <div style="width:100px;display: inline-block;">
   <form method="post" action="editpos.php">
-  <p style="text-align:center;">
     <input name="pos_id" value="<!--[$tower.pos_id]-->" type="hidden" />
-    <input name="action" value="Edit" type="submit" />
-  </p>
+    <input class="mButton" name="action" value="Edit" type="submit" />
   </form>
-
+  </div>
+  <div style="width:100px;display: inline-block;">
+  <form method="post" action="editpos.php">
+    <input name="pos_id" value="<!--[$tower.pos_id]-->" type="hidden" />
+	<input name="refuelme" value="1" type="hidden" />
+	<input name="fuelblockOP" value="<!--[$optimal.optimum_fuelblock]-->" type="hidden" />
+	<input name="chartersOP" value="<!--[$optimal.optimum_charters]-->" type="hidden" />
+	<input name="strontiumOP" value="<!--[$tower.avail_strontium]-->" type="hidden" />
+    <input class="mButton" name="action" value="Refuel" type="submit" />
+  </form>
+  </div>
+  </div>
+  <!--[/if]-->
   <table class="mcenter tracktable" style="width:600px;font-size: 12px;">
   <!--[assign var='uptimecalc' value=$tower.uptimecalc]-->
   <tbody>
@@ -99,90 +112,27 @@
       <th colspan="2">Difference</th>
     </tr>
     <tr>
-      <td>Enriched Uranium</td>
-      <td class="mcolor"><!--[$tower.required_uranium]--></td>
-      <td><!--[$tower.avail_uranium]--></td>
-      <td><!--[daycalc hours=$uptimecalc.uranium]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_uranium]--></td>
-      <td><!--[$optimalDiff.uranium]--></td>
-      <td><!--[$optimalDiff.uranium_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Oxygen</td>
-      <td class="mcolor"><!--[$tower.required_oxygen]--></td>
-      <td><!--[$tower.avail_oxygen]--></td>
-      <td><!--[daycalc hours=$uptimecalc.oxygen]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_oxygen]--></td>
-      <td><!--[$optimalDiff.oxygen]--></td>
-      <td><!--[$optimalDiff.oxygen_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Mechanical Parts</td>
-      <td class="mcolor"><!--[$tower.required_mechanical_parts]--></td>
-      <td><!--[$tower.avail_mechanical_parts]--></td>
-      <td><!--[daycalc hours=$uptimecalc.mechanical_parts]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_mechanical_parts]--></td>
-      <td><!--[$optimalDiff.mechanical_parts]--></td>
-      <td><!--[$optimalDiff.mechanical_parts_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Coolant</td>
-      <td class="mcolor"><!--[$tower.required_coolant]--></td>
-      <td><!--[$tower.avail_coolant]--></td>
-      <td><!--[daycalc hours=$uptimecalc.coolant]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_coolant]--></td>
-      <td><!--[$optimalDiff.coolant]--></td>
-      <td><!--[$optimalDiff.coolant_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Robotics</td>
-      <td class="mcolor"><!--[$tower.required_robotics]--></td>
-      <td><!--[$tower.avail_robotics]--></td>
-      <td><!--[daycalc hours=$uptimecalc.robotics]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_robotics]--></td>
-      <td><!--[$optimalDiff.robotics]--></td>
-      <td><!--[$optimalDiff.robotics_m3]--> m3</td>
+      <td><img style="vertical-align:middle;" src="images/icons/<!--[$tower.fuelblockID]-->.png" alt="Fuelblocks" /></td>
+      <td class="mcolor"><!--[$tower.required_fuelblock]--></td>
+      <td><!--[$tower.avail_fuelblock]--></td>
+      <td><!--[daycalc hours=$uptimecalc.fuelblock]--></td>
+      <td class="mcolor"><!--[$optimal.optimum_fuelblock]--></td>
+      <td><!--[$optimalDiff.fuelblock]--></td>
+      <td><!--[$optimalDiff.fuelblock_m3]--> m3</td>
     </tr>
 <!--[if $tower.charters_needed]-->
 	<tr>
-      <td>Charters</td>
+      <td><img style="vertical-align:middle;" src="images/icons/24594.png" alt="Charters" /></td>
       <td class="mcolor"><!--[$tower.required_charters]--></td>
       <td><!--[$tower.avail_charters]--></td>
       <td><!--[daycalc hours=$uptimecalc.charters]--></td>
       <td class="mcolor"><!--[$optimal.optimum_charters]--></td>
 	  <td><!--[$optimalDiff.charters]--></td>
-      <td><!--[$optimalDiff.charters]--> m3</td>
+      <td><!--[$optimalDiff.charters_m3]--> m3</td>
     </tr>
 <!--[/if]-->
     <tr>
-      <td>Isotopes (<!--[$tower.race_isotope]-->)</td>
-      <td class="mcolor"><!--[$tower.required_isotope]--></td>
-      <td><!--[$tower.avail_isotope]--></td>
-      <td><!--[daycalc hours=$uptimecalc.isotope]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_isotope]--></td>
-      <td><!--[$optimalDiff.isotopes]--></td>
-      <td><!--[$optimalDiff.isotopes_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Liquid Ozone</td>
-      <td class="mcolor"><!--[$tower.required_ozone2]-->(<!--[$tower.required_ozone]-->)</td>
-      <td><!--[$tower.avail_ozone]--></td>
-      <td><!--[daycalc hours=$uptimecalc.ozone]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_ozone]--></td>
-      <td><!--[$optimalDiff.ozone]--></td>
-      <td><!--[$optimalDiff.ozone_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Heavy Water</td>
-      <td class="mcolor"><!--[$tower.required_heavy_water2]-->(<!--[$tower.required_heavy_water]-->)</td>
-      <td><!--[$tower.avail_heavy_water]--></td>
-      <td><!--[daycalc hours=$uptimecalc.heavy_water]--></td>
-      <td class="mcolor"><!--[$optimal.optimum_heavy_water]--></td>
-      <td><!--[$optimalDiff.heavy_water]--></td>
-      <td><!--[$optimalDiff.heavy_water_m3]--> m3</td>
-    </tr>
-    <tr>
-      <td>Strontium Calthrates</td>
+      <td><img style="vertical-align:middle;" src="images/icons/16275.png" alt="Strontium Calthrates" /></td>
       <td class="mcolor"><!--[$tower.required_strontium]--></td>
       <td><!--[$tower.avail_strontium]--></td>
       <td><!--[daycalc hours=$uptimecalc.strontium]--></td>
@@ -380,12 +330,12 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
   <!--[assign var='mods' value=$tower.mods]-->
   <!--[if $mods]-->
   <h3>Modules</h3>
-  <form method="post" action="fitexporter.xml.php"><input type="hidden" name="pos_id" value="<!--[$tower.pos_id]-->">Export Style: <Select name="xmlstyle"><option value="tracker">POS-Tracker Fitting</option><option value="mypos">MyPOS Fitting</option></select><input type="submit" name="action" value="Export Structures"></form></p><br>
+  <form method="post" action="fitexporter.xml.php"><input type="hidden" name="pos_id" value="<!--[$tower.pos_id]-->">Export Style: <Select name="xmlstyle"><option value="tracker">POS-Tracker Fitting</option><option value="mypos">MyPOS Fitting</option></select> <input class="mButton" type="submit" name="action" value="Export Structures"></form></p><br>
 
   <table class="mcenter tracktable" style="width:600px;font-size: 12px;">
   <tbody>
     <tr>
-      <th>Id</th>
+      <th>Module</th>
       <th>Name</th>
       <th>CPU</th>
       <th>PG</th>

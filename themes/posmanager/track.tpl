@@ -35,7 +35,7 @@
       <!--[/if]-->
 	  <td>
       <a href="viewpos.php?i=<!--[$pos.pos_id]-->"><img src="images/icons/zoom.png" border="0" alt="View" title="View" /></a>
-      <a href="fuel_calculator.php?pos_to_refuel=<!--[$pos.pos_id]-->&days=30"><img src="images/icons/cart_go.png" border="0" alt="fuel Bill Calculator" title="Fuel Bill Calculator" /></a>
+      <a href="fuel_calculator.php?pos_to_refuel=<!--[$pos.pos_id]-->&days=30"><img src="images/icons/cart_go.png" border="0" alt="Fuel Bill Calculator" title="Fuel Bill Calculator" /></a>
 	  
       <!--[if ((($pos.name == $name || $pos.backup == $name) || in_array('5', $access) || in_array('6', $access) || in_array('21', $access) || in_array('22', $access) && $pos.corp == $corp) || (in_array('51', $access) || in_array('52', $access) && $pos.corp != $corp))]-->
       <a href="editpos.php?i=<!--[$pos.pos_id]-->"><img src="images/icons/pencil.png" border="0" alt="Edit" title="Edit" /></a>

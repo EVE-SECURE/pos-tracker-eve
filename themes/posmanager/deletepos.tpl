@@ -5,7 +5,7 @@
     <div>
       <input type="hidden" name="i"      value="<!--[$pos_id]-->" />
       <input type="hidden" name="action" value="deletepos" />
-      <input type="submit" value="Confirm Delete" />
+      <input class="mButton" type="submit" value="Confirm Delete" />
     </div>
     </form>
     <br /><br />

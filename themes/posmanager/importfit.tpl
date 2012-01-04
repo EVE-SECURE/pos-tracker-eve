@@ -11,6 +11,6 @@ Fitting Style:<br>
     <!-- Name of input element determines name in $_FILES array -->
     Send this file: <br>
 	<input name="fitimport" type="file" />
-    <input type="submit"  name="action" value="Send File" />
+    <input class="mButton" type="submit"  name="action" value="Send File" />
 </form>
 <!--[include file='footer.tpl']-->

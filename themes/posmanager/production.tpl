@@ -4,7 +4,7 @@
     <!--[html_options name='filter_regionID' options=$optregions selected=$filter_regionID]-->
     <!--[html_options name='filter_systemID' options=$optsystems selected=$filter_systemID]-->
     <!--[html_options name='filter_pos_id'   options=$optposids  selected=$filter_pos_id]-->
-    <input type="submit" name="submit" value="Filter" /> - <a class="link" href="production.php" title="Clear Filter">Clear Filter</a>
+    <input class="mButton" type="submit" name="submit" value="Filter" /> - <a class="link" href="production.php" title="Clear Filter">Clear Filter</a>
   </p>
   </form>
   <form style="margin: 0pt; padding: 0pt;" method="post" action="production.php">
@@ -58,7 +58,7 @@
   <!--[/foreach]-->
   </tbody>
   </table>
-  <center><input name="action" value="Update Amount" class="mainoption" type="submit" /></center>
+  <center><input class="mButton" name="action" value="Update Amount" class="mainoption" type="submit" /></center>
 </form>
 
 <!--[include file='footer.tpl']-->

@@ -111,7 +111,7 @@
 <p>
 <input type="hidden" name="i" value="<!--[$outpost.outpost_id]-->" />
 <input type="hidden" name="action" value="updateoutpost" />
-<input type="submit" name="action" value="Update Outpost Hangar" />
+<input class="mButton" type="submit" name="action" value="Update Outpost Hangar" />
 </p>
 </form>
 <!--[include file='footer.tpl']-->

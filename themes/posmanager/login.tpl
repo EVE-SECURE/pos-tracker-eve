@@ -1,4 +1,3 @@
-<!--[* $Id: login.tpl 131 2008-07-21 06:18:41Z stephenmg $ *]-->
 <!--[include file='header.tpl']-->
 
   <div>
@@ -17,7 +16,7 @@
         <td><input type="password" name="pass" maxlength="255" />
       </tr>
       <tr>
-        <td colspan="2"><input type="submit" name="action" value="Login" /></td>
+        <td colspan="2"><input class="mButton" type="submit" name="action" value="Login" /></td>
       </tr>
     </table>
   <!--[else]-->
@@ -32,7 +31,7 @@
         <td><input type="password" name="pass" maxlength="255" /></td>
       </tr>
       <tr>
-        <td colspan="2"><input type="submit" name="action" value="Login" /></td>
+        <td colspan="2"><input class="mButton" type="submit" name="action" value="Login" /></td>
       </tr>
     </table>
     </form>
