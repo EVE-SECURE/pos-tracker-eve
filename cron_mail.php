@@ -70,35 +70,32 @@ $eveRender->Assign('access', $access);
         $tower['current_pg']              = $tower['powergrid'];
 		}
 		
+		$charters_needed         = $tower['charters_needed'];
 		$pos_size                 = $row['pos_size'];
 	    $pos_race                 = $row['pos_race'];
 	    $systemID                 = $row['systemID'];
 		$allianceid                = $row['allianceid'];
+        $tower['sovfriendly']    = $posmgmt->getSovereigntyStatus($systemID, $allianceid);
 		
-		$db = $posmgmt->selectstaticdb($systemID, $allianceid);
+		$row3 = $posmgmt->GetStaticFBTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size));
+		
+		if ($tower['sovfriendly'] == 1) {
+			$tower['hasSov'] = .75;
+		} else {
+			$tower['hasSov'] = 1;
+		}
 
-		$row3 = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
-		
 		if ($row3) {
-            $tower['required_isotope']           = $row3['isotopes'];
-            $tower['required_oxygen']            = $row3['oxygen'];
-            $tower['required_mechanical_parts']  = $row3['mechanical_parts'];
-            $tower['required_coolant']           = $row3['coolant'];
-            $tower['required_robotics']          = $row3['robotics'];
-            $tower['required_uranium']           = $row3['uranium'];
-            $tower['required_ozone']             = $row3['ozone'];
-            $tower['required_heavy_water']       = $row3['heavy_water'];
+			$tower['required_fuelblock']         = ceil($row3['fuelblock'] * $tower['hasSov']);
             $tower['required_strontium']         = $row3['strontium'];
-            $tower['race_isotope']               = $row3['race_isotope'];
+            $tower['required_charters']          = $charters_needed?1:0;
+			$row3['charters']					= $tower['required_charters'];
             $tower['total_pg']                   = $row3['pg'];
             $tower['total_cpu']                  = $row3['cpu'];
             $tower['uptimecalc']                 = $posmgmt->uptimecalc($row['pos_id']);
             $tower['pos_capacity']=$tower['fuel_hangar']=$row3['fuel_hangar'];
-        }
+        } 
 
-		$row3['ozone']        = ceil(($tower['current_pg'] / $row3['pg']) * $row3['ozone']);
-		$row3['heavy_water']  = ceil(($tower['current_cpu'] / $row3['cpu']) * $row3['heavy_water']);
-		
 		$row['result_uptimecalc']= $posmgmt->uptimecalc($row['pos_id']);
 		$row['result_online']    = $posmgmt->online($row['result_uptimecalc']);
 		$row['last_update']      = gmdate("Y-m-d H:i:s", $row2['datetime']);
@@ -111,14 +108,8 @@ $eveRender->Assign('access', $access);
 		$characterInfo=$posmgmt->GetUserInfofromID($row['owner_id']);
 		$secondary_characterInfo=$posmgmt->GetUserInfofromID($row['secondary_owner_id']);
 
-		$diff=array('uranium' => $row['result_optimal']['optimum_uranium']-$row['uranium'],
-		'oxygen'=> $row['result_optimal']['optimum_oxygen']-$row['oxygen'],
-		'mechanical_parts'=> $row['result_optimal']['optimum_mechanical_parts']-$row['mechanical_parts'],
-		'coolant'=> $row['result_optimal']['optimum_coolant']-$row['coolant'],
-		'robotics'=> $row['result_optimal']['optimum_robotics']-$row['robotics'],
-		'isotope'=>$row['result_optimal']['optimum_isotope']-$row['isotope'],
-		'ozone'=>$row['result_optimal']['optimum_ozone']-$row['ozone'],
-		'heavy_water'=>$row['result_optimal']['optimum_heavy_water']-$row['heavy_water']);
+		$diff=array('fuelblock' => $row['result_optimal']['optimum_fuelblock']-$row['fuelblock'],
+		'charters'=>$row['result_optimal']['optimum_charters']-$row['charters']);
 
 		if($row['pos_status'] >=2) {
 		
