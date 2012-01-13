@@ -26,6 +26,11 @@ $critical_fuel_background_color = "#FF0000" ; #
 $owner_background_color         = "#001642" ; #
 $edited_background_color        = "#F13600" ; #
 
+//API Proxy. If you wish to add in another proxy just put in another line increasing the #1 count each time. See commented examples.
+$apiproxy[1] = "Singularity,https://apitest.eveonline.com";
+//$apiproxy[2] = "Singularity2,https://apitest2.eveonline.com";
+//$apiproxy[3] = "Singularity3,http://apitest3.eveonline.com";
+
 // Done... no need to touch anything else. (Unless you know what you are doing)
 // Path for templates and xml files - This only needs to be changed if you
 // want the cache to be in another place than 'yoursite/cache'
@@ -62,7 +67,4 @@ $realpath = realpath($incDir . $ds . '../cache');
         $mess = 'Nonexistent directory defined for POS_CACHE DIR constant';
         trigger_error($mess, E_USER_ERROR);
     }
-    ;
-
-/* $Id: config.php 51 2008-06-30 14:31:03Z eveoneway $ */
 ?>
