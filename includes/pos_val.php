@@ -9,4 +9,5 @@ $pos_Cha=0.1;
 $pos_Ozo=0.4;
 $pos_Hea=0.4;
 $pos_Str=3;
+$pos_Fbl=5;
 ?>

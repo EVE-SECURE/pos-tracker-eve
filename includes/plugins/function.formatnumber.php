@@ -7,7 +7,7 @@ function smarty_function_formatnumber($params, &$smarty)
     if (!isset($params['value']) || empty($params['value'])) {
         return 0;
     }
-    $value   = number_format($params['value'], 0, '.', ',');
+    $value   = number_format($params['value'], 2, '.', ',');
     $label   = ((isset($params['label'])   && !empty($params['label']))   ? $params['label']   : true);
     $highest = ((isset($params['highest']) && !empty($params['highest'])) ? $params['highest'] : false);
 
