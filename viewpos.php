@@ -64,15 +64,8 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
         //if ($row = mysql_fetch_array($result)) {
 		
         if ($tower) {
-            $current_isotope         = $tower['isotope'];
+			$current_fuelblock        = $tower['fuelblock'];
             $outpost_id            = $tower['outpost_id'];
-            $current_oxygen          = $tower['oxygen'];
-            $current_mechanical_parts= $tower['mechanical_parts'];
-            $current_coolant         = $tower['coolant'];
-            $current_robotics        = $tower['robotics'];
-            $current_uranium         = $tower['uranium'];
-            $current_ozone           = $tower['ozone'];
-            $current_heavy_water     = $tower['heavy_water'];
             $current_strontium       = $tower['strontium'];
             $current_charters        = $tower['charters'];
             $pos_size                = $tower['pos_size'];
@@ -199,36 +192,25 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
         }
 
         //Feul table selection
-        $db = $posmgmt->selectstaticdb($systemID, $allianceid);
+        //$db = $posmgmt->selectstaticdb($systemID, $allianceid);
         //End Fuel table selection
 
-        $row = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
-
+        $row = $posmgmt->GetStaticFBTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size));
+		if ($tower['sovfriendly'] == 1) {
+			$tower['hasSov'] = .75;
+		} else {
+			$tower['hasSov'] = 1;
+		}
+		
         if ($row) {
-            $tower['required_isotope']           = $row['isotopes'];
-            $tower['required_oxygen']            = $row['oxygen'];
-            $tower['required_mechanical_parts']  = $row['mechanical_parts'];
-            $tower['required_coolant']           = $row['coolant'];
-            $tower['required_robotics']          = $row['robotics'];
-            $tower['required_uranium']           = $row['uranium'];
-            $tower['required_ozone']             = $row['ozone'];
-            $tower['required_heavy_water']       = $row['heavy_water'];
+			$tower['required_fuelblock']         = ceil($row['fuelblock'] * $tower['hasSov']);
             $tower['required_strontium']         = $row['strontium'];
             $tower['required_charters']          = $charters_needed?1:0;
-            $tower['race_isotope']               = $row['race_isotope'];
+            $tower['fuelblockID']               = $row['fuelblockID'];
             $tower['total_pg']                   = $row['pg'];
             $tower['total_cpu']                  = $row['cpu'];
-            $required_isotope                    = $row['isotopes'];
-            $required_oxygen                     = $row['oxygen'];
-            $required_mechanical_parts           = $row['mechanical_parts'];
-            $required_coolant                    = $row['coolant'];
-            $required_robotics                   = $row['robotics'];
-            $required_uranium                    = $row['uranium'];
-            $required_ozone                      = $row['ozone'];
-            $required_heavy_water                = $row['heavy_water'];
             $required_strontium                  = $row['strontium'];
             $required_charters                   = $charters_needed?1:0;
-            $race_isotope                        = $row['race_isotope'];
             $total_pg                            = $row['pg'];
             $total_cpu                           = $row['cpu'];
             $tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
@@ -237,11 +219,8 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
 
         }
 
-        //$mods = $posmgmt->GetPosStructures($pos_id);
-
         $mods = $posmgmt->GetAllPosMods($pos_id);
-		
-//echo '<pre>';print_r($tower);echo '</pre>';exit;
+
         if ($mods) { //if (mysql_num_rows($result) != 0) {
             $current_pg  = 0;
             $current_cpu = 0;
@@ -271,60 +250,16 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
 
         $optimal=$posmgmt->posoptimaluptime($tower);
         $optimalDiff=$posmgmt->getOptimalDifference($optimal, $tower);
-
-        // $avail_uranium          = ($current_uranium          - ($required_uranium * $hoursago)); - Old Version. Now using the API to handle what's in the DB.
 		
-		$avail_uranium          = $current_uranium;
-        $avail_oxygen           = $current_oxygen;
-        $avail_mechanical_parts = $current_mechanical_parts;
-        $avail_coolant          = $current_coolant;
-        $avail_robotics         = $current_robotics;
-        $avail_isotope          = $current_isotope;
-        $avail_ozone            = $current_ozone;
-        $required_ozone2        = ceil(($current_pg / $total_pg) * $required_ozone);
-        $avail_heavy_water      = $current_heavy_water;
-        $required_heavy_water2  = ceil(($current_cpu / $total_cpu) * $required_heavy_water);
+		$avail_fuelblock        = $current_fuelblock;
         $avail_strontium        = $current_strontium;
         $avail_charters         = $current_charters;
 		
-        if ($avail_uranium <= 0) {
-            $avail_uranium = ($current_uranium - ($required_uranium * (floor($current_uranium / $required_uranium))));
-        }
-        if ($avail_oxygen <= 0) {
-            $avail_oxygen = ($current_oxygen - ($required_oxygen * (floor($current_oxygen / $required_oxygen))));
-        }
-        if ($avail_mechanical_parts <= 0) {
-            $avail_mechanical_parts = ($current_mechanical_parts - ($required_mechanical_parts * (floor($current_mechanical_parts / $required_mechanical_parts))));
-        }
-        if ($avail_coolant <= 0) {
-            $avail_coolant = ($current_coolant - ($required_coolant * (floor($current_coolant / $required_coolant))));
-        }
-        if ($avail_robotics <= 0) {
-            $avail_robotics = ($current_robotics - ($required_robotics * (floor($current_robotics / $required_robotics))));
-        }
-        if ($avail_isotope <= 0) {
-            $avail_isotope = ($current_isotope - ($required_isotope * (floor($current_isotope / $required_isotope))));
-        }
-        if ($avail_ozone <= 0 && $current_pg) {
-            $avail_ozone = ($current_ozone - ((ceil(($current_pg / $total_pg) * $required_ozone)) * (floor($current_ozone / (ceil(($current_pg / $total_pg) * $required_ozone))))));
-        }
-        if ($avail_heavy_water <= 0 && $current_cpu) {
-            $avail_heavy_water = ($current_heavy_water - ((ceil(($current_cpu / $total_cpu) * $required_heavy_water)) * (floor($current_heavy_water / (ceil(($current_cpu / $total_cpu) * $required_heavy_water))))));
-        }
         if ($avail_charters <= 0 && $required_charters) {
             $avail_charters = ($current_charters - ($required_charters * (floor($current_charters / $required_charters))));
         }
 
-        $tower['avail_uranium']           = $avail_uranium;
-        $tower['avail_oxygen']            = $avail_oxygen;
-        $tower['avail_mechanical_parts']  = $avail_mechanical_parts;
-        $tower['avail_coolant']           = $avail_coolant;
-        $tower['avail_robotics']          = $avail_robotics;
-        $tower['avail_isotope']           = $avail_isotope;
-        $tower['avail_ozone']             = $avail_ozone;
-        $tower['required_ozone2']         = $required_ozone2;
-        $tower['avail_heavy_water']       = $avail_heavy_water;
-        $tower['required_heavy_water2']   = $required_heavy_water2;
+		$tower['avail_fuelblock']         = $avail_fuelblock;
         $tower['avail_strontium']         = $avail_strontium;
         $tower['avail_charters']          = $avail_charters;
 
@@ -555,11 +490,6 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
                            13 => 'Shadow CT',
                            14 => 'True Sansha CT');
 
-        $tower['lines']     = $lines;
-        $tower['linecount'] = $linecount;
-
-        $eveRender->Assign('linecount',   $linecount);
-        $eveRender->Assign('lines',       $lines);
         $eveRender->Assign('arrposize',   $arrposize);
         $eveRender->Assign('arrporace',   $arrporace);
         $eveRender->Assign('towerstatus', array(0 => 'Unanchored', 1 => 'Anchored', 2 => 'Onlining', 3 => 'Reinforced', 4 => 'Online'));
@@ -568,8 +498,9 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
         $eveRender->Assign('optimal',   $optimal);
         $eveRender->Assign('optimalDiff',   $optimalDiff);
 		$eveRender->Assign('secret_pos',	$secret_pos);
+		$eveRender->Assign('name', $userinfo['name']);
+		$eveRender->Assign('corp', $userinfo['corp']);
         $eveRender->Display('viewpos.tpl');
-
     } else {
         $eve->SessionSetVar('errormsg', 'You forgot something');
         $eve->RedirectUrl('track.php');

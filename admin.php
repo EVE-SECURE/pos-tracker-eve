@@ -339,6 +339,7 @@ $prices = $posmgmt->GetPrices();
 $eveRender->Assign('users',     $users);
 $eveRender->Assign('prices',     $prices);
 $eveRender->Assign('settings',     $settings);
+$eveRender->Assign('apiproxy',     $apiproxy);
 $eveRender->Assign('userinfo',  $userinfo);
 $eveRender->Assign('awaylevel',  array(0 => 'Default', 1 => 'Away', 2 => 'Receive eMails'));
 

@@ -100,8 +100,6 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
     $textcolor = "#FFFFFF";
 
     foreach($rows as $key => $row) {
-	
-        $row2 = $posmgmt->GetLastPosUpdate($row['pos_id']);
 
 /*0 - Unanchored (also unanchoring??) (has valid stateTimestamp)
 Note that moonID is zero for unanchored Towers, but locationID will still yield the solar system ID
