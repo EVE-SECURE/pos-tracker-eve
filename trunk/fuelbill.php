@@ -29,19 +29,23 @@ $eveRender->Assign('access', $access);
 
 if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) {
 
-    $fuel_uranium           = 0;
-    $fuel_oxygen            = 0;
-    $fuel_mechanical_parts  = 0;
-    $fuel_coolant           = 0;
-    $fuel_robotics          = 0;
-    $fuel_isotopes          = 0;
-    $fuel_H_isotopes        = 0;
-    $fuel_N_isotopes        = 0;
-    $fuel_O_isotopes        = 0;
-    $fuel_Hy_isotopes       = 0;
-    $fuel_ozone             = 0;
-    $fuel_heavy_water       = 0;
+	$fuel_A_fuelblock       = 0;
+	$fuel_A_total_size     = 0;
+	$fuel_A_total      = 0;
+	$fuel_C_fuelblock       = 0;
+	$fuel_C_total_size     = 0;
+	$fuel_C_total      = 0;
+	$fuel_G_fuelblock       = 0;
+	$fuel_G_total_size     = 0;
+	$fuel_G_total      = 0;
+	$fuel_M_fuelblock       = 0;
+	$fuel_M_total_size     = 0;
+	$fuel_M_total      = 0;
     $default_days           = 0;
+	$total_size = 0;
+	$charter_total_size = 0;
+	$charter_total = 0;
+	$fb_total_size = 0;
 
     $args = array();
     $filter  = $eve->VarCleanFromInput('filter');
@@ -154,7 +158,6 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
 	
     foreach ($towers as $key => $tower) {
 
-        //New Access System Complete for fuelbill.php
         if (!in_array('1', $access) && !in_array('5', $access) && !in_array('6', $access)) { //quick user check
 		
 			continue ; //Hide the tower
@@ -211,83 +214,89 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
 			}
 		
 		}
+
+        $tower['constellationName'] = $posmgmt->getConstellationNameFromMoonID($tower['locationName']);
+        $tower['regionName']      = $posmgmt->getRegionNameFromMoonID($tower['locationName']);
 		
-
+		switch($tower['pos_race']) {
+				case 1:
+				case 6:
+				case 7:
+				case 11:
+				case 14:
+					$fuel_A_total = $fuel_A_total + $tower['fuel_A_fuelblock'];break;
+				case 4:  
+				case 5: 
+				case 8:
+					$fuel_M_total = $fuel_M_total + $tower['fuel_M_fuelblock'];break;
+				case 2:  
+				case 9: 
+				case 10: 
+					$fuel_C_total = $fuel_C_total + $tower['fuel_C_fuelblock'];break;
+				case 3:
+				case 12:
+				case 13:
+					$fuel_G_total = $fuel_G_total + $tower['fuel_G_fuelblock'];break;
+			}
 		
-        $required_H_isotope  = 0;
-        $required_N_isotope  = 0;
-        $required_O_isotope  = 0;
-        $required_Hy_isotope = 0;
-
-        $system                   = $tower['system'];
-        $needed_uranium           = $tower['needed_uranium'];
-        $needed_oxygen            = $tower['needed_oxygen'];
-        $needed_mechanical_parts  = $tower['needed_mechanical_parts'];
-        $needed_coolant           = $tower['needed_coolant'];
-        $needed_robotics          = $tower['needed_robotics'];
-        $needed_isotopes          = $tower['needed_isotopes'];
-        $needed_ozone             = $tower['needed_ozone'];
-        $needed_heavy_water       = $tower['needed_heavy_water'];
-        $needed_charters          = $tower['needed_charters'];
-        $needed_stront            = $tower['needed_stront'];
-        $pos_id                   = $tower['pos_id'];
-        $pos_race                 = $tower['pos_race'];
-        $locationName             = $tower['locationName'];
-		$towerName				  = $tower['towerName'];
-        $tower['constellationName'] = $posmgmt->getConstellationNameFromMoonID($locationName);
-        $tower['regionName']      = $posmgmt->getRegionNameFromMoonID($locationName);
-
-        switch($pos_race) {
-            case 1:  $required_H_isotope  = $tower['needed_isotopes']; break;
-            case 6:  $required_H_isotope  = $tower['needed_isotopes']; break;
-            case 7:  $required_H_isotope  = $tower['needed_isotopes']; break;
-            case 11: $required_H_isotope  = $tower['needed_isotopes']; break;
-            case 14: $required_H_isotope  = $tower['needed_isotopes']; break;
-            case 4:  $required_Hy_isotope = $tower['needed_isotopes']; break;
-            case 5:  $required_Hy_isotope = $tower['needed_isotopes']; break;
-            case 8:  $required_Hy_isotope = $tower['needed_isotopes']; break;
-            case 2:  $required_N_isotope  = $tower['needed_isotopes']; break;
-            case 9:  $required_N_isotope  = $tower['needed_isotopes']; break;
-            case 10: $required_N_isotope  = $tower['needed_isotopes']; break;
-            case 3:  $required_O_isotope  = $tower['needed_isotopes']; break;
-            case 12: $required_O_isotope  = $tower['needed_isotopes']; break;
-            case 13: $required_O_isotope  = $tower['needed_isotopes']; break;
-        }
-        $tower['required_H_isotope']  = $required_H_isotope;
-        $tower['required_Hy_isotope'] = $required_Hy_isotope;
-        $tower['required_N_isotope']  = $required_N_isotope;
-        $tower['required_O_isotope']  = $required_O_isotope;
-
-        $fuel_H_isotopes        = $fuel_H_isotopes        + $required_H_isotope;
-        $fuel_N_isotopes        = $fuel_N_isotopes        + $required_N_isotope;
-        $fuel_O_isotopes        = $fuel_O_isotopes        + $required_O_isotope;
-        $fuel_Hy_isotopes       = $fuel_Hy_isotopes       + $required_Hy_isotope;
-        $fuel_uranium           = $fuel_uranium           + $needed_uranium;
-        $fuel_oxygen            = $fuel_oxygen            + $needed_oxygen;
-        $fuel_mechanical_parts  = $fuel_mechanical_parts  + $needed_mechanical_parts;
-        $fuel_coolant           = $fuel_coolant           + $needed_coolant;
-        $fuel_robotics          = $fuel_robotics          + $needed_robotics;
-        $fuel_ozone             = $fuel_ozone             + $needed_ozone;
-        $fuel_heavy_water       = $fuel_heavy_water       + $needed_heavy_water;
-
+		$charter_total = $charter_total + $tower['fuel_charters'];
+		$fb_total_size = $fb_total_size + $tower['fb_total_volume'];
+		
+		if ($tower['fuel_charters'] > 0 ) {
+		$tower['fuel_charters'] = number_format($tower['fuel_charters']);
+		} else {
+		$tower['fuel_charters'] = '';
+		}
+		
+		if ($tower['fuel_A_fuelblock'] > 0 ) {
+		$tower['fuel_A_fuelblock'] = number_format($tower['fuel_A_fuelblock']);
+		}
+		
+		if ($tower['fuel_M_fuelblock'] > 0 ) {
+		$tower['fuel_M_fuelblock'] = number_format($tower['fuel_M_fuelblock']);
+		}
+		
+		if ($tower['fuel_C_fuelblock'] > 0 ) {
+		$tower['fuel_C_fuelblock'] = number_format($tower['fuel_C_fuelblock']);
+		}
+		
+		if ($tower['fuel_G_fuelblock'] > 0 ) {
+		$tower['fuel_G_fuelblock'] = number_format($tower['fuel_G_fuelblock']);
+		}
+		
         $disp_towers[$key] = $tower;
     }
-
-    (integer) $fuel_uranium_size          = round($fuel_uranium           * $pos_Ura);
-    (integer) $fuel_oxygen_size           = round($fuel_oxygen            * $pos_Oxy);
-    (float)   $fuel_mechanical_parts_size = round($fuel_mechanical_parts  * $pos_Mec);
-    (integer) $fuel_coolant_size          = round($fuel_coolant           * $pos_Coo);
-    (integer) $fuel_robotics_size         = round($fuel_robotics          * $pos_Rob);
-    (integer) $fuel_H_isotopes_size       = round($fuel_H_isotopes        * $pos_Iso);
-    (integer) $fuel_N_isotopes_size       = round($fuel_N_isotopes        * $pos_Iso);
-    (integer) $fuel_O_isotopes_size       = round($fuel_O_isotopes        * $pos_Iso);
-    (integer) $fuel_Hy_isotopes_size      = round($fuel_Hy_isotopes       * $pos_Iso);
-    (integer) $fuel_ozone_size            = round($fuel_ozone             * $pos_Ozo);
-    (integer) $fuel_heavy_water_size      = round($fuel_heavy_water       * $pos_Hea);
-    //(integer) $fuel_strontium_size        = round($current_strontium * 3) ;
+	$fuel_total = ceil($fuel_A_total / 40) + ceil($fuel_M_total / 40) + ceil($fuel_C_total / 40) + ceil($fuel_G_total / 40);
+	$fuel_time = ($fuel_total * 4) / 60;
+	$fuel_uranium = $fuel_total * 4;
+	$fuel_oxygen = $fuel_total * 20;
+	$fuel_mechanical_parts = $fuel_total * 4;
+	$fuel_coolant = $fuel_total * 8;
+	$fuel_robotics = $fuel_total * 1;
+	$fuel_ozone = $fuel_total * 150;
+	$fuel_heavy_water = $fuel_total * 150;
+	$fuel_H_isotopes = ceil($fuel_A_total / 40) * 400;
+	$fuel_N_isotopes = ceil($fuel_C_total / 40) * 400;
+	$fuel_O_isotopes = ceil($fuel_G_total / 40) * 400;
+	$fuel_Hy_isotopes = ceil($fuel_M_total / 40) * 400;
+	
+    $fuel_uranium_size          = $fuel_uranium           * $pos_Ura;
+    $fuel_oxygen_size           = $fuel_oxygen            * $pos_Oxy;
+    $fuel_mechanical_parts_size = $fuel_mechanical_parts  * $pos_Mec;
+    $fuel_coolant_size          = $fuel_coolant           * $pos_Coo;
+    $fuel_robotics_size         = $fuel_robotics          * $pos_Rob;
+    $fuel_ozone_size            = $fuel_ozone             * $pos_Ozo;
+    $fuel_heavy_water_size      = $fuel_heavy_water       * $pos_Hea;
+	$fuel_H_isotopes_size       = $fuel_H_isotopes        * $pos_Iso;
+    $fuel_N_isotopes_size       = $fuel_N_isotopes        * $pos_Iso;
+    $fuel_O_isotopes_size       = $fuel_O_isotopes        * $pos_Iso;
+    $fuel_Hy_isotopes_size      = $fuel_Hy_isotopes       * $pos_Iso;
 	
 	$prices = $posmgmt->GetPrices();
-	
+	$amarrFB_cost = $prices['Amarr Fuel Block'] * $fuel_A_total;
+	$minmatarFB_cost = $prices['Minmatar Fuel Block'] * $fuel_M_total;
+	$caldariFB_cost = $prices['Caldari Fuel Block'] * $fuel_C_total;
+	$gallenteFB_cost = $prices['Gallente Fuel Block'] * $fuel_G_total;	
 	$uranium_cost = $prices['Enriched Uranium'] * $fuel_uranium;
 	$oxygen_cost = $prices['Oxygen'] * $fuel_oxygen;
 	$mechanical_parts_cost = $prices['Mechanical Parts'] * $fuel_mechanical_parts;
@@ -299,6 +308,30 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
 	$oxygen_iso_cost = $prices['Oxygen Isotopes'] * $fuel_O_isotopes;
 	$liquid_ozone_cost = $prices['Liquid Ozone'] * $fuel_ozone;
 	$heavy_water_cost = $prices['Heavy Water'] * $fuel_heavy_water;
+	
+	$fuel_A_total_size = number_format($fuel_A_total * $pos_Fbl);
+	$fuel_M_total_size = number_format($fuel_M_total * $pos_Fbl);
+	$fuel_C_total_size = number_format($fuel_C_total * $pos_Fbl);
+	$fuel_G_total_size = number_format($fuel_G_total * $pos_Fbl);
+	$charter_total_size = $charter_total * $pos_Cha;
+	$fuel_A_total = number_format($fuel_A_total);
+	$fuel_M_total = number_format($fuel_M_total);
+	$fuel_C_total = number_format($fuel_C_total);
+	$fuel_G_total = number_format($fuel_G_total);
+	$charter_total = number_format($charter_total);
+	$fuel_uranium = number_format($fuel_uranium);
+	$fuel_oxygen = number_format($fuel_oxygen);
+	$fuel_mechanical_parts = number_format($fuel_mechanical_parts);
+	$fuel_coolant = number_format($fuel_coolant);
+	$fuel_robotics = number_format($fuel_robotics);
+	$fuel_ozone = number_format($fuel_ozone);
+	$fuel_heavy_water = number_format($fuel_heavy_water);
+	$fuel_H_isotopes = number_format($fuel_H_isotopes);
+	$fuel_N_isotopes = number_format($fuel_N_isotopes);
+	$fuel_O_isotopes = number_format($fuel_O_isotopes);
+	$fuel_Hy_isotopes = number_format($fuel_Hy_isotopes);
+	
+	$fb_total_cost = $amarrFB_cost + $minmatarFB_cost + $caldariFB_cost + $gallenteFB_cost;
 	
 	$total_cost = $uranium_cost + $oxygen_cost + $mechanical_parts_cost + $coolant_cost + $robotics_cost + $helium_iso_cost + $hydrogen_iso_cost + $nitrogen_iso_cost + $oxygen_iso_cost + $liquid_ozone_cost + $heavy_water_cost;
 	
@@ -316,6 +349,7 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
 	$eveRender->Assign('liquid_ozone_cost', $liquid_ozone_cost);
 	$eveRender->Assign('heavy_water_cost', $heavy_water_cost);
 	$eveRender->Assign('total_cost', $total_cost);
+	$eveRender->Assign('fb_total_cost', $fb_total_cost);
     $eveRender->Assign('fuel_uranium_size',           $fuel_uranium_size);
     $eveRender->Assign('fuel_oxygen_size',            $fuel_oxygen_size);
     $eveRender->Assign('fuel_mechanical_parts_size',  $fuel_mechanical_parts_size);
@@ -325,6 +359,7 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
     $eveRender->Assign('fuel_N_isotopes_size',        $fuel_N_isotopes_size);
     $eveRender->Assign('fuel_O_isotopes_size',        $fuel_O_isotopes_size);
     $eveRender->Assign('fuel_N_isotopes_size',        $fuel_N_isotopes_size);
+    $eveRender->Assign('fuel_Hy_isotopes_size',       $fuel_Hy_isotopes_size);
     $eveRender->Assign('fuel_Hy_isotopes_size',       $fuel_Hy_isotopes_size);
     $eveRender->Assign('fuel_ozone_size',             $fuel_ozone_size);
     $eveRender->Assign('fuel_heavy_water_size',       $fuel_heavy_water_size);
@@ -341,6 +376,22 @@ if (in_array('1', $access) || in_array('5', $access) || in_array('6', $access)) 
     $eveRender->Assign('fuel_ozone',                  $fuel_ozone);
     $eveRender->Assign('fuel_heavy_water',            $fuel_heavy_water);
     $eveRender->Assign('total_size',                  $total_size);
+	$eveRender->Assign('fuel_A_total_size',        $fuel_A_total_size);
+    $eveRender->Assign('fuel_C_total_size',        $fuel_C_total_size);
+    $eveRender->Assign('fuel_G_total_size',        $fuel_G_total_size);
+    $eveRender->Assign('fuel_M_total_size',        $fuel_M_total_size);
+	$eveRender->Assign('fuel_A_total',				  $fuel_A_total);
+    $eveRender->Assign('fuel_C_total',		          $fuel_C_total);
+    $eveRender->Assign('fuel_G_total',        		 $fuel_G_total);
+    $eveRender->Assign('fuel_M_total',        		 $fuel_M_total);
+	$eveRender->Assign('fuel_time',        		 $fuel_time);
+	$eveRender->Assign('amarrFB_cost',			 $amarrFB_cost);
+    $eveRender->Assign('caldariFB_cost',		     $caldariFB_cost);
+    $eveRender->Assign('gallenteFB_cost',      	 $gallenteFB_cost);
+    $eveRender->Assign('minmatarFB_cost',    	 $minmatarFB_cost);
+	$eveRender->Assign('charter_total_size',             $charter_total_size);
+	$eveRender->Assign('charter_total',             $charter_total);
+	$eveRender->Assign('fb_total_size',             $fb_total_size);
     $eveRender->Assign('towers',                      $disp_towers);
 	$eveRender->Assign('towerName',                   $towerName);
     $eveRender->Display('fuelbill.tpl');

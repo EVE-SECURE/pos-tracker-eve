@@ -108,18 +108,20 @@ switch($action) {
         }
         break;
     case 'Update Fuel':
-
-        $fuel['uranium']          = $eve->VarCleanFromInput('uranium');
-        $fuel['oxygen']           = $eve->VarCleanFromInput('oxygen');
-        $fuel['mechanical_parts'] = $eve->VarCleanFromInput('mechanical_parts');
-        $fuel['coolant']          = $eve->VarCleanFromInput('coolant');
-        $fuel['robotics']         = $eve->VarCleanFromInput('robotics');
-        $fuel['isotope']          = $eve->VarCleanFromInput('isotope');
-        $fuel['ozone']            = $eve->VarCleanFromInput('ozone');
-        $fuel['heavy_water']      = $eve->VarCleanFromInput('heavy_water');
-        $fuel['strontium']        = $eve->VarCleanFromInput('strontium');
+	case 'Refuel':
+		if (empty($refuelme)) {
+		$refuelme = $eve->VarCleanFromInput('refuelme');
+		}
+	
+		if ($refuelme == 1) {
+		$fuel['fuelblock'] = $eve->VarCleanFromInput('fuelblockOP');
+		$fuel['charters']  = $eve->VarCleanFromInput('chartersOP');
+		$fuel['strontium']        = $eve->VarCleanFromInput('strontiumOP');
+		} else {
+		$fuel['fuelblock']         = $eve->VarCleanFromInput('fuelblock');
         $fuel['charters']         = $eve->VarCleanFromInput('charters');
-		
+		$fuel['strontium']        = $eve->VarCleanFromInput('strontium');
+		}
 		date_default_timezone_set('UTC');
 		$fuel['status'] = date("Y-m-d H:i:s")." by ".$userinfo['name'];
 		
@@ -131,7 +133,7 @@ switch($action) {
         $fuel['pos_id']           = $pos_id;
         //echo 'Update Fuel';exit;
         if ($posmgmt->UpdatePosFuel($fuel)) {
-            $eve->SessionSetVar('statusmsg', 'Modifications Saved!');
+            $eve->SessionSetVar('statusmsg', 'Fuel Updated!');
             $eve->RedirectUrl('viewpos.php?i='.$pos_id);
         }
         break;
@@ -208,16 +210,9 @@ switch($action) {
 $tower = $posmgmt->GetTowerInfo($pos_id);
 
 if ($tower) {
-    $current_isotope          = $tower['isotope'];
+	$current_fuelblock        = $tower['fuelblock'];
 	$outpost_id               = $tower['outpost_id'];
     $outpost_name             = $tower['outpost_name'];
-    $current_oxygen           = $tower['oxygen'];
-    $current_mechanical_parts = $tower['mechanical_parts'];
-    $current_coolant          = $tower['coolant'];
-    $current_robotics         = $tower['robotics'];
-    $current_uranium          = $tower['uranium'];
-    $current_ozone            = $tower['ozone'];
-    $current_heavy_water      = $tower['heavy_water'];
     $current_strontium        = $tower['strontium'];
     $current_charters         = $tower['charters'];
     $pos_size                 = $tower['pos_size'];
@@ -350,327 +345,268 @@ foreach ($hangars as $row) {
     $i++;
 }
 
-//Begin New Sovereignty Code
-$db = $posmgmt->selectstaticdb($systemID, $allianceid);
-//End New Sovereignty Code
+	$row = $posmgmt->GetStaticFBTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size));
+	if ($tower['sovfriendly'] == 1) {
+		$tower['hasSov'] = .75;
+	} else {
+		$tower['hasSov'] = 1;
+	}
+	
+	if ($row) {
+				$tower['required_fuelblock']         = ceil($row['fuelblock'] * $tower['hasSov']);
+				$tower['required_strontium']         = $row['strontium'];
+				$tower['required_charters']          = $charters_needed?1:0;
+				$tower['fuelblockID']               = $row['fuelblockID'];
+				$tower['total_pg']                   = $row['pg'];
+				$tower['total_cpu']                  = $row['cpu'];
+				$required_strontium                  = $row['strontium'];
+				$required_charters                   = $charters_needed?1:0;
+				$total_pg                            = $row['pg'];
+				$total_cpu                           = $row['cpu'];
+				$tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
+				$tower['pos_capacity']=$tower['fuel_hangar']=$row['fuel_hangar'];
+				$tower['strontium_capacity']=$row['strontium_hangar'];
+	}
 
-$row = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
+	$mods = $posmgmt->GetAllPosMods($pos_id);
+	if ($mods) {
+		$current_pg  = 0;
+		$current_cpu = 0;
+		foreach($mods as $row) {
+			if ($row['online']) {
+				$current_pg  = $current_pg  + $row['pg'];
+				$current_cpu = $current_cpu + $row['cpu'];
+			}
+		}
+	} else {
+		$current_pg = 0;
+		$current_cpu = 0;
+	}
+	if($current_cpu<=0 && $tower_cpu>0) {
+				$current_cpu=$tower_cpu;
+			}
+	if($current_pg<=0 && $tower_pg>0) {
+		   $current_pg=$tower_pg;
+	}
 
-if ($row) {
-    $tower['required_isotope']           = $row['isotopes'];
-    $tower['required_oxygen']            = $row['oxygen'];
-    $tower['required_mechanical_parts']  = $row['mechanical_parts'];
-    $tower['required_coolant']           = $row['coolant'];
-    $tower['required_robotics']          = $row['robotics'];
-    $tower['required_uranium']           = $row['uranium'];
-    $tower['required_ozone']             = $row['ozone'];
-    $tower['required_heavy_water']       = $row['heavy_water'];
-    $tower['required_strontium']         = $row['strontium'];
-    $tower['required_charters']          = $charters_needed?1:0;
-    $tower['race_isotope']               = $row['race_isotope'];
-    $tower['total_pg']                   = $row['pg'];
-    $tower['total_cpu']                  = $row['cpu'];
-    $required_isotope                    = $row['isotopes'];
-    $required_oxygen                     = $row['oxygen'];
-    $required_mechanical_parts           = $row['mechanical_parts'];
-    $required_coolant                    = $row['coolant'];
-    $required_robotics                   = $row['robotics'];
-    $required_uranium                    = $row['uranium'];
-    $required_ozone                      = $row['ozone'];
-    $required_heavy_water                = $row['heavy_water'];
-    $required_strontium                  = $row['strontium'];
-    $required_charters                   = $charters_needed?1:0;
-    $race_isotope                        = $row['race_isotope'];
-    $total_pg                            = $row['pg'];
-    $total_cpu                           = $row['cpu'];
-    $tower['uptimecalc']                 = $posmgmt->uptimecalc($pos_id);
-    $strontium_capacity                  = $row['strontium_hangar'];
-    $pos_capacity                        = $row['fuel_hangar'];
-    $tower['strontium_capacity']         = $strontium_capacity;
-	$tower['pos_capacity']=$tower['fuel_hangar']=$row['fuel_hangar'];
-}
+	$tower['current_pg']  = $current_pg;
+	$tower['current_cpu'] = $current_cpu;
+	$row2 = $posmgmt->GetLastPosUpdate($pos_id);
+	$last_update = gmdate("Y-m-d H:i:s", $row2['datetime']);
 
-$mods = $posmgmt->GetAllPosMods($pos_id);
-if ($mods) {
-    $current_pg  = 0;
-    $current_cpu = 0;
-    foreach($mods as $row) {
-        if ($row['online']) {
-            $current_pg  = $current_pg  + $row['pg'];
-            $current_cpu = $current_cpu + $row['cpu'];
-        }
-    }
-} else {
-    $current_pg = 0;
-    $current_cpu = 0;
-}
-if($current_cpu<=0 && $tower_cpu>0) {
-            $current_cpu=$tower_cpu;
-        }
-if($current_pg<=0 && $tower_pg>0) {
-       $current_pg=$tower_pg;
-}
+	$hoursago = $posmgmt->hoursago($pos_id, 1);
 
-$tower['current_pg']  = $current_pg;
-$tower['current_cpu'] = $current_cpu;
-$row2 = $posmgmt->GetLastPosUpdate($pos_id);
-$last_update = gmdate("Y-m-d H:i:s", $row2['datetime']);
-
-$hoursago = $posmgmt->hoursago($pos_id, 1);
-
-$optimal=$posmgmt->posoptimaluptime($tower);
-$optimalDiff=$posmgmt->getOptimalDifference($optimal, $tower);
+	$optimal=$posmgmt->posoptimaluptime($tower);
+	$optimalDiff=$posmgmt->getOptimalDifference($optimal, $tower);
 		
-		$avail_uranium          = $current_uranium;
-        $avail_oxygen           = $current_oxygen;
-        $avail_mechanical_parts = $current_mechanical_parts;
-        $avail_coolant          = $current_coolant;
-        $avail_robotics         = $current_robotics;
-        $avail_isotope          = $current_isotope;
-        $avail_ozone            = $current_ozone;
-        $required_ozone2        = round(($current_pg / $total_pg) * $required_ozone);
-        $avail_heavy_water      = $current_heavy_water;
-        $required_heavy_water2  = round(($current_cpu / $total_cpu) * $required_heavy_water);
-        $avail_strontium        = $current_strontium;
-        $avail_charters         = $current_charters;
+	$avail_fuelblock        = $current_fuelblock;
+    $avail_strontium        = $current_strontium;
+    $avail_charters         = $current_charters;
 		
-if ($avail_uranium <= 0) {
-    $avail_uranium = ($current_uranium - ($required_uranium * (floor($current_uranium / $required_uranium))));
-}
-if ($avail_oxygen <= 0) {
-    $avail_oxygen = ($current_oxygen - ($required_oxygen * (floor($current_oxygen / $required_oxygen))));
-}
-if ($avail_mechanical_parts <= 0) {
-    $avail_mechanical_parts = ($current_mechanical_parts - ($required_mechanical_parts * (floor($current_mechanical_parts / $required_mechanical_parts))));
-}
-if ($avail_coolant <= 0) {
-    $avail_coolant = ($current_coolant - ($required_coolant * (floor($current_coolant / $required_coolant))));
-}
-if ($avail_robotics <= 0) {
-    $avail_robotics = ($current_robotics - ($required_robotics * (floor($current_robotics / $required_robotics))));
-}
-if ($avail_isotope <= 0) {
-    $avail_isotope = ($current_isotope - ($required_isotope * (floor($current_isotope / $required_isotope))));
-}
-if ($avail_ozone <= 0 && $current_pg) {
-    $avail_ozone = ($current_ozone - ((ceil(($current_pg / $total_pg) * $required_ozone)) * (floor($current_ozone / (ceil(($current_pg / $total_pg) * $required_ozone))))));
-}
-if ($avail_heavy_water <= 0 && $current_cpu) {
-    $avail_heavy_water = ($current_heavy_water - ((ceil(($current_cpu / $total_cpu) * $required_heavy_water)) * (floor($current_heavy_water / (ceil(($current_cpu / $total_cpu) * $required_heavy_water))))));
-}
-if ($avail_charters <= 0 && $required_charters) {
-    $avail_charters = ($current_charters - ($required_charters * (floor($current_charters / $required_charters))));
-}
-
-$tower['avail_uranium']           = $avail_uranium;
-$tower['avail_oxygen']            = $avail_oxygen;
-$tower['avail_mechanical_parts']  = $avail_mechanical_parts;
-$tower['avail_coolant']           = $avail_coolant;
-$tower['avail_robotics']          = $avail_robotics;
-$tower['avail_isotope']           = $avail_isotope;
-$tower['avail_ozone']             = $avail_ozone;
-$tower['required_ozone2']         = $required_ozone2;
-$tower['avail_heavy_water']       = $avail_heavy_water;
-$tower['required_heavy_water2']   = $required_heavy_water2;
-$tower['avail_strontium']         = $avail_strontium;
-$tower['avail_charters']          = $avail_charters;
-
-$res0 = $posmgmt->GetPosSilos($pos_id);
-
-$silocap = array(1  => 30000,
-                 2  => 20000,
-                 3  => 40000,
-                 4  => 20000,
-                 5  => 20000,
-                 6  => 30000,
-                 7  => 30000,
-                 8  => 20000,
-                 9  => 20000,
-                 10 => 20000,
-                 11 => 30000,
-                 12 => 40000,
-                 13 => 40000,
-                 14 => 30000);
-
-$x = 0;
-$display_silo = false;
-
-foreach ($res0 as $row0) {
-    //$silo = array();
-    $display_silo = true;
-
-    $available_material = $current_material_vol = $available_silo_vol = $hourstofill = $silo_material_ammount = 0;
-
-    //Basic info about Silo
-    $x                      = $row0['silo_id'];
-    $silo_link              = $row0['silo_link'];
-    $silo_id                = $row0['silo_id'];
-    $silo_type              = $row0['silo_type'];
-    $silo_material_id       = $row0['material_id'];
-    $silo_material_ammount  = $row0['material_ammount'];
-    $silo_status            = $row0['status'];
-    $silo_connection        = $row0['connection_id'];
-    //How long ago was the silo updated
-    $hoursago                     = floor($posmgmt->hoursago($silo_id, 2));
-    $silo[$x]['hoursago']         = $hoursago;
-    $silo[$x]['silo_id']          = $row0['silo_id'];
-    $silo[$x]['silo_type']        = $row0['silo_type'];
-    $silo[$x]['material_id']      = $row0['material_id'];
-    //$silo[$x]['material_ammount'] =  $row0['material_id'];
-    $silo[$x]['material_amount']  = $row0['material_ammount'];
-    $silo[$x]['status']           = $row0['status'];
-    $silo[$x]['connection_id']    = $row0['connection_id'];
-    $silo[$x]['silo_link']        = (($row0['silo_link']) ? $row0['silo_link'] : 0);
-    //if ($x == 495) { echo '<pre>';print_r($silo[$x]);echo '</pre>';exit; }
-    //reactor/harvester info
-    $row = $posmgmt->GetConnectedReator($silo_connection);
-
-    if ($row) {
-        $structure_type         = $row['structure_type'];
-        $structure_material_id  = $row['material_id'];
-        $silo[$x]['structure_type']         = $row['structure_type'];
-        $silo[$x]['structure_material_id']  = $row['material_id'];
+    if ($avail_charters <= 0 && $required_charters) {
+        $avail_charters = ($current_charters - ($required_charters * (floor($current_charters / $required_charters))));
     }
 
-    //Reactor/Harvster Name/type
-    $struct = $posmgmt->GetStaticModInfo($structure_type);
+	$tower['avail_fuelblock']         = $avail_fuelblock;
+    $tower['avail_strontium']         = $avail_strontium;
+    $tower['avail_charters']          = $avail_charters;
 
-    if ($struct) {
-        $silo[$x]['structure_name'] = $struct['name'];
-    }
+	$res0 = $posmgmt->GetPosSilos($pos_id);
 
-    $matinfo = $posmgmt->GetStaticMatInfo($structure_material_id);
+	$silocap = array(1  => 30000,
+					 2  => 20000,
+					 3  => 40000,
+					 4  => 20000,
+					 5  => 20000,
+					 6  => 30000,
+					 7  => 30000,
+					 8  => 20000,
+					 9  => 20000,
+					 10 => 20000,
+					 11 => 30000,
+					 12 => 40000,
+					 13 => 40000,
+					 14 => 30000);
 
-    if ($matinfo) {
-        $silo[$x]['structure_material_name'] = $matinfo['material_name'];
-    }
+	$x = 0;
+	$display_silo = false;
 
-    //Moon harvester Rate
-    if ($structure_type==16221 && $structure_material_id == $silo_material_id) {
-        $rate = 100;
-    }
+	foreach ($res0 as $row0) {
+		//$silo = array();
+		$display_silo = true;
 
-    //Reactor Rates
-    if($structure_type==16869 || $structure_type==20175) {
-        //Reaction info
-        $reactioninfo = $posmgmt->GetStaticReactionInfo($structure_material_id);
+		$available_material = $current_material_vol = $available_silo_vol = $hourstofill = $silo_material_ammount = 0;
 
-        if ($reactioninfo) {
-            //For Output Silo
-            if ($silo_material_id == $reactioninfo['material_id']) {
-                $rate = $reactioninfo['material_produced'];
-            } else {
-                //For Input Silo
-                if ($reactioninfo['material1_id'] == $silo_material_id) {
-                    $rate = $reactioninfo['material1_required'];
-                }
-                if ($reactioninfo['material2_id'] == $silo_material_id) {
-                    $rate = $reactioninfo['material2_required'];
-                }
-                if ($reactioninfo['material3_id'] == $silo_material_id) {
-                    $rate = $reactioninfo['material3_required'];
-                }
-                if ($reactioninfo['material4_id'] == $silo_material_id) {
-                    $rate = $reactioninfo['material4_required'];
-                }
-            }
-        }
-    }
-    if (!$rate) { $rate = 100; }
-    //Silo Material Information
-    $smatinfo = $posmgmt->GetStaticMatInfo($silo_material_id);
+		//Basic info about Silo
+		$x                      = $row0['silo_id'];
+		$silo_link              = $row0['silo_link'];
+		$silo_id                = $row0['silo_id'];
+		$silo_type              = $row0['silo_type'];
+		$silo_material_id       = $row0['material_id'];
+		$silo_material_ammount  = $row0['material_ammount'];
+		$silo_status            = $row0['status'];
+		$silo_connection        = $row0['connection_id'];
+		//How long ago was the silo updated
+		$hoursago                     = floor($posmgmt->hoursago($silo_id, 2));
+		$silo[$x]['hoursago']         = $hoursago;
+		$silo[$x]['silo_id']          = $row0['silo_id'];
+		$silo[$x]['silo_type']        = $row0['silo_type'];
+		$silo[$x]['material_id']      = $row0['material_id'];
+		//$silo[$x]['material_ammount'] =  $row0['material_id'];
+		$silo[$x]['material_amount']  = $row0['material_ammount'];
+		$silo[$x]['status']           = $row0['status'];
+		$silo[$x]['connection_id']    = $row0['connection_id'];
+		$silo[$x]['silo_link']        = (($row0['silo_link']) ? $row0['silo_link'] : 0);
+		//if ($x == 495) { echo '<pre>';print_r($silo[$x]);echo '</pre>';exit; }
+		//reactor/harvester info
+		$row = $posmgmt->GetConnectedReator($silo_connection);
 
-    if ($smatinfo) {
-        $silo[$x]['material_name'] = $smatinfo['material_name'];
-        $silo[$x]['material_volume'] = $smatinfo['material_volume'];
-        $material_volume = $smatinfo['material_volume'];
-    }
-    $silo[$x]['rate']                = $rate;
-    $silo[$x]['rate_vol']            = $rate * $smatinfo['material_volume'];
+		if ($row) {
+			$structure_type         = $row['structure_type'];
+			$structure_material_id  = $row['material_id'];
+			$silo[$x]['structure_type']         = $row['structure_type'];
+			$silo[$x]['structure_material_id']  = $row['material_id'];
+		}
 
-    $silo[$x]['silo_capacity'] = $silocap[$tower['pos_race']];
+		//Reactor/Harvster Name/type
+		$struct = $posmgmt->GetStaticModInfo($structure_type);
 
-    if($silo_status == 1) {
+		if ($struct) {
+			$silo[$x]['structure_name'] = $struct['name'];
+		}
 
-        //$rate_vol = $rate * $material_volume;
-        $silo[$x]['direction']  = 'Output';
+		$matinfo = $posmgmt->GetStaticMatInfo($structure_material_id);
 
+		if ($matinfo) {
+			$silo[$x]['structure_material_name'] = $matinfo['material_name'];
+		}
 
-        $matinfo = $posmgmt->GetStaticMatInfo($silo[$x]['material_id']);
-        $row = $posmgmt->GetConnectedReator($silo[$x]['connection_id']);
-        if ($row) {
-            $silo[$x]['structure_type']         = $row['structure_type'];
-            $silo[$x]['structure_material_id']  = $row['material_id'];
-        }
-        if ($silo[$x]['structure_type'] == 16221 && $silo[$x]['structure_material_id'] == $silo[$x]['material_id']) {
-            // Harvestor
-            $rate = 100;
-        }
+		//Moon harvester Rate
+		if ($structure_type==16221 && $structure_material_id == $silo_material_id) {
+			$rate = 100;
+		}
 
-        $rate_vol = $rate * $matinfo['material_volume'];
+		//Reactor Rates
+		if($structure_type==16869 || $structure_type==20175) {
+			//Reaction info
+			$reactioninfo = $posmgmt->GetStaticReactionInfo($structure_material_id);
 
-        $silo[$x]['rate']                = $rate;
-        $silo[$x]['rate_vol']            = $rate_vol;
-        $silo[$x]['material_volume']     = $matinfo['material_volume'];
-        $silo[$x]['material_amount_max'] = $silo[$x]['silo_capacity'] / $silo[$x]['material_volume'];
-		$silo[$x]['db_amount'] = $silo[$x]['material_amount'];
-
-        $linked = $silo[$silo[$x]['silo_link']];
-				
-					if (!$silo[$x]['silo_link']) {
-						$silo[$x]['material_amount'] = ($silo[$x]['rate']*$silo[$x]['hoursago'])+$silo[$x]['db_amount']; 			
-						$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
-						 
-							if (($silo[$x]['correct_amount'] * $silo[$x]['material_volume']) > $silo[$x]['silo_capacity']) {
-									$silo[$x]['full'] = 1;
-									$silo[$x]['correct_amount'] = ($silo[$x]['silo_capacity'] / $silo[$x]['material_volume']);
-									$silo[$x]['new_amount'] = $silo[$x]['material_amount'] - $silo[$x]['correct_amount'] ;
-							} else {
-								$silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
-								$silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
-								if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
-								$silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
-								$silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);
-							}
-					} else {
-						$linked = $silo[$silo[$x]['silo_link']];
-						
-						$silo[$x]['material_amount'] = $linked['new_amount']+$silo[$x]['db_amount'];
-						$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
-							if (($silo[$x]['correct_amount'] * $silo[$x]['material_volume']) > $silo[$x]['silo_capacity']) {
-									$silo[$x]['full'] = 1;
-									$silo[$x]['correct_amount'] = ($silo[$x]['silo_capacity'] / $silo[$x]['material_volume']);
-									$silo[$x]['new_amount'] = $silo[$x]['material_amount'] - $silo[$x]['correct_amount'] ;
-							} else {
-								$silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
-								$silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
-								if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
-								$silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
-								$silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);
-							}
+			if ($reactioninfo) {
+				//For Output Silo
+				if ($silo_material_id == $reactioninfo['material_id']) {
+					$rate = $reactioninfo['material_produced'];
+				} else {
+					//For Input Silo
+					if ($reactioninfo['material1_id'] == $silo_material_id) {
+						$rate = $reactioninfo['material1_required'];
 					}
-
-    } else {
-        //Silo is emptying, input silo
-        $silo[$x]['material_amount_orig'] = $silo[$x]['material_amount'];
-        $silo[$x]['material_amount']     = $silo[$x]['material_amount']-($hoursago*$rate);
-        $silo[$x]['material_amount_max'] = $silo[$x]['silo_capacity'] / $silo[$x]['material_volume'];//-($hoursago*$rate);
-        $silo[$x]['hourstogo']       = $silo[$x]['hourstofill'] = @floor($silo[$x]['material_amount']/$rate);
-        $silo[$x]['direction']       = 'Input';
-        $silo[$x]['empty']           = (($silo[$x]['material_amount'] <= 0) ? 1 : 0);//(($silo[$x]['hourstogo'] <= 0) ? 1 : 0);
-		if ($silo[$x]['material_amount']< 0) { //If it's empty, make sure to show it's empty.
-				$silo[$x]['material_amount'] = 0;
+					if ($reactioninfo['material2_id'] == $silo_material_id) {
+						$rate = $reactioninfo['material2_required'];
+					}
+					if ($reactioninfo['material3_id'] == $silo_material_id) {
+						$rate = $reactioninfo['material3_required'];
+					}
+					if ($reactioninfo['material4_id'] == $silo_material_id) {
+						$rate = $reactioninfo['material4_required'];
+					}
 				}
-        if ($silo[$x]['hourstogo'] < 0) {
-            $silo[$x]['hourstogo'] = $silo[$x]['hourstofill'] = 0;
+			}
+		}
+		if (!$rate) { $rate = 100; }
+		//Silo Material Information
+		$smatinfo = $posmgmt->GetStaticMatInfo($silo_material_id);
 
-        }
-        $silo[$x]['hourstogo_txt']       = $posmgmt->daycalc($silo[$x]['hourstogo']);
-        $hours = $silo[$x]['hourstogo'];
-		$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
-    }
-}
-//End Silo Tracking Code
+		if ($smatinfo) {
+			$silo[$x]['material_name'] = $smatinfo['material_name'];
+			$silo[$x]['material_volume'] = $smatinfo['material_volume'];
+			$material_volume = $smatinfo['material_volume'];
+		}
+		$silo[$x]['rate']                = $rate;
+		$silo[$x]['rate_vol']            = $rate * $smatinfo['material_volume'];
+
+		$silo[$x]['silo_capacity'] = $silocap[$tower['pos_race']];
+
+		if($silo_status == 1) {
+
+			//$rate_vol = $rate * $material_volume;
+			$silo[$x]['direction']  = 'Output';
+
+
+			$matinfo = $posmgmt->GetStaticMatInfo($silo[$x]['material_id']);
+			$row = $posmgmt->GetConnectedReator($silo[$x]['connection_id']);
+			if ($row) {
+				$silo[$x]['structure_type']         = $row['structure_type'];
+				$silo[$x]['structure_material_id']  = $row['material_id'];
+			}
+			if ($silo[$x]['structure_type'] == 16221 && $silo[$x]['structure_material_id'] == $silo[$x]['material_id']) {
+				// Harvestor
+				$rate = 100;
+			}
+
+			$rate_vol = $rate * $matinfo['material_volume'];
+
+			$silo[$x]['rate']                = $rate;
+			$silo[$x]['rate_vol']            = $rate_vol;
+			$silo[$x]['material_volume']     = $matinfo['material_volume'];
+			$silo[$x]['material_amount_max'] = $silo[$x]['silo_capacity'] / $silo[$x]['material_volume'];
+			$silo[$x]['db_amount'] = $silo[$x]['material_amount'];
+
+			$linked = $silo[$silo[$x]['silo_link']];
+					
+						if (!$silo[$x]['silo_link']) {
+							$silo[$x]['material_amount'] = ($silo[$x]['rate']*$silo[$x]['hoursago'])+$silo[$x]['db_amount']; 			
+							$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
+							 
+								if (($silo[$x]['correct_amount'] * $silo[$x]['material_volume']) > $silo[$x]['silo_capacity']) {
+										$silo[$x]['full'] = 1;
+										$silo[$x]['correct_amount'] = ($silo[$x]['silo_capacity'] / $silo[$x]['material_volume']);
+										$silo[$x]['new_amount'] = $silo[$x]['material_amount'] - $silo[$x]['correct_amount'] ;
+								} else {
+									$silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
+									$silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
+									if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
+									$silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
+									$silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);
+								}
+						} else {
+							$linked = $silo[$silo[$x]['silo_link']];
+							
+							$silo[$x]['material_amount'] = $linked['new_amount']+$silo[$x]['db_amount'];
+							$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
+								if (($silo[$x]['correct_amount'] * $silo[$x]['material_volume']) > $silo[$x]['silo_capacity']) {
+										$silo[$x]['full'] = 1;
+										$silo[$x]['correct_amount'] = ($silo[$x]['silo_capacity'] / $silo[$x]['material_volume']);
+										$silo[$x]['new_amount'] = $silo[$x]['material_amount'] - $silo[$x]['correct_amount'] ;
+								} else {
+									$silo[$x]['current_material_vol'] = $silo[$x]['material_amount'] * $silo[$x]['material_volume'];
+									$silo[$x]['available_silo_vol']   = $silo[$x]['silo_capacity'] - $silo[$x]['current_material_vol'];
+									if ($silo[$x]['available_silo_vol'] < 0) { $silo[$x]['available_silo_vol'] = 0; }
+									$silo[$x]['hourstofill'] = @floor($silo[$x]['available_silo_vol'] / $rate / $matinfo['material_volume']);
+									$silo[$x]['hourstofill_total']     = @floor($silo[$x]['silo_capacity'] / $rate / $matinfo['material_volume']);
+								}
+						}
+
+		} else {
+			//Silo is emptying, input silo
+			$silo[$x]['material_amount_orig'] = $silo[$x]['material_amount'];
+			$silo[$x]['material_amount']     = $silo[$x]['material_amount']-($hoursago*$rate);
+			$silo[$x]['material_amount_max'] = $silo[$x]['silo_capacity'] / $silo[$x]['material_volume'];//-($hoursago*$rate);
+			$silo[$x]['hourstogo']       = $silo[$x]['hourstofill'] = @floor($silo[$x]['material_amount']/$rate);
+			$silo[$x]['direction']       = 'Input';
+			$silo[$x]['empty']           = (($silo[$x]['material_amount'] <= 0) ? 1 : 0);//(($silo[$x]['hourstogo'] <= 0) ? 1 : 0);
+			if ($silo[$x]['material_amount']< 0) { //If it's empty, make sure to show it's empty.
+					$silo[$x]['material_amount'] = 0;
+					}
+			if ($silo[$x]['hourstogo'] < 0) {
+				$silo[$x]['hourstogo'] = $silo[$x]['hourstofill'] = 0;
+
+			}
+			$silo[$x]['hourstogo_txt']       = $posmgmt->daycalc($silo[$x]['hourstogo']);
+			$hours = $silo[$x]['hourstogo'];
+			$silo[$x]['correct_amount'] = $silo[$x]['material_amount'];
+		}
+	}
+	//End Silo Tracking Code
 
 $miners = $posmgmt->GetPosMiners($pos_id);
 

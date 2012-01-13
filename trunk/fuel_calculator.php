@@ -54,47 +54,12 @@ if (!empty($pos_to_refuel)) {
 	
     $tower = $bill[$pos_to_refuel];
 
-    $required_H_isotope  = 0;
-    $required_N_isotope  = 0;
-    $required_O_isotope  = 0;
-    $required_Hy_isotope = 0;
-
     $system                   = $tower['system'];
     $pos_id                   = $tower['pos_id'];
     $pos_race                 = $tower['pos_race'];
     $locationName             = $tower['locationName'];
 	
     $tower['regionName']      = $posmgmt->getRegionNameFromMoonID($locationName);
-
-    switch($pos_race) {
-        case 1:  $required_H_isotope  = $tower['needed_isotopes']; break;
-        case 6:  $required_H_isotope  = $tower['needed_isotopes']; break;
-        case 7:  $required_H_isotope  = $tower['needed_isotopes']; break;
-        case 11: $required_H_isotope  = $tower['needed_isotopes']; break;
-        case 14: $required_H_isotope  = $tower['needed_isotopes']; break;
-        case 4:  $required_Hy_isotope = $tower['needed_isotopes']; break;
-        case 5:  $required_Hy_isotope = $tower['needed_isotopes']; break;
-        case 8:  $required_Hy_isotope = $tower['needed_isotopes']; break;
-        case 2:  $required_N_isotope  = $tower['needed_isotopes']; break;
-        case 9:  $required_N_isotope  = $tower['needed_isotopes']; break;
-        case 10: $required_N_isotope  = $tower['needed_isotopes']; break;
-        case 3:  $required_O_isotope  = $tower['needed_isotopes']; break;
-        case 12: $required_O_isotope  = $tower['needed_isotopes']; break;
-        case 13: $required_O_isotope  = $tower['needed_isotopes']; break;
-    }
-    $tower['required_H_isotope']  = $required_H_isotope;
-    $tower['required_Hy_isotope'] = $required_Hy_isotope;
-    $tower['required_N_isotope']  = $required_N_isotope;
-    $tower['required_O_isotope']  = $required_O_isotope;
-
-	if ($tower['required_H_isotope'] > 1) {
-	$race_isotope = "Helium";
-	} elseif ($tower['required_Hy_isotope'] > 1) { 
-	$race_isotope = "Hydrogen";
-	} elseif ($tower['required_N_isotope'] > 1) { 
-	$race_isotope = "Nitrogen";
-	} elseif ($tower['required_O_isotope'] > 1) { 
-	$race_isotope = "Oxygen"; }
 
 	$fuel = $tower;
 
@@ -104,7 +69,7 @@ if (!empty($pos_to_refuel)) {
 
 	if ($display_optimal == 1) {
 		$tower = $posmgmt->GetTowerInfo($pos_to_refuel);
-
+		
 		if ($tower) {
 			$pos_size                = $tower['pos_size'];
             $pos_race                = $tower['pos_race'];
@@ -115,24 +80,20 @@ if (!empty($pos_to_refuel)) {
 			$tower['sovereignty']    = $posmgmt->getSovereignty($systemID);
 			$allianceid              = $tower['allianceid'];
             $tower['sovfriendly']    = $posmgmt->getSovereigntyStatus($systemID, $allianceid);
+			$charters_needed         = $tower['charters_needed'];
 		}
 	
-		$db = $posmgmt->selectstaticdb($systemID, $allianceid);
-	
-		$row = $posmgmt->GetStaticTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size, 'db' => $db));
-
+        $row = $posmgmt->GetStaticFBTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size));
+		if ($tower['sovfriendly'] == 1) {
+			$tower['hasSov'] = .75;
+		} else {
+			$tower['hasSov'] = 1;
+		}
+		
         if ($row) {
-            $tower['required_isotope']           = $row['isotopes'];
-            $tower['required_oxygen']            = $row['oxygen'];
-            $tower['required_mechanical_parts']  = $row['mechanical_parts'];
-            $tower['required_coolant']           = $row['coolant'];
-            $tower['required_robotics']          = $row['robotics'];
-            $tower['required_uranium']           = $row['uranium'];
-            $tower['required_ozone']             = $row['ozone'];
-            $tower['required_heavy_water']       = $row['heavy_water'];
+			$tower['required_fuelblock']         = ceil($row['fuelblock'] * $tower['hasSov']);
             $tower['required_strontium']         = $row['strontium'];
             $tower['required_charters']          = $charters_needed?1:0;
-            $tower['race_isotope']               = $row['race_isotope'];
             $tower['total_pg']                   = $row['pg'];
             $tower['total_cpu']                  = $row['cpu'];
             $total_pg                            = $row['pg'];
@@ -157,9 +118,7 @@ if (!empty($pos_to_refuel)) {
 		if ($partial_fuelup == 1) {
 			$tower['fuel_hangar']=$cargosize;
 			$partial_optimal=$posmgmt->posoptimaluptime($tower);
-			$partial_optimal['total']=(($partial_optimal['optimum_uranium']*$pos_Ura)+($partial_optimal['optimum_oxygen']*$pos_Oxy)+($partial_optimal['optimum_mechanical_parts']*$pos_Mec)+
-			($partial_optimal['optimum_coolant']*$pos_Coo)+($partial_optimal['optimum_robotics']*$pos_Rob)+($partial_optimal['optimum_isotope']*$pos_Iso)+
-			($partial_optimal['optimum_ozone']*$pos_Ozo)+($partial_optimal['optimum_heavy_water']*$pos_Hea));
+			$partial_optimal['total']=($partial_optimal['optimum_fuelblock']*$pos_Fbl);
 			if ($tower['charters_needed'] == 1) {
 			$partial_optimal['total']=($partial_optimal['total']+($partial_optimal['optimum_charters']*$pos_Cha));
 			}
