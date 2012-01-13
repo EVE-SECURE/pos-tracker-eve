@@ -136,14 +136,8 @@ if ($step == 2) {
     $pos_race         = $eve->VarCleanFromInput('pos_race');
     //$system           = $eve->VarCleanFromInput('solarSystemID');
     $sovereignity     = $eve->VarCleanFromInput('sovereignity');
-    $uranium          = $eve->VarCleanFromInput('uranium');
-    $oxygen           = $eve->VarCleanFromInput('oxygen');
-    $mechanical_parts = $eve->VarCleanFromInput('mechanical_parts');
-    $coolant          = $eve->VarCleanFromInput('coolant');
-    $robotics         = $eve->VarCleanFromInput('robotics');
-    $isotope          = $eve->VarCleanFromInput('isotope');
-    $ozone            = $eve->VarCleanFromInput('ozone');
-    $heavy_water      = $eve->VarCleanFromInput('heavy_water');
+    $fuelblock          = $eve->VarCleanFromInput('fuelblock');
+	$charters          = $eve->VarCleanFromInput('charters');
     $strontium        = $eve->VarCleanFromInput('strontium');
     $struct_amount    = $eve->VarCleanFromInput('struct_amount');
     $status           = $eve->VarCleanFromInput('status');
@@ -151,7 +145,6 @@ if ($step == 2) {
     $moonID           = $eve->VarCleanFromInput('moonID');
 
     $statictower = $posmgmt->GetTowerTypeID(array('pos_size' => $pos_size, 'pos_race' => $pos_race));
-//echo '<pre>';print_r($statictower);echo '</pre>';exit;
     $typeID          = $statictower['typeID'];
     $evetowerID      = null;
     $corp            = $userinfo['corp'];
@@ -160,7 +153,6 @@ if ($step == 2) {
     $charters_needed = 0;
     $pos_status      = $status;
 
-//echo $status;exit;
     $args = array('pos_size'         => $pos_size,
                   'typeID'           => $typeID,
                   'corp'             => $userinfo['corp'],
@@ -168,14 +160,8 @@ if ($step == 2) {
                   'pos_race'         => $pos_race,
                   'system'           => $system,
                   'sovereignity'     => ((!$sovereignity) ? 0 : 1),
-                  'uranium'          => $uranium,
-                  'oxygen'           => $oxygen,
-                  'mechanical_parts' => $mechanical_parts,
-                  'coolant'          => $coolant,
-                  'robotics'         => $robotics,
-                  'isotope'          => $isotope,
-                  'ozone'            => $ozone,
-                  'heavy_water'      => $heavy_water,
+                  'fuelblock'          => $fuelblock,
+				  'charters'          => $charters,
                   'strontium'        => $strontium,
                   'owner_id'         => $userinfo['id'],
                   'status'           => $status,
@@ -184,7 +170,7 @@ if ($step == 2) {
                   'moonID'           => $moonID,
                   'pos_status'       => $pos_status,
                   'systemID'         => $solarSystemID);
-//echo '<pre>';print_r($args);echo '</pre>';exit;
+
     if (!$pos_id = $posmgmt->AddNewPOS($args)) {
         $eve->RedirectUrl('addpos.php');
     }
