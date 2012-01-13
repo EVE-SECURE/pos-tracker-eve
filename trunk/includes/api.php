@@ -12,7 +12,7 @@ class API
 		if ($args <= 999999) {
 		$args = 10000002; //Default to Jita(The Forge)
 		}
-        $url = "http://eve-marketdata.com/api/item_prices.xml?type_ids=44,3683,3689,9832,9848,16274,17889,17887,17888,16273,16272&region_id=".$args;
+        $url = "http://eve-marketdata.com/api/item_prices.xml?type_ids=44,3683,3689,9832,9848,16274,17889,17887,17888,16273,16272,4247,4051,4312,4246&region_id=".$args;
 
         $xml = $this->API_Connect2($url);
 
