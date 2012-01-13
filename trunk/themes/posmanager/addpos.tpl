@@ -95,36 +95,12 @@
           <td><input name="sovereignity" type="checkbox" /></td>
         </tr>*]-->
         <tr>
-          <td class="txtleft mbground hcolor">Enriched Uranium</td>
-          <td><input name="uranium" size="20" type="text" value="0" /></td>
+          <td class="txtleft mbground hcolor">Fuel Blocks</td>
+          <td><input name="fuelblock" size="20" type="text" value="0" /></td>
         </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Oxygen</td>
-          <td><input name="oxygen" size="20" type="text" value="0" /></td>
-        </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Mechanical Parts</td>
-          <td><input name="mechanical_parts" size="20" type="text" value="0" /></td>
-        </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Coolant</td>
-          <td><input name="coolant" size="20" type="text" value="0" /></td>
-        </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Robotics</td>
-          <td><input name="robotics" size="20" type="text" value="0" /></td>
-        </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Isotopes</td>
-          <td><input name="isotope" size="20" type="text" value="0" /></td>
-        </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Liquid Ozone</td>
-          <td><input name="ozone" size="20" type="text" value="0" /></td>
-        </tr>
-        <tr>
-          <td class="txtleft mbground hcolor">Heavy Water</td>
-          <td><input name="heavy_water" size="20" type="text" value="0" /></td>
+		 <tr>
+          <td class="txtleft mbground hcolor">Charters</td>
+          <td><input name="charters" size="20" type="text" value="0" /></td>
         </tr>
         <tr>
           <td class="txtleft mbground hcolor">Strontium Calthrates</td>

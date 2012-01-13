@@ -156,31 +156,31 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
     </tr>
     <tr>
       <td>Enriched Uranium</td>
-      <td class="mcolor"><!--[$tower.required_uranium]--></td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.uranium]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.uranium]--></td>-->
     </tr>
     <tr>
       <td>Oxygen</td>
-      <td class="mcolor"><!--[$tower.required_oxygen]--></td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.oxygen]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.oxygen]--></td>-->
     </tr>
     <tr>
       <td>Mechanical Parts</td>
-      <td class="mcolor"><!--[$tower.required_mechanical_parts]--></td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.mechanical_parts]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.mechanical_parts]--></td>-->
     </tr>
     <tr>
       <td>Coolant</td>
-      <td class="mcolor"><!--[$tower.required_coolant]--></td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.coolant]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.coolant]--></td>-->
     </tr>
     <tr>
       <td>Robotics</td>
-      <td class="mcolor"><!--[$tower.required_robotics]--></td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.robotics]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.robotics]--></td>-->
     </tr>
@@ -194,19 +194,19 @@ Total Difference: <!--[$optimalDiff.totalDiff]-->m3
 <!--[/if]-->
     <tr>
       <td>Isotopes</td>
-      <td class="mcolor"><!--[$tower.required_isotope]--></td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.isotope]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.isotope]--></td>-->
     </tr>
     <tr>
       <td>Liquid Ozone</td>
-      <td class="mcolor"><!--[$tower.required_ozone2]-->(<!--[$tower.required_ozone]-->)</td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.ozone]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.ozone]--></td>-->
     </tr>
     <tr>
       <td>Heavy Water</td>
-      <td class="mcolor"><!--[$tower.required_heavy_water2]-->(<!--[$tower.required_heavy_water]-->)</td>
+      <td class="mcolor"></td>
       <td><!--[$hangar.heavy_water]--></td>
       <!--<td><!--[daycalc hours=$uptimecalc.heavy_water]--></td>-->
     </tr>
