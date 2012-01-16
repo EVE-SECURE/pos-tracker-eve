@@ -7,12 +7,12 @@ INSERT INTO `%prefix%invTypes` VALUES ('4051', '1136', 'Caldari Fuel Block', nul
 INSERT INTO `%prefix%invTypes` VALUES ('4247', '1136', 'Amarr Fuel Block', null, '0', '0', '5', '0', '40', null, '95.0000', '1', '1413', '0', '10835');
 INSERT INTO `%prefix%invTypes` VALUES ('4312', '1136', 'Gallente Fuel Block', null, '0', '0', '5', '0', '40', null, '95.0000', '1', '1413', '0', '10833');
 INSERT INTO `%prefix%invTypes` VALUES ('4246', '1136', 'Minmatar Fuel Block', null, '0', '0', '5', '0', '40', null, '95.0000', '1', '1413', '0', '10836');
-INSERT INTO `%prefix%invTypes` VALUES ('4314', '1137', 'Caldari Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '1', '10000000.0000', '1', '1412', '0', '10834');
-INSERT INTO `%prefix%invTypes` VALUES ('4315', '1137', 'Amarr Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '4', '10000000.0000', '1', '1412', '0', '10835');
-INSERT INTO `%prefix%invTypes` VALUES ('4313', '1137', 'Gallente Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '8', '10000000.0000', '1', '1412', '0', '10833');
-INSERT INTO `%prefix%invTypes` VALUES ('4316', '1137', 'Minmatar Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '2', '10000000.0000', '1', '1412', '0', '10836');
-INSERT INTO `%prefix%invTypes` VALUES ('3962', '1106', 'Customs Office Gantry', '2945', '1857', '1000000', '7600', '19500001', '1', null, '0.0000', '1', '1410', '0', null);
-INSERT INTO `%prefix%invTypes` VALUES ('3963', '1048', 'Customs Office Gantry Blueprint', null, null, '0', '0', '0.01', '0', '1', null, '25000001.0000', '1', null, '0', '0');
+INSERT INTO `%prefix%invTypes` VALUES ('4314', '1137', 'Caldari Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '1', '10000000', '1', '1412', '0', '10834');
+INSERT INTO `%prefix%invTypes` VALUES ('4315', '1137', 'Amarr Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '4', '10000000', '1', '1412', '0', '10835');
+INSERT INTO `%prefix%invTypes` VALUES ('4313', '1137', 'Gallente Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '8', '10000000', '1', '1412', '0', '10833');
+INSERT INTO `%prefix%invTypes` VALUES ('4316', '1137', 'Minmatar Fuel Block Blueprint', null, '0', '0', '0.01', '0', '1', '2', '10000000', '1', '1412', '0', '10836');
+INSERT INTO `%prefix%invTypes` VALUES ('3962', '1106', 'Customs Office Gantry', '2945', '1857', '1000000', '7600', '19500001', '1', null, '0', '1', '1410', '0', null);
+INSERT INTO `%prefix%invTypes` VALUES ('3963', '1048', 'Customs Office Gantry Blueprint', null, '0', '0', '0.01', '0', '1', null, '25000001', '1', null, '0', '0');
 
 -- --------------------------------------------------------
 
