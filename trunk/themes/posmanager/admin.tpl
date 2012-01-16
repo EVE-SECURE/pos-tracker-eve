@@ -156,22 +156,22 @@
 	  <tr>
 	    <td>Alliance Database</td>
 	    <td><!--[$allytime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatealliance" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatealliance" /><input class="mButton" type="submit" value="Update Now" /></form></td>
 	  </tr>
 	  <tr>
 	    <td>Sovereignty Database</td>
 	    <td><!--[$sovtime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatesovereignty" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatesovereignty" /><input class="mButton" type="submit" value="Update Now" /></form></td>
 	  </tr>
 	  <tr>
 	    <td>Industrial Jobs from API</td>
 	    <td><!--[$jobtime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatejobs" /><input class="mButton" type="submit" value="Update Now" /></form></td>
 	  </tr>
 	  <tr>
 	    <td>POS Update from API</td>
 	    <td><!--[$apitime]--></td>
-	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatedatafromapi" /><input class="mButton" type="submit" value="UPDATE NOW" /></form></td>
+	    <td><form method="post" action="admin.php"><input type="hidden" name="action" value="updatedatafromapi" /><input class="mButton" type="submit" value="Update Now" /></form></td>
 	  </tr>
 	</table>
       </div>

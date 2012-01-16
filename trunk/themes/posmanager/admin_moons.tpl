@@ -19,7 +19,7 @@
       <td><!--[$region.regionID]--></td>
       <td><!--[$region.file_name]--></td>
       <td><div id="row_<!--[$region.regionID]-->"><!--[if $region.installed]-->Yes<!--[else]-->No<!--[/if]--></div></td>
-      <td style="width:100px;"><button type="button" id="region_<!--[$region.regionID]-->" onclick="ajax_InstallRegion(<!--[$region.regionID]-->);"><!--[if $region.installed]-->Uninstall<!--[else]-->Install<!--[/if]--></button>&nbsp;&nbsp;<img id="loaderblank_<!--[$region.regionID]-->" src="images/loader.blank.black.gif" alt="loaderblank" /><img style="display:none;" id="loader_<!--[$region.regionID]-->" src="images/loader.gif" alt="loaderblank" /></td>
+      <td style="width:125px;"><button class="mButton" type="button" id="region_<!--[$region.regionID]-->" onclick="ajax_InstallRegion(<!--[$region.regionID]-->);"><!--[if $region.installed]-->Uninstall<!--[else]-->Install<!--[/if]--></button>&nbsp;&nbsp;<img id="loaderblank_<!--[$region.regionID]-->" src="images/loader.blank.black.gif" alt="loaderblank" /><img style="display:none;" id="loader_<!--[$region.regionID]-->" src="images/loader.gif" alt="loaderblank" /></td>
     </tr>
   <!--[/foreach]-->
   </table>
