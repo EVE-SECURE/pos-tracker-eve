@@ -1,4 +1,4 @@
-ALTER TABLE `%prefix%tower_info` ADD `fuelblock` INT( 10 ) NOT NULL;
+ALTER TABLE `%prefix%tower_info` ADD `fuelblock` INT( 10 ) unsigned NOT NULL;
 ALTER TABLE `%prefix%update_log` ADD INDEX ( `type_id` );
 
 INSERT INTO `%prefix%settings` (`id`, `name`, `gsetting`) VALUES ('4', 'API Proxy', '0');
