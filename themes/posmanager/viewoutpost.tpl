@@ -41,7 +41,7 @@
 <form method="post" action="editoutpost.php">
 <input type="hidden" name="i" value="<!--[$outpost.outpost_id]-->" />
 <div class="txtleft"><input type="hidden" name="action" value="updateoutpost" />
-<input type="submit" name="action" value='Edit Outpost' /></form>
+<input class="mButton" type="submit" name="action" value='Edit Outpost' /></form>
 </div>
 <!--[assign var='uptimecalc' value=$outpost.uptimecalc]-->
 <table border="1" cellspacing="0" cellpadding="5" width="600">

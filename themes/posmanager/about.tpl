@@ -6,6 +6,27 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.1.7 to 5.2.0 Changes:</strong>
+	<ul>
+	  <li>Support for Fuel Blocks added.</li>
+	  <li>Manufacturing fuel blocks is now listed on the Fuel Bill page at the bottom. The blueprint it uses to calculate has "perfect" ME 40. The manufacturing time is set at 4 minutes per run to help gauge how much time it will take.</li>
+	  <li>Removed some minor CSS errors.</li>
+	  <li>View/Edit POS now states Empty/Full instead of 0 under Online for silos.</li>
+	  <li>Production page updated so the entire line for the silo is turned a color when Empty/Full. Will also change to a warning color once it passes under 24 hours till Empty/Full. Colors can be changed in the theme.css files.</li>
+	  <li>Added support for API Proxies.</li>
+	  <li>POS Tower Sov Status now updates alliance info via API key.</li>
+	  <li>Fixed optimal to make sure to include charters if charters are being used.</li>
+	  <li>Fixed View/Edit POS to display the correct m3 for charters.</li>
+	  <li>POS Tower renders updated to the new non-crooked better looking versions.</li>
+	  <li>POS Track now loads faster - Thanks Solo Drakban!</li>
+	  <li>Refuel button added to ViewPOS for immediate optimal fillup.</li>
+	  <li>Buttons!</li>
+	  <li>Fuel Bill page sovereignty now only shows if the tower is in sovereignty friendly territory.</li>
+	  <li>Various pointless calls to the DB and redundant code removed, speeding up various pages in the tracker.</li>
+	  <li>Add a New Tower can now specify charters.</li>
+	  <li>Mailer will now display charters if needed.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.6 to 5.1.7 Changes:</strong>
 	<ul>
 	  <li>Mailer updated to notice sov for required fuel column.</li>
