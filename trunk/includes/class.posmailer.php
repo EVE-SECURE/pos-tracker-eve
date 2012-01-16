@@ -58,14 +58,10 @@ class posmailer extends PHPMailer {
 		$body .= "<table cellspacing=\"0\" border=\"1\">\n";
 		$body .= "<tr bgcolor=\"#BBD9EE\"><td>Fuel</td><td>Current</td><td>Status</td><td>Required</td><td>Optimal</td><td>Difference</td></tr>\n";
 		
-		$body .= "<tr><td>Enriched Uranium</td><td>".$pos['uranium']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['uranium'])."</td><td>".$static['uranium']."</td><td>".$pos['result_optimal']['optimum_uranium']."</td><td>".$diff['uranium']."</td></tr>\n";
-		$body .= "<tr><td>Oxygen</td><td>".$pos['oxygen']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['oxygen'])."</td><td>".$static['oxygen']."</td><td>".$pos['result_optimal']['optimum_oxygen']."</td><td>".$diff['oxygen']."</td></tr>\n";
-		$body .= "<tr><td>Mechanical Parts</td><td>".$pos['mechanical_parts']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['mechanical_parts'])."</td><td>".$static['mechanical_parts']."</td><td>".$pos['result_optimal']['optimum_mechanical_parts']."</td><td>".$diff['mechanical_parts']."</td></tr>\n";
-		$body .= "<tr><td>Coolant</td><td>".$pos['coolant']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['coolant'])."</td><td>".$static['coolant']."</td><td>".$pos['result_optimal']['optimum_coolant']."</td><td>".$diff['coolant']."</td></tr>\n";
-		$body .= "<tr><td>Robotics</td><td>".$pos['robotics']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['robotics'])."</td><td>".$static['robotics']."</td><td>".$pos['result_optimal']['optimum_robotics']."</td><td>".$diff['robotics']."</td></tr>\n";
-		$body .= "<tr><td>".$static['race_isotope']." Isotopes</td><td>".$pos['isotope']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['isotope'])."</td><td>".$static['isotopes']."</td><td>".$pos['result_optimal']['optimum_isotope']."</td><td>".$diff['isotope']."</td></tr>\n";
-		$body .= "<tr><td>Liquid Ozone</td><td>".$pos['ozone']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['ozone'])."</td><td>".$static['ozone']."</td><td>".$pos['result_optimal']['optimum_ozone']."</td><td>".$diff['ozone']."</td></tr>\n";
-		$body .= "<tr><td>Heavy Water</td><td>".$pos['heavy_water']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['heavy_water'])."</td><td>".$static['heavy_water']."</td><td>".$pos['result_optimal']['optimum_heavy_water']."</td><td>".$diff['heavy_water']."</td></tr>\n";
+		$body .= "<tr><td>Fuel Blocks</td><td>".$pos['fuelblock']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['fuelblock'])."</td><td>".$static['fuelblock']."</td><td>".$pos['result_optimal']['optimum_fuelblock']."</td><td>".$diff['fuelblock']."</td></tr>\n";
+		if ($static['charters'] == 1) {
+		$body .= "<tr><td>Charters</td><td>".$pos['charters']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['charters'])."</td><td>".$static['charters']."</td><td>".$pos['result_optimal']['optimum_charters']."</td><td>".$diff['charters']."</td></tr>\n";
+		}
 		$body .= "</table>\n";
 		$body .= "<br><hr><p>This an an automated email sent from POS-Tracker. If you do not wish to receive alerts from POS-Tracker, please update your profile in the User pannel of POS-Tracker</p>";
 		
@@ -99,14 +95,10 @@ class posmailer extends PHPMailer {
 		$body .= "<table cellspacing=\"0\" border=\"1\">\n";
 		$body .= "<tr bgcolor=\"#BBD9EE\"><td>Fuel</td><td>Current</td><td>Status</td><td>Required</td><td>Optimal</td><td>Difference</td></tr>\n";
 		
-		$body .= "<tr><td>Enriched Uranium</td><td>".$pos['uranium']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['uranium'])."</td><td>".$static['uranium']."</td><td>".$pos['result_optimal']['optimum_uranium']."</td><td>".$diff['uranium']."</td></tr>\n";
-		$body .= "<tr><td>Oxygen</td><td>".$pos['oxygen']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['oxygen'])."</td><td>".$static['oxygen']."</td><td>".$pos['result_optimal']['optimum_oxygen']."</td><td>".$diff['oxygen']."</td></tr>\n";
-		$body .= "<tr><td>Mechanical Parts</td><td>".$pos['mechanical_parts']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['mechanical_parts'])."</td><td>".$static['mechanical_parts']."</td><td>".$pos['result_optimal']['optimum_mechanical_parts']."</td><td>".$diff['mechanical_parts']."</td></tr>\n";
-		$body .= "<tr><td>Coolant</td><td>".$pos['coolant']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['coolant'])."</td><td>".$static['coolant']."</td><td>".$pos['result_optimal']['optimum_coolant']."</td><td>".$diff['coolant']."</td></tr>\n";
-		$body .= "<tr><td>Robotics</td><td>".$pos['robotics']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['robotics'])."</td><td>".$static['robotics']."</td><td>".$pos['result_optimal']['optimum_robotics']."</td><td>".$diff['robotics']."</td></tr>\n";
-		$body .= "<tr><td>".$static['race_isotope']." Isotopes</td><td>".$pos['isotope']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['isotope'])."</td><td>".$static['isotopes']."</td><td>".$pos['result_optimal']['optimum_isotope']."</td><td>".$diff['isotope']."</td></tr>\n";
-		$body .= "<tr><td>Liquid Ozone</td><td>".$pos['ozone']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['ozone'])."</td><td>".$static['ozone']."</td><td>".$pos['result_optimal']['optimum_ozone']."</td><td>".$diff['ozone']."</td></tr>\n";
-		$body .= "<tr><td>Heavy Water</td><td>".$pos['heavy_water']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['heavy_water'])."</td><td>".$static['heavy_water']."</td><td>".$pos['result_optimal']['optimum_heavy_water']."</td><td>".$diff['heavy_water']."</td></tr>\n";
+		$body .= "<tr><td>Fuel Blocks</td><td>".$pos['fuelblock']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['fuelblock'])."</td><td>".$static['fuelblock']."</td><td>".$pos['result_optimal']['optimum_fuelblock']."</td><td>".$diff['fuelblock']."</td></tr>\n";
+		if ($static['charters'] == 1) {
+		$body .= "<tr><td>Charters</td><td>".$pos['charters']."</td><td>".POSMGMT::daycalc($pos['result_uptimecalc']['charters'])."</td><td>".$static['charters']."</td><td>".$pos['result_optimal']['optimum_charters']."</td><td>".$diff['charters']."</td></tr>\n";
+		}
 		$body .= "</table>\n";
 		$body .= "<br><hr><p>This an an automated email sent from POS-Tracker. If you do not wish to receive alerts from POS-Tracker, please update your profile in the User pannel of POS-Tracker</p>";
 		
