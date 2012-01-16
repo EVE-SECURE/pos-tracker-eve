@@ -98,10 +98,11 @@
 	<ul>
 			<li>Fatal error: Call to undefined function ADONewConnection() in /pos/includes/dbfunctions.php on line 71<ul><li>You get this error when trying to run the POS Tracker or page in PHP4. If this happens during a Cron Job run, make sure that the job points to your PHP5 install on the server.</li></ul> </li>
 			<li>API Imported tower doesn't have a location.<ul><li>You will need to make sure the Region is installed under the Moon Database with the Admin Panel.</li></ul></li>
-			<li>Fuel Calculator doesn't have optimal for Liquid Ozone and Heavy Water. This will be addressed in later versions of the POS tracker.</li>
+			<li>Sov incorrect since I changed/joined an Alliance. How do I update my towers to have the correct Sov?<ul><li>The tower alliance information is now based off the API key so just remake the API key to make sure your new joined alliance shows up under the admin panel.</li></ul></li>
 			<li>EVE-Marketdata imported prices won't update on the global price list.<ul><li>EVE-Marketdata currently has a 24 hour cache which is updated at downtime so wait until the the next downtime.</li></ul></li>
 			<li>Can I setup a daily API pull for the global price list like to EVE-Marketdata?<ul><li>At this time no, however it is in the works along with some other possible sites.</li></ul></li>
 			<li>My POS Track page isn't sorting/displaying by what shows under my user panel(10 & Corp A).<ul><li>Most likely this is the first time you've logged in since the new version, click Update Settings under your user panel and everything should work wonderfully.</li></ul></li>
+			<li>Why is ViewPOS different than Fuel Bill if API isn't pulling in every hour?<ul><li>On ViewPOS only the Online section counts down. Available and Optimal are going off what's actually stored in the database.</li><li>On Fuel Bill the optimal works just like ViewPOS except it also counts in how many hours ago the POS was updated.</li><li>If you have the API pull in more often the pages will matchup.</li></ul></li>
 	</ul>	
 </div>
 	
