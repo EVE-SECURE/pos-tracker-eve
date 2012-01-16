@@ -35666,19 +35666,20 @@ INSERT INTO `%prefix%invTypes` (`typeID`, `groupID`, `typeName`, `graphicID`, `r
 (32465, 100, 'Civilian Hobgoblin', 1099, 15, 3000, 5, 1200, 1, 8, 2500, 1, NULL, 0.07, NULL),
 (32467, 41, 'Civilian Remote Shield Transporter', NULL, 0, 0, 5, 0, 1, NULL, 4996, 1, NULL, 0.07, 86),
 (32469, 325, 'Civilian Remote Armor Repair System', NULL, 0, 20, 5, 0, 1, NULL, 4996, 1, NULL, 0.07, 80),
-(32471, 286, 'Damaged Vessel', 330, 287, 13075000, 115000, 3200, 1, 8, 0, 0, NULL, 0, NULL),
+(32471, 286, 'Damaged Vessel', 330, 287, 13075000, 115000, 3200, 1, 8, 0, 0, NULL, 0, NULL);
+INSERT INTO `%prefix%invTypes` (`typeID`, `groupID`, `typeName`, `graphicID`, `radius`, `mass`, `volume`, `capacity`, `portionSize`, `raceID`, `basePrice`, `published`, `marketGroupID`, `chanceOfDuplicating`, `iconID`) VALUES
 (3514, 659, 'Revenant', 10038, 2840, 1546875000, 62000000, 1405, 1, 32, 12349014100, 1, 1392, 0.07, NULL),
 (3515, 1013, 'Revenant Blueprint', 309, 0, 0, 0.01, 0, 1, NULL, 18500000000, 1, NULL, 0, NULL),
 (4051, 1136, 'Caldari Fuel Block', null, 0, 0, 5, 0, 40, null, 95.0000, 1, 1413, 0, 10834),
 (4247, 1136, 'Amarr Fuel Block', null, 0, 0, 5, 0, 40, null, 95.0000, 1, 1413, 0, 10835),
 (4312, 1136, 'Gallente Fuel Block', null, 0, 0, 5, 0, 40, null, 95.0000, 1, 1413, 0, 10833),
 (4246, 1136, 'Minmatar Fuel Block', null, 0, 0, 5, 0, 40, null, 95.0000, 1, 1413, 0, 10836),
-(4314, 1137, 'Caldari Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 1, 10000000.0000, 1, 1412, 0, 10834),
-(4315, 1137, 'Amarr Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 4, 10000000.0000, 1, 1412, 0, 10835),
-(4313, 1137, 'Gallente Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 8, 10000000.0000, 1, 1412, 0, 10833),
-(4316, 1137, 'Minmatar Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 2, 10000000.0000, 1, 1412, 0, 10836),
-(3962, 1106, 'Customs Office Gantry', 2945, 1857, 1000000, 7600, 19500001, 1, null, 0.0000, 1, 1410, 0, null),
-(3963, 1048, 'Customs Office Gantry Blueprint', null, null, 0, 0, 0.01, 0, 1, null, 25000001.0000, 1, null, 0, 0);
+(4314, 1137, 'Caldari Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 1, 10000000, 1, 1412, 0, 10834),
+(4315, 1137, 'Amarr Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 4, 10000000, 1, 1412, 0, 10835),
+(4313, 1137, 'Gallente Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 8, 10000000, 1, 1412, 0, 10833),
+(4316, 1137, 'Minmatar Fuel Block Blueprint', null, 0, 0, 0.01, 0, 1, 2, 10000000, 1, 1412, 0, 10836),
+(3962, 1106, 'Customs Office Gantry', 2945, 1857, 1000000, 7600, 19500001, 1, null, 0, 1, 1410, 0, null),
+(3963, 1048, 'Customs Office Gantry Blueprint', null, 0, 0, 0.01, 0, 1, null, 25000001, 1, null, 0, 0);
 
 
 
