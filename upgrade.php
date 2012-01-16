@@ -68,6 +68,7 @@ $upgradeList=array(
 512=>'v5.1.2 - Prices & Ship Assembly Array Fix',
 514=>'v5.1.4 - User & Global Settings Update',
 517=>'v5.1.7 - Hyasyoda ML & Wormhole Update',
+520=>'v5.2.0 - Fuel Block Support',
 );
 
 $eveRender->Assign('upgradeList', $upgradeList);
