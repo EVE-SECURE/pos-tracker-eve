@@ -11251,7 +11251,8 @@ INSERT INTO `%prefix%structure_static` (`id`, `name`, `pg`, `cpu`) VALUES
 (27857, 'Blood Energy Neutralizing Battery', 350000, 25),
 (27858, 'Dark Blood Energy Neutralizing Battery', 350000, 25),
 (27855, 'Sansha Energy Neutralizing Battery', 350000, 25),
-(27856, 'True Sansha Energy Neutralizing Battery', 350000, 25);
+(27856, 'True Sansha Energy Neutralizing Battery', 350000, 25),
+(32245, 'Hyasyoda Mobile Laboratory', 110000, 600);
 -- --------------------------------------------------------
 
 -- 
