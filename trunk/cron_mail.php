@@ -87,7 +87,7 @@ $eveRender->Assign('access', $access);
 
 		if ($row3) {
 			$tower['required_fuelblock']         = ceil($row3['fuelblock'] * $tower['hasSov']);
-            $tower['required_strontium']         = $row3['strontium'];
+            $tower['required_strontium']         = ceil($row3['strontium'] * $tower['hasSov']);
             $tower['required_charters']          = $charters_needed?1:0;
 			$row3['charters']					= $tower['required_charters'];
             $tower['total_pg']                   = $row3['pg'];

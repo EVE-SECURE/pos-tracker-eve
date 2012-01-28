@@ -354,7 +354,7 @@ foreach ($hangars as $row) {
 	
 	if ($row) {
 				$tower['required_fuelblock']         = ceil($row['fuelblock'] * $tower['hasSov']);
-				$tower['required_strontium']         = $row['strontium'];
+				$tower['required_strontium']         = ceil($row['strontium'] * $tower['hasSov']);
 				$tower['required_charters']          = $charters_needed?1:0;
 				$tower['fuelblockID']               = $row['fuelblockID'];
 				$tower['total_pg']                   = $row['pg'];

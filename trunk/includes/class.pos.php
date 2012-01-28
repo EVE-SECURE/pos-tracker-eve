@@ -2420,7 +2420,7 @@ class POSMGMT
 		
         if ($row2) {
 			$required_fuelblock          = ceil($row2['fuelblock'] * $hasSov);
-            $required_strontium         = $row2['strontium'];
+            $required_strontium         = ceil($row2['strontium'] * $hasSov);;
             $required_charters          = $charters_needed?1:0;
             $race_isotope               = $row2['race_isotope'];
             $total_pg                   = $row2['pg'];
@@ -3987,7 +3987,7 @@ class POSMGMT
 				}
             if ($row) {
 			    $required_fuelblock   = ceil($row['fuelblock'] * $hasSov);
-                $required_strontium         = $row['strontium'];
+                $required_strontium         = ceil($row['strontium'] * $hasSov);;
                 $required_charters          = $charters_needed?1:0;
                 $pos_capacity               = $row['fuel_hangar'];
                 $strontium_capacity         = $row['strontium_hangar'];
