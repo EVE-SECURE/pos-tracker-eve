@@ -104,7 +104,7 @@ table {
    background-color: #352b2c;
 }
 
-body#header {
+body#header, .navif {
 	margin:0px auto;
 	background:transparent url(../images/nav_bg5.png) 0px 0px repeat-x;
 	background-color:#000000;
@@ -123,15 +123,14 @@ body#header {
 	border-top:1px solid #000000;
 }
 
-.navib {
+.navib, .navif {
 	font-size: 12px;
 	width: auto;
 	height: 31px;
 	display: inline-block;
 }
 
-div#navi div a
-{
+div#navi div a, .navif {
 	display:block;
 	width: auto;
 	color:#999999;

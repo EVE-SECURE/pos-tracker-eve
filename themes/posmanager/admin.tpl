@@ -1,30 +1,19 @@
 <!--[include file='header.tpl']-->
+	<div class="navif">
+				 | &nbsp; <a href="admin.php?op=modules" title="Addons Management">Addons</a>
+	  &nbsp; | &nbsp; <a href="#apikeys" title="API Key Management">API Keys</a>
+      &nbsp; | &nbsp; <a href="upgrade.php" title="DB Upgrades">DB Upgrades</a>
+      &nbsp; | &nbsp; <a href="admin.php?action=moons" title="Moons Management">Moon Database</a>
+      &nbsp; | &nbsp; <a href="#prices" title="Global Price List">Price List</a>
+      &nbsp; | &nbsp; <a href="#settings" title="POS Tracker Settings">Settings</a>
+	  &nbsp; | &nbsp; <a href="#users" title="Users Management">Users</a>
+      &nbsp; | &nbsp; <a href="#version" title="Version Checker">Version Check</a>
+      &nbsp; |
+	</div>
   <p class="mcenter">
   <!--[if $installchecker]-->
       <span style="color:red;font-weight:bold;">WARNING: install.php is still accessible. Please rename/remove install.php from the POS Tracker install directory.</span><br /><br />
   <!--[/if]-->
-	  &nbsp; &nbsp; | &nbsp; &nbsp;
-    <a href="admin.php?op=modules" title="Addons Management">Addons</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-	<a href="upgrade.php" title="DB Upgrades">DB Upgrades</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-	  <a href="admin.php?action=moons" title="Moons Management">Moon Database</a>
-      &nbsp; &nbsp; |
-      <br /><br />
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="#apiupdate" title="API Data Updates">API Data</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="#apikeys" title="API Key Management">API Keys</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-      <a href="#users" title="Users Management">Users</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-	  <a href="#prices" title="Global Price List">Price List</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-	  <a href="#settings" title="POS Tracker Settings">Settings</a>
-      &nbsp; &nbsp; | &nbsp; &nbsp;
-	  <a href="#version" title="Version Checker">Version Check</a>
-      &nbsp; &nbsp; |
-      <br /><br />
   </p>
   <hr />
   <!--[if $action]-->
@@ -124,14 +113,12 @@
       </form>
       </div>
       <!--[/foreach]-->
-
-
     <!--[/if]-->
   <!--[else]-->
   	<!--[if $vcheck !="Your installation is up to date!" && $vcheck !=""]-->
 	  <span style="font-weight:bold;"><!--[$vcheck]--></span><hr />
 	<!--[/if]-->
-    <h4 class="pageTitle"><a name="apiupdates"></a>API Data</h4>
+    <br /><strong><a name="apiupdates"></a>API Data</strong>
     <div>
       <!--[if $allyupdate]-->
       <span style="color:red;font-weight:bold;">Warning, Your Alliance data is out of date. <!--[$allytime]--></span><br />
@@ -178,7 +165,7 @@
     </div>
     <hr />
 
-    <h4 class="pageTitle"><a name="apikeys"></a>API Key Manager</h4>
+    <br /><strong><a name="apikeys"></a>API Key Manager</strong>
     <div class="mcenter">
       <form method="post" action="admin.php">
       <div>
@@ -210,7 +197,7 @@
         </table>
       </div>
       </form>
-     <h4 class="pageTitle">Add an <a href="https://support.eveonline.com/api" target="_blank">API Key</a></h4>
+     <br /><strong>Add an <a href="https://support.eveonline.com/api" target="_blank">API Key</a></strong>
       <form method="post" action="admin.php?action=getcharacters">
       <div>
         KeyID: <input type="text" name="userid" size="10" /> vCode: <input type="text" name="apikey" size="35" /> <input class="mButton" type="submit" value="Select Character" />
@@ -221,7 +208,7 @@
     </div>
 	
 <hr />
-    <h4 class="pageTitle"><a name="users"></a>Registered Users</h4>
+    <br /><strong><a name="users"></a>Registered Users</strong>
     <div class="mcenter">
       <form method="post" action="admin.php">
       <div>
@@ -338,7 +325,7 @@
       </div>
       </form>
 	  <hr />
-    <h4 class="pageTitle"><a name="prices"></a>Global Price List</h4>
+    <br /><strong><a name="prices"></a>Global Price List</strong>
     <div class="mcenter">
       <form method="post" action="admin.php">
       <div>
@@ -367,7 +354,7 @@
       </div>
     
 	<hr />
-    <h4 class="pageTitle"><a name="settings"></a>POS Tracker Settings</h4>
+    <br /><strong><a name="settings"></a>POS Tracker Settings</strong>
     <div class="mcenter">
 	<form method="post" action="admin.php">
       <div>
@@ -425,7 +412,7 @@
     </form>
 
 	<hr />
-    <h4 class="pageTitle"><a name="version"></a>Version Checker</h4>
+    <br /><strong><a name="version"></a>Version Checker</strong>
     <div class="mcenter">
 	<form method="post" action="admin.php">
       <div>

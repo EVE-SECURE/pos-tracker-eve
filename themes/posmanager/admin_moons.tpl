@@ -1,5 +1,5 @@
 <!--[include file='header.tpl']-->
-  <h2>Region Administration</h2>
+  <h3 class="pageTitle">Moon/Region Database</h3>
   <div class="mcenter txtcenter">
     <p>
       <a class="link" href="admin.php" title="Finish Installation">Done</a>

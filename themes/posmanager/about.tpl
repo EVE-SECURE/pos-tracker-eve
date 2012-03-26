@@ -6,6 +6,13 @@
     <span class="txtleft">Interactive Player Owned Starbase Tracking and Management Website. Compatible both in game and out of game.</span>
     <br />
 	<br />
+	<strong>Version 5.2.0 to 5.2.1 Changes:</strong>
+	<ul>
+	  <li>Fixed sovereignty bonus for Strontium usage.</li>
+	  <li>Fuel Calc now understands the use current levels function.</li>
+	  <li>Fixed sovereignty for both Fuel Calc and Fuel Bill.</li>
+	</ul>
+	<br />
 	<strong>Version 5.1.7 to 5.2.0 Changes:</strong>
 	<ul>
 	  <li>Support for Fuel Blocks added.</li>

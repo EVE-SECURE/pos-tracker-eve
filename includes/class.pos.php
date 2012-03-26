@@ -3980,7 +3980,7 @@ class POSMGMT
 			$bill[$pos_to_refuel]['secret_pos']         = $secret_pos;
 			
 			$row = $this->GetStaticFBTowerInfo(array('pos_race' => $pos_race, 'pos_size' => $pos_size));
-				if ($sovfriendly == 1) {
+				if ($bill[$pos_to_refuel]['sovfriendly'] == 1) {
 					$hasSov = .75;
 				} else {
 					$hasSov = 1;
@@ -4115,8 +4115,11 @@ class POSMGMT
         $avail_charters         = ($current_charters - ($required_charters * $hoursago));
 		
             if ($use_current_levels) {
+			
                 $fuelbill_fuelblock = $needed_fuelblock - $current_fuelblock;
                 $fuelbill_charters = $needed_charters - $current_charters;
+				
+				
 				if ($display_optimal) {
 					$fuelbill_fuelblock = $optimal['optimum_fuelblock'] - $avail_fuelblock;
 					$fuelbill_charters = $optimal['optimum_charters'] - $avail_charters;		
@@ -4173,17 +4176,15 @@ class POSMGMT
 			$bill[$pos_to_refuel]['fuel_charters'] = $fuelbill_charters;
             //Disable NPC hanger
             /*if ($use_npc_levels) {
-              $needed_uranium          = $needed_uranium - $npc_uranium ;
-              $needed_oxygen           = $needed_oxygen - $npc_oxygen ;
-              $needed_mechanical_parts = $needed_mechanical_parts - $npc_mechanical_parts ;
-              $needed_coolant          = $needed_coolant - $npc_coolant ;
-              $needed_robotics         = $needed_robotics - $npc_robotics ;
-              $needed_isotopes         = $needed_isotopes - $npc_isotope ;
-              $needed_ozone            = $needed_ozone - $npc_ozone ;
-              $needed_heavy_water      = $needed_heavy_water - - $npc_heavy_water ;
+              $needed_fuelblock          = $needed_fuelblock - $npc_fuelblock;
               $needed_charters         = $needed_charters - $npc_charters;
             }*/
-
+			
+			if ($use_current_levels) {
+			$needed_fuelblock = $needed_fuelblock - $avail_fuelblock;
+			$needed_charters = $needed_charters - $avail_charters;
+			}
+			
             if ($needed_fuelblock < 0) {
                 $needed_fuelblock = 0;
             }
@@ -4201,8 +4202,6 @@ class POSMGMT
                 $bill[$pos_to_refuel]['needed_stront']       = $needed_stront;
             }
 
-            $bill[$pos_to_refuel]['needed_fuelblock_size']          = $needed_fuelblock * $GLOBALS["pos_Fbl"];
-            $bill[$pos_to_refuel]['needed_charter_size']          = $needed_charters * $GLOBALS["pos_Cha"];
             if ($checkstront) {
                 $bill[$pos_to_refuel]['needed_stront_size']       = $needed_stront * $GLOBALS["pos_Str"];
             }

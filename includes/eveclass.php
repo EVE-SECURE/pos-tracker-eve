@@ -295,7 +295,7 @@ class Eve {
             return false;
         }
 
-        $_SESSION[$name] = $value;
+        $_SESSION[$name] = addslashes($value);
 
         return true;
     }
