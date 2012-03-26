@@ -104,7 +104,7 @@ table {
    background-color: #91a3d3;
 }
 
-body#header {
+body#header, .navif {
 	margin:0px auto;
 	background:transparent url(../images/nav_bg1.png) 0px 0px repeat-x;
 	background-color:#F2EFE9;
@@ -123,15 +123,14 @@ body#header {
 	border-top:1px solid #F2EFE9;
 }
 
-.navib {
+.navib, .navif {
 	font-size: 12px;
 	width: auto;
 	height: 31px;
 	display: inline-block;
 }
 
-div#navi div a
-{
+div#navi div a, .navif {
 	display:block;
 	width: auto;
 	color:#999999;
@@ -143,7 +142,7 @@ div#navi div a
 div#navi div a:hover, div a.current {	
 	color:#000000;
 	height: 22px;
-	background:transparent url(../images/nav_bt1.png) 0px -1px no-repeat;		
+	background:transparent url(../images/nav_bt1.png) 0px -1px no-repeat;
 }
 
 .mButton {
